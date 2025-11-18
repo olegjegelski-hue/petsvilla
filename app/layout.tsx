@@ -21,12 +21,12 @@ export const metadata: Metadata = {
     default: 'PetsVilla OÜ — Merisead, Viirpapagoid ja Kvaliteetne Hein | Soinaste, Tartu',
     template: '%s | PetsVilla OÜ'
   },
-  description: 'Professionaalne lemmikloomade aretaja Soinastes. Pakume tervislikke meriseabeebisid dokumenteeritud päritoluga, näituse kvaliteediga viirpapagoid ja looduslikult kuivatatud heina. Üle 4 aasta kogemus. Helista +372 512 7938.',
+  description: 'Professionaalne lemmikloomade aretaja Soinastes. Pakume tervislikke merisigasid dokumenteeritud päritoluga, näituse kvaliteediga viirpapagoid ja looduslikult kuivatatud heina. Üle 4 aasta kogemus. Helista +372 512 7938.',
   keywords: [
     // Eesti keelsed võtmesõnad - Merisead
     'merisead',
-    'meriseabeebid',
-    'meriseabeebi ost',
+    'merisead',
+    'merisea ost',
     'tõumerisead',
     'merisead Eestis',
     'merisiigade aretaja',
@@ -82,7 +82,7 @@ export const metadata: Metadata = {
     url: 'https://petsvilla.ee',
     siteName: 'PetsVilla OÜ',
     title: 'PetsVilla OÜ — Merisead, Viirpapagoid ja Kvaliteetne Hein | Soinaste',
-    description: 'Professionaalne lemmikloomade aretaja Soinastes. Tervislikud meriseabeebid dokumenteeritud päritoluga, näituse kvaliteediga viirpapagoid ja looduslikult kuivatatud hein. Üle 4 aasta kogemus. Tartu mnt 80, Soinaste. Tel: +372 512 7938.',
+    description: 'Professionaalne lemmikloomade aretaja Soinastes. Tervislikud merisead dokumenteeritud päritoluga, näituse kvaliteediga viirpapagoid ja looduslikult kuivatatud hein. Üle 4 aasta kogemus. Tartu mnt 80, Soinaste. Tel: +372 512 7938.',
     images: [
       {
         url: '/og-image.png',

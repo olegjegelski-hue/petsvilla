@@ -124,7 +124,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       post.title,
       post.category,
       'lemmikloomade blogi',
-      'meriseabeebid',
+      'merisead',
       'viirpapagoid',
       'loomade hooldus',
       'PetsVilla',

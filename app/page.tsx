@@ -97,10 +97,10 @@ export default function Home() {
           '@type': 'Offer',
           itemOffered: {
             '@type': 'Product',
-            name: 'Meriseabeebid',
+            name: 'Merisead',
             alternateName: 'Tõumerisead',
             description: 'Lühikarvased tõumerisead dokumenteeritud päritoluga (pedigree). Professionaalne aretamine, tervisekontroll ja nõustamine. Üle 50 tõumeriseaga erinevate värvide ja karvastruktuuriga.',
-            url: 'https://petsvilla.ee/meriseabeebid',
+            url: 'https://petsvilla.ee/merisead',
             category: 'Lemmikloomad',
             brand: {
               '@type': 'Brand',

@@ -226,7 +226,7 @@ export function About() {
                 <div className="relative h-64 md:h-96 rounded-lg overflow-hidden shadow-lg">
                   <Image
                     src="/parent-babies.jpg"
-                    alt="Meie meriseabeebid koos vanemaga"
+                    alt="Meie merisead koos vanemaga"
                     fill
                     className="object-cover"
                   />

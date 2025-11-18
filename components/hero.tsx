@@ -51,7 +51,7 @@ export function Hero() {
           transition={{ duration: 0.8, delay: 0.4 }}
           className="flex flex-wrap justify-center gap-4 mb-8"
         >
-          <Link href="/meriseabeebid">
+          <Link href="/merisead">
             <Button size="lg" className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300">
               <Heart className="w-5 h-5 mr-2" />
               Merisead

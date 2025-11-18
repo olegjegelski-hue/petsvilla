@@ -81,7 +81,7 @@ export function GuineaPigGallery() {
           <div className="flex items-center justify-center min-h-[400px]">
             <div className="text-center">
               <Loader2 className="w-12 h-12 text-pink-500 animate-spin mx-auto mb-4" />
-              <p className="text-gray-600">Laadin meriseabeebide andmeid...</p>
+              <p className="text-gray-600">Laadin merisigade andmeid...</p>
             </div>
           </div>
         </div>
@@ -170,7 +170,7 @@ export function GuineaPigGallery() {
                   <div className="relative h-80 overflow-hidden group">
                     <Image
                       src={imageUrl}
-                      alt={pig.name || 'Meriseabeeby'}
+                      alt={pig.name || 'Merisiga'}
                       fill
                       className="object-cover hover:scale-110 transition-transform duration-700"
                     />

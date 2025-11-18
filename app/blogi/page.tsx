@@ -7,8 +7,8 @@ import Script from 'next/script'
 
 export const metadata: Metadata = {
   title: 'Blogi - Lemmikloomade Hooldus ja Nõuanded',
-  description: 'Loe huvitavaid artikleid meriseabeebide, viirpapagoide hoolduse, toitmise ja tervise kohta. PetsVilla ekspertide nõuanded lemmikloomade omanikele.',
-  keywords: ['lemmikloomade blogi', 'meriseabeebid hooldus', 'viirpapagoid toitmine', 'loomade tervis', 'lemmikloomade nõuanded', 'guinea pig care', 'budgie care'],
+  description: 'Loe huvitavaid artikleid meriseade, viirpapagoide hoolduse, toitmise ja tervise kohta. PetsVilla ekspertide nõuanded lemmikloomade omanikele.',
+  keywords: ['lemmikloomade blogi', 'merisead hooldus', 'viirpapagoid toitmine', 'loomade tervis', 'lemmikloomade nõuanded', 'guinea pig care', 'budgie care'],
   alternates: {
     canonical: 'https://petsvilla.ee/blogi',
   },
@@ -25,7 +25,7 @@ export default function BlogPage() {
     '@context': 'https://schema.org',
     '@type': 'Blog',
     name: 'PetsVilla Blogi',
-    description: 'Artiklid lemmikloomade hoolduse, toitmise ja tervise kohta. Ekspertide nõuanded meriseabeebide ja viirpapagoide omanikele.',
+    description: 'Artiklid lemmikloomade hoolduse, toitmise ja tervise kohta. Ekspertide nõuanded meriseade ja viirpapagoide omanikele.',
     url: 'https://petsvilla.ee/blogi',
     publisher: {
       '@type': 'Organization',

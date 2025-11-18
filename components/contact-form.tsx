@@ -40,7 +40,7 @@ export function ContactForm() {
     if (pigName) {
       setFormData(prev => ({
         ...prev,
-        product: 'meriseabeebid',
+        product: 'merisead',
         subject: `Päring merisea ${pigName} kohta`,
         message: `Tere! Olen huvitatud meriseast nimega "${pigName}". Palun saatke mulle rohkem infot.`
       }))
@@ -228,10 +228,10 @@ export function ContactForm() {
                           <SelectValue placeholder="Valige toode" className="text-gray-500" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="meriseabeebid">
+                          <SelectItem value="merisead">
                             <div className="flex items-center space-x-2">
                               <Heart className="w-4 h-4 text-pink-500" />
-                              <span>Meriseabeebid</span>
+                              <span>Merisead</span>
                             </div>
                           </SelectItem>
                           <SelectItem value="viirpapagoid">
