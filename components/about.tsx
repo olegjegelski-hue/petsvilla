@@ -49,9 +49,9 @@ export function About() {
   ]
 
   const quickLinks = [
-    { name: 'Merisigadest', href: '#merisigadest', icon: Heart, color: 'from-pink-500 to-orange-500' },
-    { name: 'Viirpapagoidest', href: '#viirpapagoidest', icon: Bird, color: 'from-blue-500 to-cyan-500' },
-    { name: 'Heinast', href: '#heinast', icon: Wheat, color: 'from-green-500 to-yellow-500' },
+    { name: 'Merisead', href: '#merisigadest', icon: Heart, color: 'from-pink-500 to-orange-500' },
+    { name: 'Viirpapagoid', href: '#viirpapagoidest', icon: Bird, color: 'from-blue-500 to-cyan-500' },
+    { name: 'Lemmiklooma hein', href: '#heinast', icon: Wheat, color: 'from-green-500 to-yellow-500' },
   ]
 
   const allParents = [
@@ -113,7 +113,7 @@ export function About() {
           className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            PetsVilla - lemmikloomade kodu!
+            PetsVilla - hoitud lemmikud teie perele
           </h2>
           <div className="w-24 h-1 bg-gradient-to-r from-orange-500 to-pink-500 mx-auto mb-6"></div>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
@@ -196,7 +196,7 @@ export function About() {
           >
             <h3 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 text-center">
               <Heart className="inline-block w-8 h-8 mr-2 text-pink-600" />
-              Merisigadest
+              Merisead
             </h3>
             <div className="w-20 h-1 bg-gradient-to-r from-pink-500 to-orange-500 mx-auto mb-8"></div>
             <Card className="p-8 md:p-12 border-0 shadow-xl bg-white">
@@ -284,7 +284,7 @@ export function About() {
           >
             <h3 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 text-center">
               <Bird className="inline-block w-8 h-8 mr-2 text-blue-600" />
-              Viirpapagoidest
+              Viirpapagoid
             </h3>
             <div className="w-20 h-1 bg-gradient-to-r from-blue-500 to-cyan-500 mx-auto mb-8"></div>
             <Card className="p-8 md:p-12 border-0 shadow-xl bg-white">
@@ -336,7 +336,7 @@ export function About() {
           >
             <h3 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 text-center">
               <Wheat className="inline-block w-8 h-8 mr-2 text-green-600" />
-              Heinast
+              Lemmiklooma hein
             </h3>
             <div className="w-20 h-1 bg-gradient-to-r from-green-500 to-yellow-500 mx-auto mb-8"></div>
             <Card className="p-8 md:p-12 border-0 shadow-xl bg-white">

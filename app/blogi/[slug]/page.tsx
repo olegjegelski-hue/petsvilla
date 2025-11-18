@@ -293,11 +293,6 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
                   </div>
                 </div>
 
-                {/* Description */}
-                <p className="text-xl text-gray-700 mb-8 leading-relaxed">
-                  {post.description}
-                </p>
-
                 {/* Content */}
                 <div className="prose prose-lg max-w-none">
                   <div className="whitespace-pre-wrap text-gray-800 leading-relaxed">

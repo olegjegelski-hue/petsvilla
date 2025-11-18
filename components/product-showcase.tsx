@@ -12,7 +12,7 @@ import Image from 'next/image'
 const products = [
   {
     id: 'meriseabeebid',
-    title: 'Meriseabeebid',
+    title: 'Merisead',
     description: 'Tegeleme lühikarvaliste tõumerisigade professionaalse aretamisega. Aretuse vanemad on hoolikalt valitud, et tagada tervete, rõõmsate ja ilusate beebide sünd. Pakume alati nõu ja tuge uutele omanikele.',
     icon: Heart,
     color: 'from-pink-400 to-red-500',

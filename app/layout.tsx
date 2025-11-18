@@ -18,27 +18,53 @@ export const dynamic = "force-dynamic"
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXTAUTH_URL || 'https://petsvilla.ee'),
   title: {
-    default: 'PetsVilla — merisea beebid, viirpapagoid ja kvaliteetne hein | Soinaste',
+    default: 'PetsVilla OÜ — Merisead, Viirpapagoid ja Kvaliteetne Hein | Soinaste, Tartu',
     template: '%s | PetsVilla OÜ'
   },
-  description: 'PetsVilla OÜ pakub tervislikke meriseabeebisid, rõõmsaid viirpapagoid ja looduslikult kuivatatud heina. Asume Soinastes, Tartu mnt 80. Helista +372 512 7938.',
+  description: 'Professionaalne lemmikloomade aretaja Soinastes. Pakume tervislikke meriseabeebisid dokumenteeritud päritoluga, näituse kvaliteediga viirpapagoid ja looduslikult kuivatatud heina. Üle 4 aasta kogemus. Helista +372 512 7938.',
   keywords: [
-    'meriseabeebid', 
-    'tõumerisiigad', 
-    'merisiigade aretaja', 
-    'guinea pig breeder Estonia',
-    'viirpapagoid', 
-    'budgie breeder',
-    'näituse kvaliteet',
-    'hein merisiigadele', 
+    // Eesti keelsed võtmesõnad - Merisead
+    'merisead',
+    'meriseabeebid',
+    'meriseabeebi ost',
+    'tõumerisead',
+    'merisead Eestis',
+    'merisiigade aretaja',
+    'merisea kasvatus',
+    'lühikarvased merisead',
+    'rosette merisead',
+    'pedigree merisead',
+    'dokumenteeritud päritolu',
+    // Eesti keelsed võtmesõnad - Viirpapagoid
+    'viirpapagoid',
+    'viirpapagoi ost',
+    'viirpapagoidide aretaja',
+    'näituse viirpapagoid',
+    'papagoid Eestis',
+    'linnud Eestis',
+    'viirpapagoi kasvatus',
+    // Eesti keelsed võtmesõnad - Hein
+    'kvaliteetne hein',
+    'hein merisiigadele',
     'hein küülikutele',
-    'lemmikloomad', 
-    'pet store Estonia',
+    'looduslik hein',
+    'hein Tartus',
+    'meriseatoit',
+    'küülikutoit',
+    // Inglise keelsed võtmesõnad
+    'guinea pig breeder Estonia',
     'pedigree guinea pigs',
-    'tõuloomad',
+    'budgie breeder Estonia',
+    'pet store Estonia',
+    'show quality budgies',
+    'guinea pigs for sale',
+    // Üldised
+    'lemmikloomad Eestis',
     'lemmikloomade aretaja',
+    'tõuloomad',
     'PetsVilla',
-    'Eesti lemmikloomad'
+    'Soinaste',
+    'Tartu lemmikloomad'
   ],
   authors: [{ name: 'PetsVilla OÜ' }],
   creator: 'PetsVilla OÜ',
@@ -55,23 +81,31 @@ export const metadata: Metadata = {
     locale: 'et_EE',
     url: 'https://petsvilla.ee',
     siteName: 'PetsVilla OÜ',
-    title: 'PetsVilla OÜ - Tõumerisiigad ja Viirpapagoid | Eesti',
-    description: 'Professionaalne tõumerisiigade ja näituse kvaliteediga viirpapagoidega aretaja. Dokumenteeritud päritolu, tervisekontroll ja professionaalne nõustamine.',
+    title: 'PetsVilla OÜ — Merisead, Viirpapagoid ja Kvaliteetne Hein | Soinaste',
+    description: 'Professionaalne lemmikloomade aretaja Soinastes. Tervislikud meriseabeebid dokumenteeritud päritoluga, näituse kvaliteediga viirpapagoid ja looduslikult kuivatatud hein. Üle 4 aasta kogemus. Tartu mnt 80, Soinaste. Tel: +372 512 7938.',
     images: [
       {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'PetsVilla OÜ - Tõumerisiigad ja Viirpapagoid',
+        alt: 'PetsVilla OÜ — Professionaalne merisigade ja viirpapagoidide aretaja Soinastes, Tartumaa',
+        type: 'image/png',
       },
     ],
+    countryName: 'Estonia',
+    emails: ['service@petsvilla.ee', 'info@petsvilla.ee'],
+    phoneNumbers: ['+372 512 7938'],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'PetsVilla OÜ - Tõumerisiigad ja Viirpapagoid',
-    description: 'Professionaalne aretaja Eestis. Dokumenteeritud päritolu ja tervisekontroll.',
-    images: ['/og-image.png'],
+    site: '@petsvilla',
     creator: '@petsvilla',
+    title: 'PetsVilla OÜ — Merisead, Viirpapagoid ja Kvaliteetne Hein',
+    description: 'Professionaalne lemmikloomade aretaja Soinastes, Tartumaa. Dokumenteeritud päritolu, tervisekontroll ja professionaalne nõustamine. Helista +372 512 7938.',
+    images: {
+      url: '/og-image.png',
+      alt: 'PetsVilla OÜ — Merisead ja Viirpapagoid',
+    },
   },
   robots: {
     index: true,
@@ -95,11 +129,13 @@ export const metadata: Metadata = {
     apple: '/favicon.svg',
   },
   other: {
-    'fb:app_id': 'your-facebook-app-id',
     'og:phone_number': '+372 512 7938',
-    'og:email': 'info@petsvilla.ee',
+    'og:email': 'service@petsvilla.ee',
     'og:country-name': 'Estonia',
-    'og:region': 'EE',
+    'og:region': 'Tartumaa',
+    'og:locality': 'Soinaste',
+    'og:postal-code': '61709',
+    'og:street-address': 'Tartu mnt 80',
   },
 }
 
@@ -108,8 +144,63 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+  // Organization Schema for AI and Search Engines
+  const organizationSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'PetsVilla OÜ',
+    legalName: 'PetsVilla OÜ',
+    url: 'https://petsvilla.ee',
+    logo: 'https://petsvilla.ee/og-image.png',
+    description: 'Professionaalne lemmikloomade aretaja Eestis. Spetsialiseerunud tõumerisiigade ja näituse kvaliteediga viirpapagoidide aretamisele.',
+    foundingDate: '2020',
+    founder: {
+      '@type': 'Person',
+      name: 'PetsVilla OÜ Juht'
+    },
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: 'Tartu mnt 80',
+      addressLocality: 'Soinaste',
+      addressRegion: 'Tartumaa',
+      postalCode: '61709',
+      addressCountry: 'EE'
+    },
+    contactPoint: {
+      '@type': 'ContactPoint',
+      telephone: '+372-512-7938',
+      contactType: 'customer service',
+      email: 'service@petsvilla.ee',
+      availableLanguage: ['Estonian', 'Russian', 'English'],
+      areaServed: 'EE'
+    },
+    sameAs: [
+      'https://petsvilla.ee'
+    ],
+    email: 'service@petsvilla.ee',
+    telephone: '+372 512 7938',
+    areaServed: {
+      '@type': 'Country',
+      name: 'Estonia'
+    },
+    knowsAbout: [
+      'Guinea Pig Breeding',
+      'Budgerigar Breeding',
+      'Pet Care',
+      'Animal Husbandry',
+      'Pedigree Documentation',
+      'Show Quality Animals'
+    ]
+  }
+
   return (
     <html lang="et" suppressHydrationWarning>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+        />
+      </head>
       <body className={`${inter.className} ${poppins.variable}`} suppressHydrationWarning>
         <GoogleAnalytics />
         <ThemeProvider

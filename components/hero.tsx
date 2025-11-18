@@ -34,10 +34,10 @@ export function Hero() {
           transition={{ duration: 0.8, delay: 0.2 }}
         >
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl mb-6 leading-tight">
-            <span className="font-[family-name:var(--font-poppins)] font-semibold tracking-[0.075rem] text-[#222222] block">
+            <span className="font-[family-name:var(--font-poppins)] font-semibold tracking-[0.075rem] text-[#222222] block whitespace-nowrap">
               <span className="text-orange-500">Pets</span>
               <span className="text-green-600">Villa</span>
-              <span className="font-normal text-[90%] text-[#6B7280]"> — karvased sõbrad, sulelised lauljad ja kvaliteetne hein</span>
+              <span className="font-normal text-[90%] text-[#6B7280]"> - hoitud lemmikud teie perele</span>
             </span>
           </h1>
           <p className="text-xl md:text-2xl text-gray-700 mb-8 max-w-3xl mx-auto leading-relaxed font-medium">
@@ -54,7 +54,7 @@ export function Hero() {
           <Link href="/meriseabeebid">
             <Button size="lg" className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300">
               <Heart className="w-5 h-5 mr-2" />
-              Meriseabeebid
+              Merisead
               <ArrowRight className="w-5 h-5 ml-2" />
             </Button>
           </Link>

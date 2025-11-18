@@ -66,7 +66,7 @@ export default function TellimusKinnitatudPage() {
               </p>
               <div className="text-sm space-y-1">
                 <p className="text-gray-600">
-                  📧 Email: <a href="mailto:info@petsvilla.ee" className="text-orange-600 hover:underline">info@petsvilla.ee</a>
+                  📧 Email: <a href="mailto:service@petsvilla.ee" className="text-orange-600 hover:underline">service@petsvilla.ee</a>
                 </p>
                 <p className="text-gray-600">
                   📱 Telefon: <a href="tel:+3725127938" className="text-orange-600 hover:underline">+372 512 7938</a>

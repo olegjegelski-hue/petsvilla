@@ -101,7 +101,7 @@ export function GuineaPigGallery() {
         >
           <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-4">
             <Heart className="inline-block w-12 h-12 text-pink-500 mr-4" />
-            Meriseabeebid
+            Merisead
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
             Tegeleme lühikarvaliste tõumerisigade professionaalse aretamisega. Aretuse vanemad on hoolikalt valitud, et tagada tervete, rõõmsate ja ilusate beebide sünd. Pakume alati nõu ja tuge uutele omanikele.
