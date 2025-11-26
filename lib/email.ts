@@ -100,7 +100,7 @@ export async function sendHayOrderEmail(data: {
   const htmlContent = `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
       <h2 style="color: #333; border-bottom: 3px solid #10b981; padding-bottom: 10px;">
-        ✅ Uus heinatellimus
+        ✅ Heinatellimus kinnitatud
       </h2>
       
       <div style="background-color: #f0fdf4; padding: 20px; border-radius: 8px; margin: 20px 0; border: 2px solid #10b981;">
@@ -119,6 +119,14 @@ export async function sendHayOrderEmail(data: {
         <p style="margin: 10px 0; font-size: 18px;"><strong>Summa:</strong> <span style="color: #d97706;">${data.totalPrice}€</span></p>
       </div>
       
+      <div style="background-color: #f0f9ff; padding: 20px; border-radius: 8px; margin: 20px 0; border: 2px solid #0ea5e9;">
+        <h3 style="color: #0369a1; margin-top: 0;">💳 Palume tasuda antud tellimus:</h3>
+        <p style="margin: 10px 0;"><strong>Saaja:</strong> PetsVilla OÜ</p>
+        <p style="margin: 10px 0;"><strong>Konto:</strong> EE252200221078273363</p>
+        <p style="margin: 10px 0; font-size: 18px;"><strong>Summa:</strong> <span style="color: #0369a1;">${data.totalPrice}€</span></p>
+        <p style="margin: 10px 0;"><strong>Selgitus:</strong> Petsvilla kodulehe tellimus</p>
+      </div>
+      
       ${data.comments ? `
       <div style="background-color: #fff; padding: 20px; border-left: 4px solid #10b981; margin: 20px 0;">
         <h3 style="color: #333; margin-top: 0;">Kommentaarid:</h3>
@@ -135,12 +143,12 @@ export async function sendHayOrderEmail(data: {
 
   const mailOptions = {
     from: `"PetsVilla Heinatellimus" <${process.env.SMTP_USER}>`,
-    to: 'service@petsvilla.ee',
+    to: `${data.email}, service@petsvilla.ee`,
     replyTo: data.email,
-    subject: `🌾 Uus heinatellimus: ${data.quantity} pakki - ${data.name}`,
+    subject: `🌾 Heinatellimus kinnitus: ${data.quantity} pakki - ${data.name}`,
     html: htmlContent,
     text: `
-✅ UUS HEINATELLIMUS
+✅ HEINATELLIMUS KINNITATUD
 
 Kliendi andmed:
 - Nimi: ${data.name}
@@ -151,6 +159,12 @@ Tellimuse üksikasjad:
 - SmartPost terminal: ${data.terminal}
 - Hein (kotid): ${data.quantity} pakki
 ${data.guineaPigFood > 0 ? `- Meriseatoit: ${data.guineaPigFood} kg\n` : ''}${data.rabbitFood > 0 ? `- Küülikutoit: ${data.rabbitFood} × 2 kg pakend (kokku ${data.rabbitFood * 2} kg)\n` : ''}- Summa: ${data.totalPrice}€
+
+💳 PALUME TASUDA ANTUD TELLIMUS:
+Saaja: PetsVilla OÜ
+Konto: EE252200221078273363
+Summa: ${data.totalPrice}€
+Selgitus: Petsvilla kodulehe tellimus
 
 ${data.comments ? `Kommentaarid:\n${data.comments}\n` : ''}
 

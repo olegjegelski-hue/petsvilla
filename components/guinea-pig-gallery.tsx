@@ -4,13 +4,20 @@
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Heart, Calendar, Palette, Users, Mail, Phone, ArrowRight, Loader2, Cake, PawPrint } from 'lucide-react'
+import { Heart, Calendar, Palette, Users, Mail, Phone, ArrowRight, Loader2, Cake, PawPrint, Filter } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import type { GuineaPig } from '@/lib/types'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 
 // Fallback data in case Notion API fails
 const fallbackGuineaPigs: GuineaPig[] = [
@@ -36,6 +43,8 @@ export function GuineaPigGallery() {
   const [guineaPigs, setGuineaPigs] = useState<GuineaPig[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [selectedBreed, setSelectedBreed] = useState<string>('all')
+  const [selectedGender, setSelectedGender] = useState<string>('all')
 
   useEffect(() => {
     setMounted(true)
@@ -106,31 +115,6 @@ export function GuineaPigGallery() {
           <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
             Tegeleme lühikarvaliste tõumerisigade professionaalse aretamisega. Aretuse vanemad on hoolikalt valitud, et tagada tervete, rõõmsate ja ilusate beebide sünd. Pakume alati nõu ja tuge uutele omanikele.
           </p>
-          
-          {/* Info Cards */}
-          <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-            <Card className="border-0 shadow-lg">
-              <CardContent className="p-4 text-center">
-                <Calendar className="w-8 h-8 text-pink-500 mx-auto mb-2" />
-                <p className="font-semibold">Vanus</p>
-                <p className="text-sm text-gray-600">5-8 nädalat</p>
-              </CardContent>
-            </Card>
-            <Card className="border-0 shadow-lg">
-              <CardContent className="p-4 text-center">
-                <Palette className="w-8 h-8 text-pink-500 mx-auto mb-2" />
-                <p className="font-semibold">Värvid</p>
-                <p className="text-sm text-gray-600">Erinevad värvid</p>
-              </CardContent>
-            </Card>
-            <Card className="border-0 shadow-lg">
-              <CardContent className="p-4 text-center">
-                <Users className="w-8 h-8 text-pink-500 mx-auto mb-2" />
-                <p className="font-semibold">Sotsiaalsed</p>
-                <p className="text-sm text-gray-600">Sõbralikud ja usaludasväärsed</p>
-              </CardContent>
-            </Card>
-          </div>
         </motion.div>
 
         {/* Error Message */}
@@ -140,9 +124,109 @@ export function GuineaPigGallery() {
           </div>
         )}
 
+        {/* Filters - keskele ja kitsamaks */}
+        {guineaPigs.length > 0 && (
+          <div className="max-w-3xl mx-auto mb-8">
+            <motion.div 
+              className="bg-white rounded-lg shadow-md p-4"
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <div className="flex flex-wrap items-center gap-3 justify-center">
+                <div className="flex items-center gap-2">
+                  <Filter className="w-5 h-5 text-pink-500" />
+                  <span className="text-base font-semibold text-gray-900">Filtreeri:</span>
+                </div>
+                
+                {/* Breed Filter */}
+                <div className="flex items-center gap-2">
+                  <label className="text-sm font-medium text-gray-700">Tõug</label>
+                  <Select value={selectedBreed} onValueChange={setSelectedBreed}>
+                    <SelectTrigger className="w-40">
+                      <SelectValue placeholder="Vali" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">Kõik</SelectItem>
+                      {Array.from(new Set(guineaPigs.map(pig => pig.breed).filter(Boolean))).sort().map(breed => (
+                        <SelectItem key={breed} value={breed!}>{breed}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Gender Filter */}
+                <div className="flex items-center gap-2">
+                  <label className="text-sm font-medium text-gray-700">Sugu</label>
+                  <Select value={selectedGender} onValueChange={setSelectedGender}>
+                    <SelectTrigger className="w-36">
+                      <SelectValue placeholder="Vali" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">Kõik</SelectItem>
+                      {Array.from(new Set(guineaPigs.map(pig => pig.gender).filter(Boolean))).sort().map(gender => (
+                        <SelectItem key={gender} value={gender!}>{gender}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              {/* Active Filters Display */}
+              {(selectedBreed !== 'all' || selectedGender !== 'all') && (
+                <div className="mt-4 flex items-center gap-2 flex-wrap justify-center">
+                  <span className="text-sm text-gray-600">Aktiivsed filtrid:</span>
+                  {selectedBreed !== 'all' && (
+                    <Badge variant="secondary" className="bg-pink-100 text-pink-700">
+                      Tõug: {selectedBreed}
+                    </Badge>
+                  )}
+                  {selectedGender !== 'all' && (
+                    <Badge variant="secondary" className="bg-blue-100 text-blue-700">
+                      Sugu: {selectedGender}
+                    </Badge>
+                  )}
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => {
+                      setSelectedBreed('all')
+                      setSelectedGender('all')
+                    }}
+                    className="text-xs text-gray-500 hover:text-gray-700"
+                  >
+                    Tühista filtrid
+                  </Button>
+                </div>
+              )}
+            </motion.div>
+          </div>
+        )}
+
+        {/* Results count */}
+        {guineaPigs.length > 0 && (
+          <div className="mb-6">
+            <p className="text-sm text-gray-600">
+              Leitud: <span className="font-semibold text-gray-900">
+                {guineaPigs.filter(pig => {
+                  const breedMatch = selectedBreed === 'all' || pig.breed === selectedBreed
+                  const genderMatch = selectedGender === 'all' || pig.gender === selectedGender
+                  return breedMatch && genderMatch
+                }).length}
+              </span> merisiga
+            </p>
+          </div>
+        )}
+
         {/* Guinea Pig Cards */}
         <div ref={ref} className="grid md:grid-cols-2 lg:grid-cols-2 gap-8 mb-16">
-          {guineaPigs.map((pig, index) => {
+          {guineaPigs
+            .filter(pig => {
+              const breedMatch = selectedBreed === 'all' || pig.breed === selectedBreed
+              const genderMatch = selectedGender === 'all' || pig.gender === selectedGender
+              return breedMatch && genderMatch
+            })
+            .map((pig, index) => {
             // Use different placeholder images if no image is provided
             const placeholderImages = [
               '/parent-brown.png',
@@ -162,9 +246,9 @@ export function GuineaPigGallery() {
             return (
               <motion.div
                 key={pig.id}
-                initial={{ opacity: 0, y: 50 }}
-                animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-                transition={{ duration: 0.8, delay: index * 0.2 }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
               >
                 <Card className="h-full hover:shadow-2xl transition-all duration-500 border-0 shadow-lg overflow-hidden">
                   <div className="relative h-80 overflow-hidden group">
@@ -174,26 +258,21 @@ export function GuineaPigGallery() {
                       fill
                       className="object-cover hover:scale-110 transition-transform duration-700"
                     />
-                  {/* Status badge - vasakul üleval */}
-                  <div className="absolute top-4 left-4">
-                    {pig.status && (
-                      <Badge 
-                        variant="default" 
-                        className={
-                          pig.status === 'Emmega' ? 'bg-green-500 hover:bg-green-600' :
-                          pig.status === 'Broneeritud' ? 'bg-yellow-500 hover:bg-yellow-600' :
-                          pig.status === 'Müüdud' ? 'bg-gray-500 hover:bg-gray-600' :
-                          'bg-blue-500 hover:bg-blue-600'
-                        }
-                      >
-                        {pig.status}
-                      </Badge>
-                    )}
-                  </div>
+                  {/* Birth date - vasakul üleval */}
+                  {pig.birthDate && (
+                    <div className="absolute top-3 left-3 bg-white/95 rounded-lg px-2.5 py-1.5 shadow-md">
+                      <div className="text-center">
+                        <p className="text-xs font-semibold text-gray-700">Sündis</p>
+                        <p className="text-sm font-bold text-pink-600">
+                          {new Date(pig.birthDate).toLocaleDateString('et-EE')}
+                        </p>
+                      </div>
+                    </div>
+                  )}
                   
                   {/* Available date - paremal üleval */}
                   {pig.available && (
-                    <div className="absolute top-4 right-4 bg-white/95 rounded-lg px-3 py-2 shadow-md">
+                    <div className="absolute top-3 right-3 bg-white/95 rounded-lg px-2.5 py-1.5 shadow-md">
                       <div className="text-center">
                         <p className="text-xs font-semibold text-gray-700">Saadaval</p>
                         <p className="text-sm font-bold text-pink-600">
@@ -203,70 +282,76 @@ export function GuineaPigGallery() {
                     </div>
                   )}
                   
-                  {/* Gender heart icon - alumises paremas nurgas */}
+                  {/* Price - vasakul all */}
+                  {pig.price > 0 && (
+                    <div className="absolute bottom-3 left-3 bg-pink-500 text-white rounded-lg px-3 py-2 shadow-lg">
+                      <div className="text-xl font-bold">{pig.price}€</div>
+                    </div>
+                  )}
+                  
+                  {/* Gender heart icon with text - paremal all */}
                   {pig.gender && (
-                    <div className="absolute bottom-4 right-4 transition-transform group-hover:scale-110 duration-300">
-                      <Heart 
-                        className={`w-10 h-10 drop-shadow-lg ${
+                    <div className="absolute bottom-3 right-3 transition-transform group-hover:scale-110 duration-300">
+                      <div className="flex flex-col items-center bg-white/90 rounded-lg px-3 py-2 shadow-md">
+                        <Heart 
+                          className={`w-8 h-8 mb-1 ${
+                            pig.gender === 'Emane' || pig.gender === 'Tüdruk'
+                              ? 'text-pink-500 fill-pink-500' 
+                              : pig.gender === 'Isane' || pig.gender === 'Poiss'
+                              ? 'text-blue-500 fill-blue-500'
+                              : 'text-gray-400 fill-gray-400'
+                          }`}
+                          strokeWidth={2}
+                        />
+                        <span className={`text-xs font-bold ${
                           pig.gender === 'Emane' || pig.gender === 'Tüdruk'
-                            ? 'text-pink-500 fill-pink-500' 
+                            ? 'text-pink-600' 
                             : pig.gender === 'Isane' || pig.gender === 'Poiss'
-                            ? 'text-blue-500 fill-blue-500'
-                            : 'text-gray-400 fill-gray-400'
-                        }`}
-                        strokeWidth={2}
-                      />
+                            ? 'text-blue-600'
+                            : 'text-gray-600'
+                        }`}>
+                          {pig.gender}
+                        </span>
+                      </div>
                     </div>
                   )}
                 </div>
                 
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-2xl font-bold text-gray-900">{pig.name}</h3>
-                    {pig.price > 0 && (
-                      <div className="text-2xl font-bold text-pink-500">{pig.price}€</div>
-                    )}
-                  </div>
+                <CardContent className="p-4">
+                  {/* Nimi keskele */}
+                  <h3 className="text-xl font-bold text-gray-900 text-center mb-3">{pig.name}</h3>
                   
-                  <div className="space-y-2.5 mb-4">
-                    {pig.gender && (
-                      <div className="flex items-center space-x-2">
-                        <Users className="w-4 h-4 text-gray-500 flex-shrink-0" />
-                        <span className="text-sm text-gray-600"><span className="font-semibold">Sugu:</span> {pig.gender}</span>
-                      </div>
-                    )}
-                    {pig.breed && (
-                      <div className="flex items-center space-x-2">
-                        <PawPrint className="w-4 h-4 text-gray-500 flex-shrink-0" />
-                        <span className="text-sm text-gray-600"><span className="font-semibold">Tõug:</span> {pig.breed}</span>
-                      </div>
-                    )}
-                    {pig.color && (
-                      <div className="flex items-center space-x-2">
-                        <Palette className="w-4 h-4 text-gray-500 flex-shrink-0" />
-                        <span className="text-sm text-gray-600"><span className="font-semibold">Värvus:</span> {pig.color}</span>
-                      </div>
-                    )}
-                    {pig.birthDate && (
-                      <div className="flex items-center space-x-2">
-                        <Cake className="w-4 h-4 text-gray-500 flex-shrink-0" />
-                        <span className="text-sm text-gray-600"><span className="font-semibold">Sündis:</span> {new Date(pig.birthDate).toLocaleDateString('et-EE')}</span>
-                      </div>
-                    )}
-                    {pig.age && (
-                      <div className="flex items-center space-x-2">
-                        <Calendar className="w-4 h-4 text-gray-500 flex-shrink-0" />
-                        <span className="text-sm text-gray-600"><span className="font-semibold">Vanus:</span> {pig.age}</span>
-                      </div>
-                    )}
-                  </div>
+                  {/* Tõug ja Värvus ühel real - keskele joondatud */}
+                  {(pig.breed || pig.color) && (
+                    <div className="flex items-center justify-center gap-3 mb-3 p-2.5 bg-gray-50 rounded-lg border border-gray-300 flex-wrap">
+                      {pig.breed && (
+                        <div className="flex items-center gap-1.5">
+                          <PawPrint className="w-4 h-4 text-gray-800 flex-shrink-0" />
+                          <span className="text-sm font-medium text-gray-800">
+                            Tõug: <span className="font-semibold text-gray-900">{pig.breed}</span>
+                          </span>
+                        </div>
+                      )}
+                      {pig.breed && pig.color && (
+                        <span className="text-gray-400">|</span>
+                      )}
+                      {pig.color && (
+                        <div className="flex items-center gap-1.5">
+                          <Palette className="w-4 h-4 text-gray-800 flex-shrink-0" />
+                          <span className="text-sm font-medium text-gray-800">
+                            Värvus: <span className="font-semibold text-gray-900">{pig.color}</span>
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  )}
 
                   {pig.description && (
                     <p className="text-gray-600 mb-4">{pig.description}</p>
                   )}
 
                   <Link href={`/kontakt?pig=${encodeURIComponent(pig.name)}&id=${pig.id}`}>
-                    <Button className="w-full bg-pink-500 hover:bg-pink-600 text-white">
+                    <Button className="w-full bg-pink-600 hover:bg-pink-700 text-white font-semibold shadow-md">
                       <Heart className="w-4 h-4 mr-2" />
                       Küsi infot
                       <ArrowRight className="w-4 h-4 ml-2" />

@@ -9,12 +9,13 @@ export function Footer() {
         <div className="grid md:grid-cols-3 gap-12">
           {/* Brand Section */}
           <div>
-            <div className="flex items-center space-x-2 mb-6">
+            <div className="flex items-center space-x-2 mb-2">
               <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-orange-400 to-green-500 flex items-center justify-center">
                 <span className="text-white font-bold">PV</span>
               </div>
               <span className="font-bold text-2xl">PetsVilla OÜ</span>
             </div>
+            <p className="text-gray-400 text-sm mb-6">Reg. nr. 14980686</p>
             <p className="text-gray-300 leading-relaxed mb-6">
               Oleme pühendunud lemmikloomade heaolule ja teie rahulolule. 
               Meie eesmärk on tuua teie koju armastust ja rõõmu.
@@ -91,9 +92,7 @@ export function Footer() {
         </div>
 
         <div className="border-t border-gray-800 mt-12 pt-8 text-center">
-          <p className="text-gray-400">
-            © 2025 PetsVilla OÜ (reg kood 14980686). Kõik õigused kaitstud.
-          </p>
+          <p className="text-gray-400">© 2025 PetsVilla OÜ Kõik õigused kaitstud.</p>
         </div>
       </div>
     </footer>

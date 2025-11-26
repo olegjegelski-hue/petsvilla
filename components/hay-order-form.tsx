@@ -349,7 +349,7 @@ export function HayOrderForm() {
                           <p className="text-gray-700 font-medium text-lg">Kogusumma:</p>
                           <p className="text-3xl font-bold text-green-700">{totalPrice}€</p>
                         </div>
-                        <p className="text-xs text-gray-600 text-center">Hein hind sisaldab Smartpost tarnet</p>
+                        <p className="text-xs text-gray-600 text-center">Tellimus sisaldab Smartpost tarnet</p>
                       </div>
                     </CardContent>
                   </Card>
