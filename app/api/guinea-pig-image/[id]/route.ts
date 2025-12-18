@@ -47,8 +47,10 @@ export async function GET(
     if (imageUrl.startsWith('http')) {
       return NextResponse.redirect(imageUrl);
     } else {
-      // Return placeholder image path
-      return NextResponse.json({ imageUrl });
+      // Construct absolute URL for placeholder
+      const baseUrl = new URL(request.url).origin;
+      const absoluteUrl = `${baseUrl}${imageUrl}`;
+      return NextResponse.redirect(absoluteUrl);
     }
   } catch (error: any) {
     console.error('Pildi laadimine ebaõnnestus:', error);

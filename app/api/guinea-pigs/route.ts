@@ -23,7 +23,7 @@ export async function GET() {
     }
 
     // Pärime andmebaasi andmeid, filtreerides ainult saadaolevad beebed
-    // Filtreerime ainult need beebed, kus Staatus on "Emmega" või "Broneeritud"
+    // Filtreerime ainult need beebed, kus Staatus on "Emmega" või "Lasteaed"
     const response = await notion.databases.query({
       database_id: databaseId,
       filter: {
@@ -37,7 +37,7 @@ export async function GET() {
           {
             property: 'Staatus',
             select: {
-              equals: 'Broneeritud'
+              equals: 'Lasteaed'
             }
           }
         ]
@@ -75,6 +75,10 @@ export async function GET() {
         properties.Tõug?.select?.name || 
         '';
       
+      const code = 
+        properties.Kood?.formula?.string || 
+        '';
+      
       const birthDate = 
         properties['Sündis']?.date?.start || 
         '';
@@ -103,6 +107,7 @@ export async function GET() {
       return {
         id: page.id,
         name,
+        code,
         price,
         color,
         age,

@@ -10,10 +10,28 @@ const notion = new Client({
   auth: process.env.NOTION_API_KEY,
 })
 
+// Format phone number to ensure +372 prefix for SmartPost (without spaces)
+function formatPhoneNumber(phone: string): string {
+  // Remove ALL spaces and non-digit characters except +
+  let cleaned = phone.replace(/\s+/g, '').replace(/[^\d+]/g, '')
+  
+  // If starts with 372 (without +), add the +
+  if (cleaned.startsWith('372')) {
+    cleaned = '+' + cleaned
+  }
+  // If starts with a digit (like 5...), add +372
+  else if (cleaned.length > 0 && /^\d/.test(cleaned)) {
+    cleaned = '+372' + cleaned
+  }
+  // If already has + but not +372, keep as is
+  
+  return cleaned
+}
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { name, email, phone, terminal, quantity, guineaPigFood, rabbitFood, comments } = body
+    let { name, email, phone, terminal, quantity, guineaPigFood, rabbitFood, comments } = body
 
     if (!name || !email || !phone || !terminal || !quantity) {
       return NextResponse.json(
@@ -21,6 +39,9 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       )
     }
+
+    // Format phone number to ensure +372 prefix for SmartPost
+    phone = formatPhoneNumber(phone)
 
     const databaseId = process.env.NOTION_HAY_DATABASE_ID
     
