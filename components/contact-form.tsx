@@ -32,17 +32,30 @@ export function ContactForm() {
     product: ''
   })
 
-  // Load guinea pig info from URL params
+  // Load guinea pig or product info from URL params
   useEffect(() => {
     const pigName = searchParams.get('pig')
     const pigId = searchParams.get('id')
+    const pigCode = searchParams.get('code')
+    const productName = searchParams.get('product')
+    const productId = searchParams.get('id')
+    const productCode = searchParams.get('code')
     
     if (pigName) {
+      const codeInfo = pigCode ? ` (${pigCode})` : ''
       setFormData(prev => ({
         ...prev,
         product: 'merisead',
-        subject: `Päring merisea ${pigName} kohta`,
-        message: `Tere! Olen huvitatud meriseast nimega "${pigName}". Palun saatke mulle rohkem infot.`
+        subject: `Päring merisea ${pigName}${codeInfo} kohta`,
+        message: `Tere! Olen huvitatud meriseast nimega "${pigName}"${codeInfo}. Palun saatke mulle rohkem infot.`
+      }))
+    } else if (productName) {
+      const codeInfo = productCode ? ` (Kood: ${productCode})` : ''
+      setFormData(prev => ({
+        ...prev,
+        product: 'pood',
+        subject: `Päring toote ${productName} kohta${codeInfo}`,
+        message: `Tere! Olen huvitatud tootest "${productName}". Palun saatke mulle rohkem infot.`
       }))
     }
   }, [searchParams])
@@ -126,7 +139,7 @@ export function ContactForm() {
               <CardContent>
                 <p className="text-gray-600 mb-2">Külastage meid:</p>
                 <p className="text-lg font-semibold text-gray-900">Tartu mnt 80, Soinaste</p>
-                <p className="text-sm text-gray-500 mt-1">Kambja vald, Tartumaa 61709</p>
+                <p className="text-sm text-gray-700 mt-1">Kambja vald, Tartumaa 61709</p>
               </CardContent>
             </Card>
 
@@ -174,7 +187,7 @@ export function ContactForm() {
                 <CardTitle className="text-2xl text-gray-900">
                   Saada meile sõnum
                 </CardTitle>
-                <p className="text-gray-700">
+                <p className="text-gray-800">
                   Täitke vorm ja võtame teiega peagi ühendust
                 </p>
               </CardHeader>
@@ -189,7 +202,7 @@ export function ContactForm() {
                         onChange={(e) => handleInputChange('name', e.target.value)}
                         placeholder="Teie nimi"
                         required
-                        className="pl-4 text-gray-900 placeholder:text-gray-500"
+                        className="pl-4 text-gray-900 placeholder:text-gray-600"
                       />
                     </div>
                     <div className="space-y-2">
@@ -201,7 +214,7 @@ export function ContactForm() {
                         onChange={(e) => handleInputChange('email', e.target.value)}
                         placeholder="teie@email.ee"
                         required
-                        className="pl-4 text-gray-900 placeholder:text-gray-500"
+                        className="pl-4 text-gray-900 placeholder:text-gray-600"
                       />
                     </div>
                   </div>
@@ -215,7 +228,7 @@ export function ContactForm() {
                         value={formData.phone}
                         onChange={(e) => handleInputChange('phone', e.target.value)}
                         placeholder="+372 XXX XXXX"
-                        className="pl-4 text-gray-900 placeholder:text-gray-500"
+                        className="pl-4 text-gray-900 placeholder:text-gray-600"
                       />
                     </div>
                     <div className="space-y-2">
@@ -259,7 +272,7 @@ export function ContactForm() {
                       value={formData.subject}
                       onChange={(e) => handleInputChange('subject', e.target.value)}
                       placeholder="Sõnumi teema"
-                      className="pl-4 text-gray-900 placeholder:text-gray-500"
+                      className="pl-4 text-gray-900 placeholder:text-gray-600"
                     />
                   </div>
 
@@ -272,7 +285,7 @@ export function ContactForm() {
                       placeholder="Kirjutage oma sõnum siia..."
                       rows={6}
                       required
-                      className="pl-4 pt-3 resize-none text-gray-900 placeholder:text-gray-500"
+                      className="pl-4 pt-3 resize-none text-gray-900 placeholder:text-gray-600"
                     />
                   </div>
 

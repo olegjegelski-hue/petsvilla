@@ -34,10 +34,33 @@ export function HayOrderForm() {
   })
 
   const handleInputChange = (field: string, value: string) => {
+    // Format phone number automatically
+    if (field === 'phone') {
+      value = formatPhoneNumber(value)
+    }
+    
     setFormData(prev => ({
       ...prev,
       [field]: value
     }))
+  }
+
+  // Format phone number to ensure +372 prefix without spaces
+  const formatPhoneNumber = (phone: string): string => {
+    // Remove ALL spaces and non-digit characters except +
+    let cleaned = phone.replace(/\s+/g, '').replace(/[^\d+]/g, '')
+    
+    // If starts with 372 (without +), add the +
+    if (cleaned.startsWith('372')) {
+      cleaned = '+' + cleaned
+    }
+    // If starts with a digit (like 5...), add +372
+    else if (cleaned.length > 0 && /^\d/.test(cleaned)) {
+      cleaned = '+372' + cleaned
+    }
+    // If already has + but not +372, keep as is
+    
+    return cleaned
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -51,38 +74,124 @@ export function HayOrderForm() {
     setIsSubmitting(true)
 
     try {
-      // TODO: Implement API endpoint for hay orders
-      const response = await fetch('/api/hay-order', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      })
+      // Check if Montonio payments are enabled
+      const montonioEnabled = process.env.NEXT_PUBLIC_MONTONIO_ENABLED === 'true'
+      
+      if (montonioEnabled) {
+        // MONTONIO WORKFLOW: Create payment order and redirect to payment page
+        console.log('Creating Montonio order with data:', {
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          hayAmount: formData.quantity,
+          guineaPigFood: formData.guineaPigFood,
+          rabbitFood: formData.rabbitFood,
+        })
 
-      if (response.ok) {
-        // Redirect to confirmation page
-        router.push('/tellimus-kinnitatud')
+        const response = await fetch('/api/montonio/create-order', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name: formData.name,
+            email: formData.email,
+            phone: formData.phone,
+            hayAmount: formData.quantity,
+            guineaPigFood: formData.guineaPigFood,
+            rabbitFood: formData.rabbitFood,
+            deliveryMethod: 'smartpost',
+            parcelMachine: formData.terminal,
+            notes: formData.comments
+          }),
+        })
+
+        console.log('Response status:', response.status)
+        
+        const data = await response.json()
+        console.log('Response data:', data)
+
+        if (response.ok && data.paymentUrl) {
+          // Save order reference to sessionStorage for confirmation page
+          sessionStorage.setItem('lastOrderReference', data.merchantReference)
+          sessionStorage.setItem('lastOrderUuid', data.uuid)
+          
+          console.log('Redirecting to:', data.paymentUrl)
+          
+          // Redirect to Montonio payment page
+          window.location.href = data.paymentUrl
+        } else {
+          console.error('Order creation failed:', data)
+          const errorMessage = data.details || data.error || 'Viga tellimuse loomisel. Palun proovige uuesti.'
+          toast.error(errorMessage, { duration: 5000 })
+          setIsSubmitting(false)
+        }
       } else {
-        toast.error('Viga tellimuse saatmisel. Palun proovige uuesti.')
+        // EMAIL-BASED WORKFLOW: Save order to Notion and show confirmation
+        console.log('Saving order to Notion (email-based workflow):', {
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          quantity: formData.quantity,
+          guineaPigFood: formData.guineaPigFood,
+          rabbitFood: formData.rabbitFood,
+        })
+
+        const response = await fetch('/api/hay-order', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name: formData.name,
+            email: formData.email,
+            phone: formData.phone,
+            terminal: formData.terminal,
+            quantity: formData.quantity,
+            guineaPigFood: formData.guineaPigFood,
+            rabbitFood: formData.rabbitFood,
+            comments: formData.comments
+          }),
+        })
+
+        const data = await response.json()
+
+        if (response.ok) {
+          // Show success message
+          toast.success('Tellimus edukalt saadetud! Saadame sulle emailiga makseinfo.', { duration: 5000 })
+          
+          // Redirect to confirmation page after 2 seconds
+          setTimeout(() => {
+            router.push('/tellimus-kinnitatud?payment=success')
+          }, 2000)
+        } else {
+          console.error('Order creation failed:', data)
+          const errorMessage = data.error || 'Viga tellimuse loomisel. Palun proovige uuesti.'
+          toast.error(errorMessage, { duration: 5000 })
+          setIsSubmitting(false)
+        }
       }
     } catch (error) {
-      console.error('Error submitting order:', error)
-      toast.error('Viga tellimuse saatmisel. Palun proovige uuesti.')
-    } finally {
+      console.error('Error creating order:', error)
+      toast.error('Viga tellimuse loomisel. Palun kontrollige internetiühendust ja proovige uuesti.', { duration: 5000 })
       setIsSubmitting(false)
     }
   }
 
   // Calculate total price:
-  // - Hay: quantity * 9€
-  // - Guinea pig food: guineaPigFood * 9€ per kg
-  // - Rabbit food: sold in 2 kg packages at 6€ per package
-  const hayPrice = parseInt(formData.quantity || '1') * 9
-  const guineaPigFoodPrice = parseInt(formData.guineaPigFood || '0') * 9
-  const rabbitFoodQuantity = parseInt(formData.rabbitFood || '0')
-  const rabbitFoodPrice = rabbitFoodQuantity * 6  // 6€ per 2kg package
+  // - Hay: 9€ for 1 bag, 18€ for 2 bags, 27€ for 3+ bags
+  // - Guinea pig food: 9€ per kg
+  // - Rabbit food: 3€ per kg (6€ for 2kg package)
+  // - Delivery: FREE (tarne hinna sees)
+  const quantity = parseInt(formData.quantity || '1')
+  const hayPrice = quantity === 1 ? 9 : quantity === 2 ? 18 : 27
+  const guineaPigFoodPrice = parseFloat(formData.guineaPigFood || '0') * 9
+  const rabbitFoodPrice = parseFloat(formData.rabbitFood || '0') * 3
+  const deliveryPrice = 0 // FREE delivery
   const totalPrice = hayPrice + guineaPigFoodPrice + rabbitFoodPrice
+  
+  // Check if Montonio is enabled
+  const montonioEnabled = process.env.NEXT_PUBLIC_MONTONIO_ENABLED === 'true'
 
   return (
     <section className="py-20">
@@ -99,8 +208,17 @@ export function HayOrderForm() {
             Telli Hein
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Täida tellimuse vorm ja võtame sinuga peagi ühendust tellimuse kinnitamiseks.
-            Hind: 9€/kott (sh Smartpost tarne üle Eesti)
+            {montonioEnabled ? (
+              <>
+                Täida tellimuse vorm ja maksa turvaliselt läbi Montonio.
+                Hind: 9€/kott (tarne hinna sees)
+              </>
+            ) : (
+              <>
+                Täida tellimuse vorm. Saadame sulle emailiga makseinfo.
+                Hind: 9€/kott (tarne hinna sees)
+              </>
+            )}
           </p>
         </motion.div>
 
@@ -147,8 +265,8 @@ export function HayOrderForm() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-2xl font-bold text-gray-900">9€</p>
-                <p className="text-sm text-gray-600">Smartpost</p>
+                <p className="text-2xl font-bold text-green-600">TASUTA</p>
+                <p className="text-sm text-gray-600">SmartPost</p>
               </CardContent>
             </Card>
           </div>
@@ -160,8 +278,7 @@ export function HayOrderForm() {
                 <div className="flex items-start space-x-3">
                   <AlertCircle className="w-6 h-6 text-orange-600 flex-shrink-0 mt-0.5" />
                   <p className="text-orange-800 font-semibold">
-                    Hind sisaldab heina ja Smartpost tarne maksumust. 
-                    Pärast tellimuse saamist võtame teiega ühendust kinnitamiseks.
+                    Pärast vormi täitmist suunatakse teid Montonio makselehele, kus saate tasuda panga lingi või kaardiga.
                   </p>
                 </div>
               </CardContent>
@@ -230,10 +347,14 @@ export function HayOrderForm() {
                         type="tel"
                         value={formData.phone}
                         onChange={(e) => handleInputChange('phone', e.target.value)}
-                        placeholder="+372 5XXX XXXX"
+                        placeholder="5XXX XXXX"
                         required
                         className="pl-4 text-gray-900 placeholder:text-gray-500"
                       />
+                      <p className="text-xs text-gray-700 font-medium flex items-center">
+                        <AlertCircle className="w-3 h-3 mr-1" />
+                        +372 lisatakse automaatselt
+                      </p>
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="quantity" className="text-gray-900 font-semibold flex items-center">
@@ -263,12 +384,13 @@ export function HayOrderForm() {
                         <div className="space-y-2">
                           <Label htmlFor="guineaPigFood" className="text-gray-900 font-semibold flex items-center">
                             <ShoppingCart className="w-4 h-4 mr-2 text-gray-600" />
-                            Meriseatoit (1 kg 9 eur)
+                            Meriseatoit (kg, 9€/kg)
                           </Label>
                           <Input
                             id="guineaPigFood"
                             type="number"
                             min="0"
+                            step="0.5"
                             value={formData.guineaPigFood}
                             onChange={(e) => handleInputChange('guineaPigFood', e.target.value)}
                             placeholder="0"
@@ -278,12 +400,13 @@ export function HayOrderForm() {
                         <div className="space-y-2">
                           <Label htmlFor="rabbitFood" className="text-gray-900 font-semibold flex items-center">
                             <ShoppingCart className="w-4 h-4 mr-2 text-gray-600" />
-                            Küülikutoit (2 kg pakend 6 eur)
+                            Küülikutoit (kg, 3€/kg)
                           </Label>
                           <Input
                             id="rabbitFood"
                             type="number"
                             min="0"
+                            step="0.5"
                             value={formData.rabbitFood}
                             onChange={(e) => handleInputChange('rabbitFood', e.target.value)}
                             placeholder="0"
@@ -329,27 +452,31 @@ export function HayOrderForm() {
                       <div className="space-y-3">
                         <div className="space-y-1">
                           <div className="flex justify-between items-center text-sm">
-                            <span className="text-gray-700">Hein: {formData.quantity} kott × 9€</span>
-                            <span className="text-gray-900 font-semibold">{hayPrice}€</span>
+                            <span className="text-gray-700">Hein: {formData.quantity} kott{parseInt(formData.quantity) > 1 ? 'i' : ''}</span>
+                            <span className="text-gray-900 font-semibold">{hayPrice.toFixed(2)}€</span>
                           </div>
-                          {parseInt(formData.guineaPigFood || '0') > 0 && (
+                          {parseFloat(formData.guineaPigFood || '0') > 0 && (
                             <div className="flex justify-between items-center text-sm">
                               <span className="text-gray-700">Meriseatoit: {formData.guineaPigFood} kg × 9€</span>
-                              <span className="text-gray-900 font-semibold">{guineaPigFoodPrice}€</span>
+                              <span className="text-gray-900 font-semibold">{guineaPigFoodPrice.toFixed(2)}€</span>
                             </div>
                           )}
-                          {parseInt(formData.rabbitFood || '0') > 0 && (
+                          {parseFloat(formData.rabbitFood || '0') > 0 && (
                             <div className="flex justify-between items-center text-sm">
-                              <span className="text-gray-700">Küülikutoit: {formData.rabbitFood} × 2 kg pakend (6€)</span>
-                              <span className="text-gray-900 font-semibold">{rabbitFoodPrice}€</span>
+                              <span className="text-gray-700">Küülikutoit: {formData.rabbitFood} kg × 3€</span>
+                              <span className="text-gray-900 font-semibold">{rabbitFoodPrice.toFixed(2)}€</span>
                             </div>
                           )}
+                          <div className="flex justify-between items-center text-sm">
+                            <span className="text-gray-700">SmartPost tarne</span>
+                            <span className="text-green-600 font-semibold">TASUTA</span>
+                          </div>
                         </div>
                         <div className="border-t border-gray-300 pt-3 flex justify-between items-center">
                           <p className="text-gray-700 font-medium text-lg">Kogusumma:</p>
-                          <p className="text-3xl font-bold text-green-700">{totalPrice}€</p>
+                          <p className="text-3xl font-bold text-green-700">{totalPrice.toFixed(2)}€</p>
                         </div>
-                        <p className="text-xs text-gray-600 text-center">Tellimus sisaldab Smartpost tarnet</p>
+                        <p className="text-xs text-gray-600 text-center">Makse toimub Montonio vahendusel</p>
                       </div>
                     </CardContent>
                   </Card>
@@ -363,12 +490,12 @@ export function HayOrderForm() {
                     {isSubmitting ? (
                       <div className="flex items-center space-x-2">
                         <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                        <span>Saadan...</span>
+                        <span>{montonioEnabled ? 'Loon makse linki...' : 'Saadan tellimust...'}</span>
                       </div>
                     ) : (
                       <div className="flex items-center space-x-2">
-                        <Send className="w-5 h-5" />
-                        <span>Saada tellimus</span>
+                        {montonioEnabled ? <ShoppingCart className="w-5 h-5" /> : <Send className="w-5 h-5" />}
+                        <span>{montonioEnabled ? 'Telli ja maksa' : 'Saada tellimus'}</span>
                       </div>
                     )}
                   </Button>

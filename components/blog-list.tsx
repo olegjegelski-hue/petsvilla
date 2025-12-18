@@ -180,12 +180,12 @@ export function BlogList() {
                         {post.title}
                       </h3>
                       
-                      <p className="text-gray-600 mb-4 line-clamp-3">
+                      <p className="text-gray-800 font-medium mb-4 line-clamp-3">
                         {post.description}
                       </p>
 
                       {/* Meta Info */}
-                      <div className="flex items-center gap-4 text-sm text-gray-500 pt-4 border-t">
+                      <div className="flex items-center gap-4 text-sm text-gray-700 font-semibold pt-4 border-t">
                         <div className="flex items-center gap-1">
                           <Calendar className="w-4 h-4" />
                           <span>
@@ -203,7 +203,7 @@ export function BlogList() {
                       </div>
 
                       <div className="mt-4">
-                        <Button variant="ghost" className="w-full group-hover:bg-purple-50 group-hover:text-purple-600">
+                        <Button variant="ghost" className="w-full text-gray-900 font-semibold group-hover:bg-purple-50 group-hover:text-purple-600">
                           Loe edasi
                           <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                         </Button>

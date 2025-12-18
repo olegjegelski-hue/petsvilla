@@ -6,7 +6,7 @@ export function Footer() {
   return (
     <footer className="bg-gray-900 text-white py-16">
       <div className="container mx-auto max-w-6xl px-4">
-        <div className="grid md:grid-cols-3 gap-12">
+        <div className="grid md:grid-cols-4 gap-8">
           {/* Brand Section */}
           <div>
             <div className="flex items-center space-x-2 mb-2">
@@ -51,8 +51,40 @@ export function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/pood" className="text-gray-300 hover:text-orange-400 transition-colors">
+                  Pood
+                </Link>
+              </li>
+              <li>
+                <Link href="/blogi" className="text-gray-300 hover:text-orange-400 transition-colors">
+                  Blogi
+                </Link>
+              </li>
+              <li>
                 <Link href="/kontakt" className="text-gray-300 hover:text-orange-400 transition-colors">
                   Kontakt
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* E-poe tingimused */}
+          <div>
+            <h3 className="font-bold text-lg mb-6">E-pood</h3>
+            <ul className="space-y-3">
+              <li>
+                <Link href="/muugitingimused" className="text-gray-300 hover:text-orange-400 transition-colors">
+                  Müügitingimused
+                </Link>
+              </li>
+              <li>
+                <Link href="/tagastuspoliitika" className="text-gray-300 hover:text-orange-400 transition-colors">
+                  Tagastuspoliitika
+                </Link>
+              </li>
+              <li>
+                <Link href="/tarneinfo" className="text-gray-300 hover:text-orange-400 transition-colors">
+                  Tarneinfo
                 </Link>
               </li>
               <li>

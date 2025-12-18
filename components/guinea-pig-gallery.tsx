@@ -227,21 +227,11 @@ export function GuineaPigGallery() {
               return breedMatch && genderMatch
             })
             .map((pig, index) => {
-            // Use different placeholder images if no image is provided
-            const placeholderImages = [
-              '/parent-brown.png',
-              '/parent-silver.jpg',
-              '/parent-black.jpg',
-              '/parent-cream.jpg',
-              '/parent-rosette.jpg',
-              '/parent-white-red-eyes.jpg'
-            ]
-            const placeholderImage = placeholderImages[index % placeholderImages.length]
-            
             // Use image proxy endpoint for Notion images to avoid expiration
-            const imageUrl = pig.image && pig.image !== '/placeholder-guinea-pig.jpg' 
+            // If image is placeholder or missing, use "Pilt lisatakse varsti" placeholder
+            const imageUrl = pig.image && pig.image !== '/placeholder-guinea-pig.jpg' && pig.image.startsWith('http')
               ? `/api/guinea-pig-image/${pig.id}`
-              : (pig.image || placeholderImage)
+              : '/placeholder-guinea-pig.jpg'
             
             return (
               <motion.div
@@ -284,8 +274,8 @@ export function GuineaPigGallery() {
                   
                   {/* Price - vasakul all */}
                   {pig.price > 0 && (
-                    <div className="absolute bottom-3 left-3 bg-pink-500 text-white rounded-lg px-3 py-2 shadow-lg">
-                      <div className="text-xl font-bold">{pig.price}€</div>
+                    <div className="absolute bottom-3 left-3 bg-pink-800 text-white rounded-lg px-3 py-2 shadow-xl border-2 border-pink-900">
+                      <div className="text-xl font-bold text-white drop-shadow-md">{pig.price}€</div>
                     </div>
                   )}
                   
@@ -318,28 +308,30 @@ export function GuineaPigGallery() {
                 </div>
                 
                 <CardContent className="p-4">
-                  {/* Nimi keskele */}
-                  <h3 className="text-xl font-bold text-gray-900 text-center mb-3">{pig.name}</h3>
+                  {/* Nimi ja kood keskele */}
+                  <h3 className="text-xl font-bold !text-[#000000] text-center mb-3 drop-shadow-sm">
+                    {pig.name}{pig.code && <span className="!text-[#374151] font-bold"> ({pig.code})</span>}
+                  </h3>
                   
                   {/* Tõug ja Värvus ühel real - keskele joondatud */}
                   {(pig.breed || pig.color) && (
-                    <div className="flex items-center justify-center gap-3 mb-3 p-2.5 bg-gray-50 rounded-lg border border-gray-300 flex-wrap">
+                    <div className="flex items-center justify-center gap-3 mb-3 p-2.5 !bg-[#e5e7eb] rounded-lg !border-2 !border-[#4b5563] flex-wrap">
                       {pig.breed && (
                         <div className="flex items-center gap-1.5">
-                          <PawPrint className="w-4 h-4 text-gray-800 flex-shrink-0" />
-                          <span className="text-sm font-medium text-gray-800">
-                            Tõug: <span className="font-semibold text-gray-900">{pig.breed}</span>
+                          <PawPrint className="w-4 h-4 !text-[#000000] flex-shrink-0" />
+                          <span className="text-sm font-semibold !text-[#000000]">
+                            Tõug: <span className="font-bold !text-[#000000]">{pig.breed}</span>
                           </span>
                         </div>
                       )}
                       {pig.breed && pig.color && (
-                        <span className="text-gray-400">|</span>
+                        <span className="font-bold !text-[#000000]">|</span>
                       )}
                       {pig.color && (
                         <div className="flex items-center gap-1.5">
-                          <Palette className="w-4 h-4 text-gray-800 flex-shrink-0" />
-                          <span className="text-sm font-medium text-gray-800">
-                            Värvus: <span className="font-semibold text-gray-900">{pig.color}</span>
+                          <Palette className="w-4 h-4 !text-[#000000] flex-shrink-0" />
+                          <span className="text-sm font-semibold !text-[#000000]">
+                            Värvus: <span className="font-bold !text-[#000000]">{pig.color}</span>
                           </span>
                         </div>
                       )}
@@ -350,7 +342,7 @@ export function GuineaPigGallery() {
                     <p className="text-gray-600 mb-4">{pig.description}</p>
                   )}
 
-                  <Link href={`/kontakt?pig=${encodeURIComponent(pig.name)}&id=${pig.id}`}>
+                  <Link href={`/kontakt?pig=${encodeURIComponent(pig.name)}&id=${pig.id}${pig.code ? `&code=${encodeURIComponent(pig.code)}` : ''}`}>
                     <Button className="w-full bg-pink-600 hover:bg-pink-700 text-white font-semibold shadow-md">
                       <Heart className="w-4 h-4 mr-2" />
                       Küsi infot

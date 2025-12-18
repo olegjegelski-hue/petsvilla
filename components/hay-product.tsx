@@ -182,8 +182,8 @@ export function HayProduct() {
                 <Card key={index} className="border-0 shadow-lg">
                   <CardContent className="p-4 text-center">
                     <Icon className="w-8 h-8 text-yellow-600 mx-auto mb-2" />
-                    <h4 className="font-semibold mb-1">{feature.title}</h4>
-                    <p className="text-sm text-gray-600">{feature.description}</p>
+                    <h4 className="font-semibold text-gray-900 mb-1">{feature.title}</h4>
+                    <p className="text-sm text-gray-800 font-medium">{feature.description}</p>
                   </CardContent>
                 </Card>
               )
