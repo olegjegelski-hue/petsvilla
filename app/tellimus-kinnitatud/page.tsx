@@ -4,7 +4,7 @@ import { Navigation } from '@/components/navigation'
 import { Footer } from '@/components/footer'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
-import { CheckCircle2, Home, Package, Clock, XCircle } from 'lucide-react'
+import { CheckCircle2, Home, Package, Mail } from 'lucide-react'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
@@ -12,118 +12,112 @@ import { useSearchParams } from 'next/navigation'
 export default function TellimusKinnitatudPage() {
   const searchParams = useSearchParams()
   const [orderReference, setOrderReference] = useState<string>('')
-  const [paymentStatus, setPaymentStatus] = useState<'processing' | 'success' | 'failed'>('processing')
+  const [statusUpdated, setStatusUpdated] = useState<boolean>(false)
 
   useEffect(() => {
-    // Get order reference from sessionStorage or URL params
-    const storedRef = sessionStorage.getItem('lastOrderReference')
-    const paymentParam = searchParams.get('payment')
+    // Get order reference from URL params
     const referenceParam = searchParams.get('reference')
-    
-    const reference = referenceParam || storedRef || ''
-    setOrderReference(reference)
-
-    // Check payment status based on URL parameter
-    if (paymentParam === 'success' && reference) {
-      setPaymentStatus('success')
-      // Clear sessionStorage after successful return
-      sessionStorage.removeItem('lastOrderReference')
-      sessionStorage.removeItem('lastOrderUuid')
-    } else if (paymentParam === 'cancel' || paymentParam === 'failed') {
-      setPaymentStatus('failed')
-    } else if (storedRef && !paymentParam) {
-      // User came back but no payment status yet - show processing
-      setPaymentStatus('processing')
+    if (referenceParam) {
+      setOrderReference(referenceParam)
+      
+      // Automatically update order status in Notion
+      updateOrderStatus(referenceParam)
     }
   }, [searchParams])
 
-  const isSuccess = paymentStatus === 'success'
-  const isProcessing = paymentStatus === 'processing'
-  const isFailed = paymentStatus === 'failed'
+  const updateOrderStatus = async (reference: string) => {
+    try {
+      console.log('=== UPDATING ORDER STATUS ===')
+      console.log('Order reference:', reference)
+      
+      const response = await fetch('/api/montonio/verify-payment', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          merchantReference: reference,
+        }),
+      })
+
+      console.log('Status update response:', response.status)
+      const data = await response.json()
+      console.log('Status update data:', data)
+
+      if (response.ok) {
+        console.log('✅ Order status updated successfully!')
+        setStatusUpdated(true)
+      } else {
+        console.error('❌ Failed to update order status:', data)
+      }
+    } catch (error) {
+      console.error('Error updating order status:', error)
+    }
+  }
 
   return (
-    <div className={`min-h-screen ${isSuccess ? 'bg-gradient-to-b from-green-50 to-emerald-50' : isProcessing ? 'bg-gradient-to-b from-blue-50 to-sky-50' : 'bg-gradient-to-b from-red-50 to-rose-50'}`}>
+    <div className="min-h-screen bg-gradient-to-b from-green-50 to-emerald-50">
       <Navigation />
       
       <main className="container mx-auto px-4 py-16 max-w-3xl">
-        <Card className={`${isSuccess ? 'border-green-200' : isProcessing ? 'border-blue-200' : 'border-red-200'} shadow-lg`}>
+        <Card className="border-green-200 shadow-lg">
           <CardContent className="pt-12 pb-8 text-center">
-            {/* Status Icon */}
+            {/* Success Icon */}
             <div className="flex justify-center mb-6">
-              <div className={`rounded-full ${isSuccess ? 'bg-green-100' : isProcessing ? 'bg-blue-100' : 'bg-red-100'} p-4`}>
-                {isSuccess && <CheckCircle2 className="w-16 h-16 text-green-600" />}
-                {isProcessing && <Clock className="w-16 h-16 text-blue-600 animate-pulse" />}
-                {isFailed && <XCircle className="w-16 h-16 text-red-600" />}
+              <div className="rounded-full bg-green-100 p-4">
+                <CheckCircle2 className="w-16 h-16 text-green-600" />
               </div>
             </div>
 
-            {/* Status Message */}
-            {isSuccess && (
-              <>
-                <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                  Makse õnnestus!
-                </h1>
-                <p className="text-lg text-gray-700 mb-4">
-                  Teie tellimus on edukalt vastu võetud ja makse kinnitatud.
-                </p>
-                {orderReference && (
-                  <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-8 inline-block">
-                    <p className="text-sm text-gray-600">Tellimuse number:</p>
-                    <p className="text-lg font-mono font-semibold text-green-700">{orderReference}</p>
-                  </div>
-                )}
-              </>
-            )}
+            {/* Success Message */}
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              ✅ Makse õnnestus!
+            </h1>
+            
+            <p className="text-lg text-gray-700 mb-4">
+              Tellimus on saadetud ka teie mailile.
+            </p>
 
-            {isProcessing && (
-              <>
-                <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                  Tellimus edukalt saadetud!
-                </h1>
-                <p className="text-lg text-gray-700 mb-8">
-                  Teie mailile tuli teade. Vaadake see üle.
-                </p>
-              </>
-            )}
-
-            {isFailed && (
-              <>
-                <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                  Makse ebaõnnestus
-                </h1>
-                <p className="text-lg text-gray-700 mb-8">
-                  Kahjuks teie makse ebaõnnestus. Palun proovige uuesti või võtke meiega ühendust.
-                </p>
-              </>
-            )}
-
-            {/* Info Card */}
-            {isSuccess && (
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8 text-left">
-                <h2 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
-                  <Package className="w-5 h-5 text-blue-600" />
-                  Mis edasi?
-                </h2>
-                <ul className="space-y-2 text-gray-700">
-                  <li className="flex items-start">
-                    <span className="text-blue-600 mr-2">•</span>
-                    <span>Saate kohe e-kirja tellimuse kinnituse</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-blue-600 mr-2">•</span>
-                    <span>Pakendame teie tellimuse <strong>1 tööpäeva jooksul</strong></span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-blue-600 mr-2">•</span>
-                    <span>Hein jõuab teie valitud Smartpost pakiautomaati <strong>1-3 tööpäeva</strong> jooksul</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-blue-600 mr-2">•</span>
-                    <span>Saate SMS-i ja e-kirja, kui pakk on pakiautomaati jõudnud</span>
-                  </li>
-                </ul>
+            {orderReference && (
+              <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-8 inline-block">
+                <p className="text-sm text-gray-600">Tellimuse number:</p>
+                <p className="text-lg font-mono font-semibold text-green-700">{orderReference}</p>
               </div>
             )}
+
+            {/* Delivery Info */}
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8 text-left">
+              <h2 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                <Package className="w-5 h-5 text-blue-600" />
+                Tarne informatsioon
+              </h2>
+              <ul className="space-y-2 text-gray-700">
+                <li className="flex items-start">
+                  <span className="text-blue-600 mr-2">•</span>
+                  <span>Hein saadetakse välja <strong>1-3 päeva jooksul</strong></span>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-blue-600 mr-2">•</span>
+                  <span>Kui hein on SmartPost kapis, <strong>tuleb teile SMS</strong></span>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-blue-600 mr-2">•</span>
+                  <span>Saate ka e-kirja, kui pakk on pakiautomaati jõudnud</span>
+                </li>
+              </ul>
+            </div>
+
+            {/* Email Confirmation */}
+            <div className="bg-orange-50 border border-orange-200 rounded-lg p-6 mb-8 text-left">
+              <h2 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                <Mail className="w-5 h-5 text-orange-600" />
+                Tellimuse kinnitus
+              </h2>
+              <p className="text-gray-700">
+                Tellimuse kinnitus on saadetud teie emailile. <br/>
+                Palun kontrollige oma postkasti (ka rämpsposti kausta).
+              </p>
+            </div>
 
             {/* Contact Info */}
             <div className="bg-gray-50 rounded-lg p-6 mb-8 text-left">
@@ -159,11 +153,6 @@ export default function TellimusKinnitatudPage() {
             </div>
           </CardContent>
         </Card>
-
-        {/* Additional Info */}
-        <p className="text-center text-sm text-gray-600 mt-8">
-          Tellimuse number ja täpsem info saadetakse teile peagi e-posti teel
-        </p>
       </main>
 
       <Footer />

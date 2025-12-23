@@ -6,8 +6,13 @@ const notion = new Client({ auth: process.env.NOTION_API_KEY });
 
 export async function POST(request: NextRequest) {
   try {
+    console.log('=== MONTONIO CALLBACK RECEIVED ===');
+    console.log('Request body:', JSON.stringify(await request.clone().json(), null, 2));
+    
     const body = await request.json();
     const { payment_token } = body;
+    
+    console.log('Payment token:', payment_token);
 
     if (!payment_token) {
       return NextResponse.json(
@@ -39,13 +44,13 @@ export async function POST(request: NextRequest) {
     // Update order in Notion based on payment status
     if (merchantReference && status) {
       try {
-        // Find the order in Notion by merchant reference
+        // Find the order in Notion by searching Comments field for merchant reference
         const response = await notion.databases.query({
           database_id: process.env.NOTION_HAY_DATABASE_ID!,
           filter: {
-            property: 'Makse_viide',
+            property: 'Comments',
             rich_text: {
-              equals: merchantReference,
+              contains: merchantReference,
             },
           },
         });
@@ -54,18 +59,19 @@ export async function POST(request: NextRequest) {
           const pageId = response.results[0].id;
 
           // Map Montonio status to our status
-          let paymentStatus = 'Ootel';
+          let paymentStatus = 'Töötlemisel';
           if (status === 'finalized' || status === 'paid') {
-            paymentStatus = 'Makstud';
+            paymentStatus = 'Uus'; // Payment successful, order is ready to process
           } else if (status === 'abandoned' || status === 'voided') {
-            paymentStatus = 'Tühistatud';
+            paymentStatus = 'Tühistatud'; // Payment cancelled
           }
+          // Otherwise stays 'Töötlemisel' (payment pending/processing)
 
           // Update the order with payment status
           await notion.pages.update({
             page_id: pageId,
             properties: {
-              Makse_staatus: {
+              Status: {
                 select: { name: paymentStatus },
               },
             },
@@ -77,6 +83,7 @@ export async function POST(request: NextRequest) {
         }
       } catch (notionError) {
         console.error('Error updating Notion:', notionError);
+        console.error('Notion update error details:', JSON.stringify(notionError, null, 2));
         // Don't fail the callback if Notion update fails
       }
     }
