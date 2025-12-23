@@ -1,15 +1,9 @@
-> /** @type {import('next').NextConfig} */
+/** @type {import('next').NextConfig} */
 const nextConfig = {
-distDir: process.env.NEXT_DIST_DIR || '.next',
-eslint: {
-ignoreDuringBuilds: true,
-},
-typescript: {
-ignoreBuildErrors: false,
-},
-images: { unoptimized: true },
+  distDir: process.env.NEXT_DIST_DIR || '.next',
+  eslint: { ignoreDuringBuilds: true },
+  typescript: { ignoreBuildErrors: false },
+  images: { unoptimized: true },
 };
-> 
 
-> module.exports = nextConfig;
->
+module.exports = nextConfig;
