@@ -79,6 +79,7 @@ export function HayOrderForm() {
       
       if (montonioEnabled) {
         // MONTONIO WORKFLOW: Create payment order and redirect to payment page
+        console.log('=== MONTONIO WORKFLOW STARTED ===')
         console.log('Creating Montonio order with data:', {
           name: formData.name,
           email: formData.email,
@@ -88,6 +89,7 @@ export function HayOrderForm() {
           rabbitFood: formData.rabbitFood,
         })
 
+        console.log('Calling /api/montonio/create-order...')
         const response = await fetch('/api/montonio/create-order', {
           method: 'POST',
           headers: {
@@ -106,26 +108,58 @@ export function HayOrderForm() {
           }),
         })
 
+        console.log('=== API RESPONSE RECEIVED ===')
         console.log('Response status:', response.status)
+        console.log('Response ok:', response.ok)
         
         const data = await response.json()
         console.log('Response data:', data)
+        console.log('Payment URL:', data.paymentUrl)
+        console.log('Merchant Reference:', data.merchantReference)
+        console.log('UUID:', data.uuid)
 
-        if (response.ok && data.paymentUrl) {
-          // Save order reference to sessionStorage for confirmation page
-          sessionStorage.setItem('lastOrderReference', data.merchantReference)
-          sessionStorage.setItem('lastOrderUuid', data.uuid)
-          
-          console.log('Redirecting to:', data.paymentUrl)
-          
-          // Redirect to Montonio payment page
-          window.location.href = data.paymentUrl
-        } else {
-          console.error('Order creation failed:', data)
+        if (!response.ok) {
+          console.error('❌ Order creation failed! Status:', response.status)
+          console.error('Response data:', data)
           const errorMessage = data.details || data.error || 'Viga tellimuse loomisel. Palun proovige uuesti.'
           toast.error(errorMessage, { duration: 5000 })
           setIsSubmitting(false)
+          return
         }
+
+        console.log('✅ Response OK! Checking paymentUrl...')
+        console.log('paymentUrl value:', data.paymentUrl)
+        console.log('paymentUrl type:', typeof data.paymentUrl)
+        console.log('paymentUrl exists:', !!data.paymentUrl)
+
+        if (!data.paymentUrl) {
+          console.error('❌ Payment URL missing from response!')
+          console.error('Full response data:', JSON.stringify(data, null, 2))
+          toast.error('Makselinki ei leitud. Palun proovige uuesti või võtke meiega ühendust.', { duration: 5000 })
+          setIsSubmitting(false)
+          return
+        }
+
+        console.log('✅ Order created successfully!')
+        
+        // Save order reference to sessionStorage for confirmation page
+        sessionStorage.setItem('lastOrderReference', data.merchantReference || '')
+        sessionStorage.setItem('lastOrderUuid', data.uuid || '')
+        console.log('Saved to sessionStorage')
+        console.log('Merchant Reference:', data.merchantReference)
+        console.log('UUID:', data.uuid)
+        
+        console.log('🔄 Starting redirect to Montonio...')
+        console.log('Payment URL:', data.paymentUrl)
+        
+        // Add a small delay to ensure logs are visible
+        setTimeout(() => {
+          console.log('Executing redirect NOW')
+          // Redirect to Montonio payment page
+          window.location.href = data.paymentUrl
+        }, 100)
+        
+        console.log('Redirect scheduled (will execute in 100ms)')
       } else {
         // EMAIL-BASED WORKFLOW: Save order to Notion and show confirmation
         console.log('Saving order to Notion (email-based workflow):', {
