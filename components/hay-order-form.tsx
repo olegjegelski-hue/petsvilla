@@ -7,12 +7,13 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
-import { Truck, MapPin, User, Mail, Phone, ShoppingCart, Send, Package, AlertCircle, Wheat } from 'lucide-react'
+import { Truck, User, Mail, Phone, ShoppingCart, Send, Package, AlertCircle, Wheat } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import { useState } from 'react'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
+import { TerminalPicker } from '@/components/terminal-picker'
 
 export function HayOrderForm() {
   const router = useRouter()
@@ -27,6 +28,7 @@ export function HayOrderForm() {
     email: '',
     phone: '',
     terminal: '',
+    terminalUuid: '',
     quantity: '1',
     guineaPigFood: '0',
     rabbitFood: '0',
@@ -104,6 +106,7 @@ export function HayOrderForm() {
             rabbitFood: formData.rabbitFood,
             deliveryMethod: 'smartpost',
             parcelMachine: formData.terminal,
+            parcelMachineUuid: formData.terminalUuid,
             notes: formData.comments
           }),
         })
@@ -451,20 +454,17 @@ export function HayOrderForm() {
                     </CardContent>
                   </Card>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="terminal" className="text-gray-900 font-semibold flex items-center">
-                      <MapPin className="w-4 h-4 mr-2 text-gray-600" />
-                      Smartpost Pakiautomaat *
-                    </Label>
-                    <Input
-                      id="terminal"
-                      value={formData.terminal}
-                      onChange={(e) => handleInputChange('terminal', e.target.value)}
-                      placeholder="Nt. Tartu Lõunakeskus Smartpost pakiautomaat"
-                      required
-                      className="pl-4 text-gray-900 placeholder:text-gray-500"
-                    />
-                  </div>
+                  <TerminalPicker
+                    value={formData.terminal}
+                    onChange={(terminalName, terminalUuid) => {
+                      setFormData(prev => ({
+                        ...prev,
+                        terminal: terminalName,
+                        terminalUuid: terminalUuid
+                      }))
+                    }}
+                    required
+                  />
 
                   <div className="space-y-2">
                     <Label htmlFor="comments" className="text-gray-900 font-semibold">
