@@ -68,7 +68,51 @@ async function getBlogPost(slug: string): Promise<BlogPost | null> {
 
     const title = properties.Pealkiri?.title?.[0]?.plain_text || 'Pealkiri puudub'
     const description = properties.Kirjeldus?.rich_text?.[0]?.plain_text || ''
-    const content = properties.Sisu?.rich_text?.[0]?.plain_text || ''
+    
+    // Get content from Sisu property first
+    let content = properties.Sisu?.rich_text?.map((rt: any) => rt.plain_text).join('') || ''
+    
+    // If Sisu is empty or short, try to get content from page blocks
+    if (!content || content.length < 100) {
+      try {
+        const blocks = await notion.blocks.children.list({
+          block_id: page.id,
+          page_size: 100,
+        })
+        
+        const blockContent = blocks.results
+          .map((block: any) => {
+            if (block.type === 'paragraph') {
+              return block.paragraph?.rich_text?.map((rt: any) => rt.plain_text).join('') || ''
+            }
+            if (block.type === 'heading_1') {
+              return '## ' + (block.heading_1?.rich_text?.map((rt: any) => rt.plain_text).join('') || '')
+            }
+            if (block.type === 'heading_2') {
+              return '### ' + (block.heading_2?.rich_text?.map((rt: any) => rt.plain_text).join('') || '')
+            }
+            if (block.type === 'heading_3') {
+              return '#### ' + (block.heading_3?.rich_text?.map((rt: any) => rt.plain_text).join('') || '')
+            }
+            if (block.type === 'bulleted_list_item') {
+              return '• ' + (block.bulleted_list_item?.rich_text?.map((rt: any) => rt.plain_text).join('') || '')
+            }
+            if (block.type === 'numbered_list_item') {
+              return '- ' + (block.numbered_list_item?.rich_text?.map((rt: any) => rt.plain_text).join('') || '')
+            }
+            return ''
+          })
+          .filter((text: string) => text.trim())
+          .join('\n\n')
+        
+        if (blockContent) {
+          content = blockContent
+        }
+      } catch (blockError) {
+        console.error('Error fetching page blocks:', blockError)
+      }
+    }
+    
     const publishedDate = properties.Avaldamise_kuupaev?.date?.start || ''
     const category = properties.Kategooria?.select?.name || ''
     const author = properties.Autor?.rich_text?.[0]?.plain_text || 'PetsVilla'

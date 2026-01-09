@@ -25,6 +25,7 @@ export async function POST(request: NextRequest) {
       rabbitFood,
       deliveryMethod,
       parcelMachine,
+      parcelMachineUuid,
       notes,
     } = body;
 
@@ -187,7 +188,7 @@ export async function POST(request: NextRequest) {
           number: grandTotal 
         },
         Comments: { 
-          rich_text: [{ text: { content: `${notes || ''}\n\nMontonio Reference: ${merchantReference}\nMontonio UUID: ${uuid}` } }] 
+          rich_text: [{ text: { content: `${notes || ''}\n\nMontonio Reference: ${merchantReference}\nMontonio UUID: ${uuid}${parcelMachineUuid ? `\nPickup Point UUID: ${parcelMachineUuid}` : ''}` } }] 
         },
         Status: { 
           select: { name: 'Töötlemisel' } 
