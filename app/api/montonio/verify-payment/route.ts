@@ -79,30 +79,45 @@ export async function POST(request: NextRequest) {
 
     console.log('✅ Order status updated successfully to "Uus"');
 
-    // Create shipment in Montonio Shipping if we have terminal UUID
-    let shipmentResult = null;
+    // Create shipments in Montonio Shipping if we have terminal UUID
+    // SmartPost allows only 1 parcel per shipment, so we create multiple shipments
+    const shipmentResults: any[] = [];
     if (terminalUuid) {
-      console.log('=== CREATING MONTONIO SHIPMENT ===');
+      console.log('=== CREATING MONTONIO SHIPMENTS ===');
+      console.log(`Creating ${hayQuantity} separate shipments (SmartPost allows 1 parcel per shipment)`);
       
       const nameParts = customerName.split(' ');
       const firstName = nameParts[0] || customerName;
       const lastName = nameParts.slice(1).join(' ') || '-';
       
-      shipmentResult = await createMontonioShipment({
-        merchantReference,
-        pickupPointUuid: terminalUuid,
-        shippingFirstName: firstName,
-        shippingLastName: lastName,
-        shippingEmail: customerEmail,
-        shippingPhone: customerPhone,
-        parcelCount: hayQuantity,
-      });
+      const trackingCodes: string[] = [];
+      
+      for (let i = 0; i < hayQuantity; i++) {
+        const shipmentRef = hayQuantity > 1 ? `${merchantReference}-${i + 1}` : merchantReference;
+        console.log(`Creating shipment ${i + 1}/${hayQuantity}: ${shipmentRef}`);
+        
+        const result = await createMontonioShipment({
+          merchantReference: shipmentRef,
+          pickupPointUuid: terminalUuid,
+          shippingFirstName: firstName,
+          shippingLastName: lastName,
+          shippingEmail: customerEmail,
+          shippingPhone: customerPhone,
+          parcelCount: 1, // Always 1 parcel per shipment for SmartPost
+        });
+        
+        shipmentResults.push(result);
+        console.log(`Shipment ${i + 1} result:`, result);
+        
+        if (result.success && result.trackingCode) {
+          trackingCodes.push(result.trackingCode);
+        }
+      }
 
-      console.log('Shipment creation result:', shipmentResult);
-
-      // Update Notion with tracking info if shipment was created
-      if (shipmentResult.success && shipmentResult.trackingCode) {
-        const updatedComments = `${comments}\nTracking: ${shipmentResult.trackingCode}`;
+      // Update Notion with all tracking codes
+      if (trackingCodes.length > 0) {
+        const trackingInfo = trackingCodes.map((code, i) => `Pakk ${i + 1}: ${code}`).join('\n');
+        const updatedComments = `${comments}\nTracking:\n${trackingInfo}`;
         await notion.pages.update({
           page_id: pageId,
           properties: {
@@ -111,7 +126,7 @@ export async function POST(request: NextRequest) {
             },
           },
         });
-        console.log('✅ Tracking code added to Notion');
+        console.log(`✅ ${trackingCodes.length} tracking codes added to Notion`);
       }
     } else {
       console.log('No terminal UUID found, skipping shipment creation');
@@ -123,7 +138,8 @@ export async function POST(request: NextRequest) {
       success: true,
       message: 'Order status updated to Uus',
       merchantReference,
-      shipment: shipmentResult,
+      shipments: shipmentResults,
+      shipmentsCreated: shipmentResults.filter(r => r.success).length,
     });
   } catch (error) {
     console.error('=== ERROR IN PAYMENT VERIFICATION ===');
