@@ -97,9 +97,19 @@ export function BudgieGallery() {
             Kirjud ja elurõõmsad viirpapagoid, kes toovad teie koju rõõmu ja värvikust. 
             Meie linnud on terved ja hästi sotsiaalsed.
           </p>
+          <Link href="#ostuprotsess-viirpapagoid">
+            <Button
+              size="lg"
+              variant="outline"
+              className="border-2 border-blue-500 text-blue-600 hover:bg-blue-500 hover:text-white px-6 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
+            >
+              Vaata ostuprotsessi
+              <ArrowRight className="w-5 h-5 ml-2" />
+            </Button>
+          </Link>
           
           {/* Availability Notice */}
-          <div className="bg-red-50 border-2 border-red-500 rounded-lg px-6 py-3 max-w-2xl mx-auto mb-8">
+          <div className="bg-red-50 border-2 border-red-500 rounded-lg px-6 py-3 max-w-2xl mx-auto mt-6 mb-8">
             <p className="text-red-600 font-semibold text-lg text-center">
               NB! linnud peagi saabimas.
             </p>
@@ -205,6 +215,82 @@ export function BudgieGallery() {
               </Card>
             </motion.div>
           ))}
+        </div>
+
+        {/* Purchase Process */}
+        <div id="ostuprotsess-viirpapagoid" className="mb-16 scroll-mt-24">
+          <Card className="border border-blue-100 shadow-2xl bg-gradient-to-br from-blue-50 via-white to-green-50">
+            <CardContent className="p-8 md:p-10">
+              <div className="text-center mb-8">
+                <h3 className="text-3xl font-bold text-gray-900 mb-2">
+                  Kuidas viirpapagoi ostmine käib?
+                </h3>
+                <p className="text-gray-600">Selge ja sõbralik protsess, et kõik sujuks.</p>
+              </div>
+
+              <div className="grid gap-5 md:grid-cols-2">
+                <div className="rounded-2xl bg-white/90 border border-blue-100 p-5 shadow-lg">
+                  <div className="flex items-start gap-4">
+                    <div className="h-12 w-12 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center">
+                      <Bird className="w-6 h-6" />
+                    </div>
+                    <div>
+                      <h4 className="text-lg font-semibold text-gray-900">1. Vali sobiv viirpapagoi</h4>
+                      <p className="text-gray-600">Tutvu galeriiga ning vali endale sobiv lind.</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="rounded-2xl bg-white/90 border border-blue-100 p-5 shadow-lg">
+                  <div className="flex items-start gap-4">
+                    <div className="h-12 w-12 rounded-full bg-green-100 text-green-600 flex items-center justify-center">
+                      <Mail className="w-6 h-6" />
+                    </div>
+                    <div>
+                      <h4 className="text-lg font-semibold text-gray-900">2. Võta ühendust</h4>
+                      <p className="text-gray-600">Küsi rohkem infot telefonil või kontaktivormi kaudu.</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="rounded-2xl bg-white/90 border border-blue-100 p-5 shadow-lg">
+                  <div className="flex items-start gap-4">
+                    <div className="h-12 w-12 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center">
+                      <Calendar className="w-6 h-6" />
+                    </div>
+                    <div>
+                      <h4 className="text-lg font-semibold text-gray-900">3. Külastus / valik</h4>
+                      <p className="text-gray-600">Lepime kokku aja, kus saad linde näha ja valida sobiva.</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="rounded-2xl bg-white/90 border border-blue-100 p-5 shadow-lg">
+                  <div className="flex items-start gap-4">
+                    <div className="h-12 w-12 rounded-full bg-green-100 text-green-600 flex items-center justify-center">
+                      <Phone className="w-6 h-6" />
+                    </div>
+                    <div>
+                      <h4 className="text-lg font-semibold text-gray-900">4. Vali ja vormista</h4>
+                      <p className="text-gray-600">Kohtumisel saad viirpapagoisi oma silmaga näha, valida ning vormistada ostu.</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="rounded-2xl bg-white/90 border border-blue-100 p-5 shadow-lg md:col-span-2">
+                  <div className="flex items-start gap-4">
+                    <div className="h-12 w-12 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center">
+                      <Users className="w-6 h-6" />
+                    </div>
+                    <div>
+                      <h4 className="text-lg font-semibold text-gray-900">5. Nõuanded ja juhised</h4>
+                      <p className="text-gray-600">Anname kaasa vajalikud hooldus- ja toitmissoovitused.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
         {/* Info CTA */}
