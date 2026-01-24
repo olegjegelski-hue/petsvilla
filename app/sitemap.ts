@@ -162,17 +162,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         const properties = page.properties
         const slug = properties.Slug?.rich_text?.[0]?.plain_text || ''
         const publishedDate = properties.Avaldamise_kuupaev?.date?.start || new Date().toISOString()
-        const coverProperty = properties.Kaanepilt
-        let coverImage = `${baseUrl}/og-image.png`
-
-        if (coverProperty?.files?.[0]) {
-          const file = coverProperty.files[0]
-          if (file.type === 'external') {
-            coverImage = file.external.url
-          } else if (file.type === 'file') {
-            coverImage = file.file.url
-          }
-        }
+        // Use proxy image URL to avoid signed URL query strings in sitemap XML
+        const coverImage = `${baseUrl}/api/blog-image/${page.id}`
         
         return {
           url: `${baseUrl}/blogi/${slug}`,
