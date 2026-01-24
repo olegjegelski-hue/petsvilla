@@ -10,11 +10,19 @@ const RATE_LIMIT_MAX = 5
 const rateLimitStore = new Map<string, { count: number; resetAt: number }>()
 
 function getClientIp(request: NextRequest): string {
+  const realIp = request.headers.get('x-real-ip')
+  if (realIp) {
+    return realIp.trim()
+  }
   const forwarded = request.headers.get('x-forwarded-for')
   if (forwarded) {
     return forwarded.split(',')[0]?.trim() || 'unknown'
   }
-  return request.ip || 'unknown'
+  const cfIp = request.headers.get('cf-connecting-ip')
+  if (cfIp) {
+    return cfIp.trim()
+  }
+  return 'unknown'
 }
 
 function isRateLimited(ip: string): boolean {
