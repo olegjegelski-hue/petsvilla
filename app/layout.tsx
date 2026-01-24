@@ -17,7 +17,7 @@ const poppins = Poppins({
 export const dynamic = "force-dynamic"
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXTAUTH_URL || 'https://petsvilla.ee'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || process.env.NEXTAUTH_URL || 'https://petsvilla.ee'),
   title: {
     default: 'PetsVilla OÜ — Merisead, Viirpapagoid ja Kvaliteetne Hein | Soinaste, Tartu',
     template: '%s | PetsVilla OÜ'

@@ -18,7 +18,7 @@ const categories = [
   {
     id: '1',
     title: 'Papagoid',
-    slug: 'BIRDS',
+    slug: 'birds',
     description: 'Erinevad linnuliigid - papagoid, kakaduud, ja muud eksootilised linnud',
     icon: '🦜',
     productCount: 4,
@@ -27,7 +27,7 @@ const categories = [
   {
     id: '2',
     title: 'Elustoit',
-    slug: 'FEED FOR REPTILES',
+    slug: 'feed-for-reptiles',
     description: 'Kvaliteetne elustoit roomajatele ja kahepaiksetele',
     icon: '🦗',
     productCount: 3,
@@ -36,7 +36,7 @@ const categories = [
   {
     id: '3',
     title: 'Roomajad ja Kahepaiksed',
-    slug: 'REPTILES & AMPHIBIANS',
+    slug: 'reptiles-amphibians',
     description: 'Roomajad, kahepaiksed ja nende hooldus',
     icon: '🦎',
     productCount: 17,
@@ -45,7 +45,7 @@ const categories = [
   {
     id: '4',
     title: 'Akvaariumi Taimed',
-    slug: 'PLANTS',
+    slug: 'plants',
     description: 'Elavad akvaariumi taimed - ilu ja tervisliku keskkonna loomiseks',
     icon: '🌿',
     productCount: 1,

@@ -23,13 +23,15 @@ export function ContactForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [formStartedAt] = useState(() => Date.now())
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     phone: '',
     subject: '',
     message: '',
-    product: ''
+    product: '',
+    website: ''
   })
 
   // Load guinea pig or product info from URL params
@@ -83,7 +85,7 @@ export function ContactForm() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+          body: JSON.stringify({ ...formData, formStartedAt }),
       })
 
       if (response.ok) {
@@ -193,6 +195,21 @@ export function ContactForm() {
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleSubmit} className="space-y-6">
+                  {/* Honeypot field for bots */}
+                  <div className="hidden" aria-hidden="true">
+                    <Label htmlFor="website" className="text-gray-900 font-semibold">Veebileht</Label>
+                    <Input
+                      id="website"
+                      name="website"
+                      value={formData.website}
+                      onChange={(e) => handleInputChange('website', e.target.value)}
+                      placeholder="https://"
+                      tabIndex={-1}
+                      autoComplete="off"
+                    />
+                  </div>
+
+                  <input type="hidden" name="formStartedAt" value={formStartedAt} />
                   <div className="grid md:grid-cols-2 gap-6">
                     <div className="space-y-2">
                       <Label htmlFor="name" className="text-gray-900 font-semibold">Nimi *</Label>

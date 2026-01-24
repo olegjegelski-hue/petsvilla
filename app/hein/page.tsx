@@ -1,6 +1,7 @@
 
 import { Navigation } from '@/components/navigation'
 import { HayProduct } from '@/components/hay-product'
+import { TestimonialsSection } from '@/components/testimonials-section'
 import { Footer } from '@/components/footer'
 import { Metadata } from 'next'
 import Script from 'next/script'
@@ -15,7 +16,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Kvaliteetne Looduslik Hein - PetsVilla OÜ',
     description: 'Looduslikult kuivatatud kvaliteetne hein merisiigadele ja küülikutele. 80L kott.',
-    url: 'https://m.media-amazon.com/images/I/81eHAG1WxWL._AC_UF1000,1000_QL80_.jpg',
+    url: 'https://petsvilla.ee/hein',
     images: ['/hay-product.jpg'],
   },
 }
@@ -134,6 +135,24 @@ export default function HeinPage() {
       <div className="min-h-screen bg-gradient-to-b from-yellow-50 to-green-50">
         <Navigation />
         <HayProduct />
+        <TestimonialsSection
+          title="Mida meie kliendid ütlevad"
+          toneClassName="from-yellow-50 via-white to-green-50 border-yellow-100"
+          items={[
+            {
+              name: 'Kristel',
+              text: 'Hein oli värske ja lõhnav, tolmuvaba. Lemmikud sõid isuga.',
+            },
+            {
+              name: 'Siim',
+              text: 'Tarne oli kiire ja pakk korralik. Väga rahul kvaliteediga.',
+            },
+            {
+              name: 'Helena',
+              text: 'Stabiilselt hea kvaliteet — ostan kindlasti uuesti.',
+            },
+          ]}
+        />
         <Footer />
       </div>
     </>

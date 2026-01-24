@@ -1,281 +1,61 @@
-'use client'
-
-import { useEffect, useState } from 'react'
 import { notFound } from 'next/navigation'
-import Image from 'next/image'
-import Link from 'next/link'
-import { ChevronLeft, ShoppingCart, CheckCircle2, Loader2, Heart, Share2, Info } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { Separator } from '@/components/ui/separator'
-import { Navigation } from '@/components/navigation'
-import { Footer } from '@/components/footer'
+import { Metadata } from 'next'
+import { ProductDetailPage } from '@/components/product-detail-page'
 
-interface ProductPageProps {
-  params: Promise<{
-    category: string
-    slug: string
-  }>
-}
-
-interface Product {
-  id: string
-  code: string
-  genus: string
-  species: string
-  commonName: string
-  scientificName: string
-  category: string
-  status: string
-  price: number
-  availability: string
-  image: string
-  slug: string
-}
-
-const categoryData: Record<string, any> = {
-  'BIRDS': {
+const categoryData: Record<string, { title: string; icon: string; notionCategory: string }> = {
+  birds: {
     title: 'Papagoid',
     icon: '🦜',
+    notionCategory: 'BIRDS',
   },
-  'FEED FOR REPTILES': {
+  'feed-for-reptiles': {
     title: 'Elustoit',
     icon: '🦗',
+    notionCategory: 'FEED FOR REPTILES',
   },
-  'REPTILES & AMPHIBIANS': {
+  'reptiles-amphibians': {
     title: 'Roomajad ja Kahepaiksed',
     icon: '🦎',
+    notionCategory: 'REPTILES & AMPHIBIANS',
   },
-  'PLANTS': {
+  plants: {
     title: 'Akvaariumi Taimed',
     icon: '🌿',
+    notionCategory: 'PLANTS',
   },
 }
 
-export default function ProductPage({ params }: ProductPageProps) {
-  const [product, setProduct] = useState<Product | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  const [category, setCategory] = useState<any>(null)
-  const [decodedCategory, setDecodedCategory] = useState<string>('')
-  const [decodedSlug, setDecodedSlug] = useState<string>('')
+export async function generateMetadata({ params }: { params: Promise<{ category: string; slug: string }> }): Promise<Metadata> {
+  const resolved = await params
+  const decodedCat = decodeURIComponent(resolved.category)
+  const decodedSlug = decodeURIComponent(resolved.slug)
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || process.env.NEXTAUTH_URL || 'https://petsvilla.ee'
 
-  useEffect(() => {
-    async function initParams() {
-      const resolvedParams = await params
-      const decodedCat = decodeURIComponent(resolvedParams.category)
-      const decodedS = decodeURIComponent(resolvedParams.slug)
-      setDecodedCategory(decodedCat)
-      setDecodedSlug(decodedS)
-      setCategory(categoryData[decodedCat])
-    }
-    initParams()
-  }, [params])
+  return {
+    title: decodedSlug.replace(/-/g, ' '),
+    alternates: {
+      canonical: `${baseUrl}/pood/${decodedCat}/${decodedSlug}`,
+    },
+  }
+}
 
-  useEffect(() => {
-    async function fetchProduct() {
-      if (!category) {
-        setLoading(false)
-        return
-      }
-
-      try {
-        // Kasutame decodeeritud kategooriat API päringus
-        const response = await fetch(`/api/products?category=${encodeURIComponent(decodedCategory)}`)
-        const data = await response.json()
-        
-        if (data.error) {
-          setError(data.message || 'Toote laadimine ebaõnnestus')
-        } else {
-          const foundProduct = data.products?.find((p: Product) => p.slug === decodedSlug)
-          if (foundProduct) {
-            setProduct(foundProduct)
-          } else {
-            setError('Toodet ei leitud')
-          }
-        }
-      } catch (err) {
-        console.error('Viga toote laadimisel:', err)
-        setError('Toote laadimine ebaõnnestus')
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchProduct()
-  }, [decodedSlug, decodedCategory, category])
+export default async function ProductPage({ params }: { params: Promise<{ category: string; slug: string }> }) {
+  const resolved = await params
+  const decodedCat = decodeURIComponent(resolved.category)
+  const decodedSlug = decodeURIComponent(resolved.slug)
+  const category = categoryData[decodedCat]
 
   if (!category) {
     notFound()
   }
 
-  if (loading) {
-    return (
-      <>
-        <Navigation />
-        <div className="min-h-screen bg-gradient-to-b from-green-50 to-white flex items-center justify-center">
-          <Loader2 className="h-12 w-12 animate-spin text-green-600" />
-        </div>
-        <Footer />
-      </>
-    )
-  }
-
-  if (error || !product) {
-    return (
-      <>
-        <Navigation />
-        <div className="min-h-screen bg-gradient-to-b from-green-50 to-white">
-          <div className="container mx-auto px-4 py-16">
-            <Link
-              href={`/pood/${decodedCategory}`}
-              className="inline-flex items-center text-green-700 hover:text-green-800 mb-8 font-medium"
-            >
-              <ChevronLeft className="h-5 w-5 mr-1" />
-              Tagasi kategooriasse
-            </Link>
-            <div className="text-center py-16">
-              <div className="text-6xl mb-4">⚠️</div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">
-                {error || 'Toodet ei leitud'}
-              </h2>
-              <p className="text-gray-600 mb-8">
-                Palun kontrolli URL-i või mine tagasi kategooriasse.
-              </p>
-            </div>
-          </div>
-        </div>
-        <Footer />
-      </>
-    )
-  }
-
-  const isInStock = product.status === 'Aktiivne'
-
   return (
-    <>
-      <Navigation />
-      <div className="min-h-screen bg-gradient-to-b from-green-50 to-white">
-        <div className="container mx-auto px-4 py-8 md:py-16">
-          {/* Breadcrumbs */}
-          <div className="mb-8 flex items-center gap-2 text-sm text-gray-600">
-            <Link href="/pood" className="hover:text-green-700 transition-colors">
-              Pood
-            </Link>
-            <span>/</span>
-            <Link href={`/pood/${decodedCategory}`} className="hover:text-green-700 transition-colors">
-              {category.title}
-            </Link>
-            <span>/</span>
-            <span className="text-gray-900 font-medium">{product.commonName}</span>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-8 md:gap-12">
-            {/* Toote pilt */}
-            <div className="space-y-4">
-              <div className="relative aspect-square bg-gray-50 rounded-xl overflow-hidden border-2 border-gray-200">
-                <Image
-                  src={`/api/product-image/${product.id}`}
-                  alt={product.commonName}
-                  fill
-                  className="object-contain p-4"
-                />
-              </div>
-              
-              {/* Info ühel real */}
-              <div className="flex flex-wrap gap-4 text-sm text-gray-700">
-                {product.code && (
-                  <div>
-                    <strong>Kood:</strong> {product.code}
-                  </div>
-                )}
-                {product.availability && (
-                  <div>
-                    <strong>Saadavus:</strong> {product.availability}
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* Toote info */}
-            <div className="space-y-6">
-              <div>
-                <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
-                  {product.commonName}
-                </h1>
-                
-                {/* Genus + Species vastavates tulpadest */}
-                {(product.genus || product.species) && (
-                  <p className="text-base text-gray-600 italic mb-4">
-                    {product.genus} {product.species}
-                  </p>
-                )}
-              </div>
-
-              <Separator />
-
-              {/* Hind */}
-              <div className="bg-gradient-to-br from-green-50 to-emerald-50 border-2 border-green-200 rounded-xl p-6 text-center">
-                {product.price > 0 ? (
-                  <span className="text-4xl font-bold text-green-700">
-                    {product.price.toFixed(2)} €
-                  </span>
-                ) : (
-                  <span className="text-2xl font-semibold text-gray-700">
-                    Hind küsida
-                  </span>
-                )}
-              </div>
-
-              {/* Tegevusnupud */}
-              <div className="space-y-3">
-                <Link 
-                  href={`/kontakt?product=${encodeURIComponent(product.commonName)}&id=${product.id}&code=${encodeURIComponent(product.code || '')}`}
-                  className="block"
-                >
-                  <Button 
-                    size="lg" 
-                    className="w-full bg-green-600 hover:bg-green-700 text-lg py-6 shadow-lg hover:shadow-xl transition-all"
-                    disabled={!isInStock}
-                  >
-                    <ShoppingCart className="mr-2 h-5 w-5" />
-                    {isInStock ? 'Telli kohe' : 'Küsi saabumist'}
-                  </Button>
-                </Link>
-                
-                <Link 
-                  href={`/kontakt?product=${encodeURIComponent(product.commonName)}&id=${product.id}&code=${encodeURIComponent(product.code || '')}`}
-                  className="block"
-                >
-                  <Button 
-                    variant="outline" 
-                    size="lg" 
-                    className="w-full text-lg py-6 border-2"
-                  >
-                    <Info className="mr-2 h-5 w-5" />
-                    Küsi lisainfot
-                  </Button>
-                </Link>
-              </div>
-
-
-            </div>
-          </div>
-
-          {/* Tagasi link */}
-          <div className="mt-12">
-            <Link
-              href={`/pood/${decodedCategory}`}
-              className="inline-flex items-center text-green-700 hover:text-green-800 font-medium"
-            >
-              <ChevronLeft className="h-5 w-5 mr-1" />
-              Tagasi kategooriasse: {category.title}
-            </Link>
-          </div>
-        </div>
-      </div>
-      <Footer />
-    </>
+    <ProductDetailPage
+      categorySlug={decodedCat}
+      productSlug={decodedSlug}
+      categoryTitle={category.title}
+      categoryIcon={category.icon}
+      notionCategory={category.notionCategory}
+    />
   )
 }

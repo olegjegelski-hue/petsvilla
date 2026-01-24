@@ -1,6 +1,7 @@
 
 import { Navigation } from '@/components/navigation'
 import { GuineaPigGallery } from '@/components/guinea-pig-gallery'
+import { TestimonialsSection } from '@/components/testimonials-section'
 import { Footer } from '@/components/footer'
 import { Metadata } from 'next'
 import Script from 'next/script'
@@ -227,6 +228,24 @@ export default function MeriseadPage() {
       <div className="min-h-screen bg-gradient-to-b from-pink-50 to-orange-50">
         <Navigation />
         <GuineaPigGallery />
+        <TestimonialsSection
+          title="Mida meie kliendid ütlevad"
+          toneClassName="from-pink-50 via-white to-orange-50 border-pink-100"
+          items={[
+            {
+              name: 'Kaisa',
+              text: 'Merisea beebi oli terve ja väga sõbralik. Sain palju nõu, kuidas alguses hooldada.',
+            },
+            {
+              name: 'Marko',
+              text: 'Pedigree info oli kenasti kaasa pandud. Väga professionaalne.',
+            },
+            {
+              name: 'Liis',
+              text: 'Külastus oli rahulik ja soe, beebid on hästi sotsialiseeritud.',
+            },
+          ]}
+        />
         <Footer />
       </div>
     </>

@@ -1,6 +1,7 @@
 
 import { Navigation } from '@/components/navigation'
 import { BudgieGallery } from '@/components/budgie-gallery'
+import { TestimonialsSection } from '@/components/testimonials-section'
 import { Footer } from '@/components/footer'
 import { Metadata } from 'next'
 import Script from 'next/script'
@@ -94,6 +95,24 @@ export default function ViirpapagoidPage() {
       <div className="min-h-screen bg-gradient-to-b from-blue-50 to-green-50">
         <Navigation />
         <BudgieGallery />
+        <TestimonialsSection
+          title="Mida meie kliendid ütlevad"
+          toneClassName="from-blue-50 via-white to-green-50 border-blue-100"
+          items={[
+            {
+              name: 'Laura',
+              text: 'Lind oli rahulik ja inimese kohalolekuga harjunud. Väga meeldiv kogemus.',
+            },
+            {
+              name: 'Rasmus',
+              text: 'Sulestik on imeilus ja saime head hooldusjuhised kaasa.',
+            },
+            {
+              name: 'Anu',
+              text: 'Kokkulepped olid lihtsad ning suhtlus kiire ja sõbralik.',
+            },
+          ]}
+        />
         <Footer />
       </div>
     </>

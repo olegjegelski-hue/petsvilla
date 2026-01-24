@@ -81,10 +81,28 @@ export async function POST(request: NextRequest) {
 
     // Create shipments in Montonio Shipping if we have terminal UUID
     // SmartPost allows only 1 parcel per shipment, so we create multiple shipments
+    // Prevent duplicate shipment creation if tracking already exists
     const shipmentResults: any[] = [];
     if (terminalUuid) {
-      console.log('=== CREATING MONTONIO SHIPMENTS ===');
-      console.log(`Creating ${hayQuantity} separate shipments (SmartPost allows 1 parcel per shipment)`);
+      const hasTrackingInfo = /Tracking:/i.test(comments);
+      const hasShipmentMarker = /Shipment created:/i.test(comments) || /Shipment creating:/i.test(comments);
+
+      if (hasTrackingInfo || hasShipmentMarker) {
+        console.log('Shipment already created or in progress. Skipping shipment creation.');
+      } else {
+        // Mark shipment creation in progress to avoid duplicate calls
+        const preflightComments = `${comments}\n\nShipment creating: ${new Date().toISOString()}`;
+        await notion.pages.update({
+          page_id: pageId,
+          properties: {
+            Comments: {
+              rich_text: [{ text: { content: preflightComments.slice(0, 2000) } }],
+            },
+          },
+        });
+
+        console.log('=== CREATING MONTONIO SHIPMENTS ===');
+        console.log(`Creating ${hayQuantity} separate shipments (SmartPost allows 1 parcel per shipment)`);
       
       const nameParts = customerName.split(' ');
       const firstName = nameParts[0] || customerName;
@@ -92,41 +110,42 @@ export async function POST(request: NextRequest) {
       
       const trackingCodes: string[] = [];
       
-      for (let i = 0; i < hayQuantity; i++) {
-        const shipmentRef = hayQuantity > 1 ? `${merchantReference}-${i + 1}` : merchantReference;
-        console.log(`Creating shipment ${i + 1}/${hayQuantity}: ${shipmentRef}`);
-        
-        const result = await createMontonioShipment({
-          merchantReference: shipmentRef,
-          pickupPointUuid: terminalUuid,
-          shippingFirstName: firstName,
-          shippingLastName: lastName,
-          shippingEmail: customerEmail,
-          shippingPhone: customerPhone,
-          parcelCount: 1, // Always 1 parcel per shipment for SmartPost
-        });
-        
-        shipmentResults.push(result);
-        console.log(`Shipment ${i + 1} result:`, result);
-        
-        if (result.success && result.trackingCode) {
-          trackingCodes.push(result.trackingCode);
+        for (let i = 0; i < hayQuantity; i++) {
+          const shipmentRef = hayQuantity > 1 ? `${merchantReference}-${i + 1}` : merchantReference;
+          console.log(`Creating shipment ${i + 1}/${hayQuantity}: ${shipmentRef}`);
+          
+          const result = await createMontonioShipment({
+            merchantReference: shipmentRef,
+            pickupPointUuid: terminalUuid,
+            shippingFirstName: firstName,
+            shippingLastName: lastName,
+            shippingEmail: customerEmail,
+            shippingPhone: customerPhone,
+            parcelCount: 1, // Always 1 parcel per shipment for SmartPost
+          });
+          
+          shipmentResults.push(result);
+          console.log(`Shipment ${i + 1} result:`, result);
+          
+          if (result.success && result.trackingCode) {
+            trackingCodes.push(result.trackingCode);
+          }
         }
-      }
 
       // Update Notion with all tracking codes
-      if (trackingCodes.length > 0) {
-        const trackingInfo = trackingCodes.map((code, i) => `Pakk ${i + 1}: ${code}`).join('\n');
-        const updatedComments = `${comments}\nTracking:\n${trackingInfo}`;
-        await notion.pages.update({
-          page_id: pageId,
-          properties: {
-            Comments: {
-              rich_text: [{ text: { content: updatedComments.slice(0, 2000) } }],
+        if (trackingCodes.length > 0) {
+          const trackingInfo = trackingCodes.map((code, i) => `Pakk ${i + 1}: ${code}`).join('\n');
+          const updatedComments = `${comments}\n\nTracking:\n${trackingInfo}\nShipment created: ${new Date().toISOString()}`;
+          await notion.pages.update({
+            page_id: pageId,
+            properties: {
+              Comments: {
+                rich_text: [{ text: { content: updatedComments.slice(0, 2000) } }],
+              },
             },
-          },
-        });
-        console.log(`✅ ${trackingCodes.length} tracking codes added to Notion`);
+          });
+          console.log(`✅ ${trackingCodes.length} tracking codes added to Notion`);
+        }
       }
     } else {
       console.log('No terminal UUID found, skipping shipment creation');

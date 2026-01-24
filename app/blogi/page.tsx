@@ -32,7 +32,7 @@ export default function BlogPage() {
       name: 'PetsVilla OÜ',
       logo: {
         '@type': 'ImageObject',
-        url: 'https://upload.wikimedia.org/wikipedia/en/0/09/Wellness_Pet_Company_Logo_2022.png',
+        url: 'https://petsvilla.ee/og-image.png',
       },
     },
     inLanguage: 'et-EE',

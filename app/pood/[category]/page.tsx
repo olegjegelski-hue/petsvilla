@@ -30,25 +30,29 @@ interface Product {
 }
 
 const categoryData: Record<string, any> = {
-  'BIRDS': {
+  birds: {
     title: 'Papagoid',
     description: 'Erinevad linnuliigid - papagoid, kakaduud, ja muud eksootilised linnud',
     icon: '🦜',
+    notionCategory: 'BIRDS',
   },
-  'FEED FOR REPTILES': {
+  'feed-for-reptiles': {
     title: 'Elustoit',
     description: 'Kvaliteetne elustoit roomajatele ja kahepaiksetele',
     icon: '🦗',
+    notionCategory: 'FEED FOR REPTILES',
   },
-  'REPTILES & AMPHIBIANS': {
+  'reptiles-amphibians': {
     title: 'Roomajad ja Kahepaiksed',
     description: 'Roomajad, kahepaiksed ja nende hooldus',
     icon: '🦎',
+    notionCategory: 'REPTILES & AMPHIBIANS',
   },
-  'PLANTS': {
+  plants: {
     title: 'Akvaariumi Taimed',
     description: 'Elavad akvaariumi taimed - ilu ja tervisliku keskkonna loomiseks',
     icon: '🌿',
+    notionCategory: 'PLANTS',
   },
 }
 
@@ -58,6 +62,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
   const [error, setError] = useState<string | null>(null)
   const [category, setCategory] = useState<any>(null)
   const [decodedCategory, setDecodedCategory] = useState<string>('')
+  const [paramsReady, setParamsReady] = useState(false)
 
   useEffect(() => {
     async function initParams() {
@@ -65,6 +70,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
       const decodedCat = decodeURIComponent(resolvedParams.category)
       setDecodedCategory(decodedCat)
       setCategory(categoryData[decodedCat])
+      setParamsReady(true)
     }
     initParams()
   }, [params])
@@ -78,7 +84,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
 
       try {
         // Kasutame decodeeritud kategooriat API päringus
-        const response = await fetch(`/api/products?category=${encodeURIComponent(decodedCategory)}`)
+        const response = await fetch(`/api/products?category=${encodeURIComponent(category.notionCategory)}`)
         const data = await response.json()
         
         if (data.error) {
@@ -96,6 +102,18 @@ export default function CategoryPage({ params }: CategoryPageProps) {
 
     fetchProducts()
   }, [decodedCategory, category])
+
+  if (!paramsReady) {
+    return (
+      <>
+        <Navigation />
+        <div className="min-h-screen bg-gradient-to-b from-green-50 to-white flex items-center justify-center">
+          <Loader2 className="h-12 w-12 animate-spin text-green-600" />
+        </div>
+        <Footer />
+      </>
+    )
+  }
 
   if (!category) {
     notFound()

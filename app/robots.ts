@@ -9,17 +9,17 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/api/', '/tellimus-kinnitatud/'],
+        disallow: ['/api/', '/tellimus-kinnitatud/', '/sonum-saadetud/'],
       },
       {
         userAgent: 'Googlebot',
         allow: '/',
-        disallow: ['/api/', '/tellimus-kinnitatud/'],
+        disallow: ['/api/', '/tellimus-kinnitatud/', '/sonum-saadetud/'],
       },
       {
         userAgent: 'Bingbot',
         allow: '/',
-        disallow: ['/api/', '/tellimus-kinnitatud/'],
+        disallow: ['/api/', '/tellimus-kinnitatud/', '/sonum-saadetud/'],
       },
       {
         userAgent: 'GPTBot',

@@ -115,6 +115,19 @@ export function GuineaPigGallery() {
           <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
             Tegeleme lühikarvaliste tõumerisigade professionaalse aretamisega. Aretuse vanemad on hoolikalt valitud, et tagada tervete, rõõmsate ja ilusate beebide sünd. Pakume alati nõu ja tuge uutele omanikele.
           </p>
+          <Link href="#ostuprotsess">
+            <Button
+              size="lg"
+              variant="outline"
+              className="border-2 border-pink-500 text-pink-600 hover:bg-pink-500 hover:text-white px-6 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
+            >
+              Vaata ostuprotsessi
+              <ArrowRight className="w-5 h-5 ml-2" />
+            </Button>
+          </Link>
+          <p className="mt-4 text-sm text-gray-600">
+            Merisea hind sõltub vanusest, tõust ja värvist.
+          </p>
         </motion.div>
 
         {/* Error Message */}
@@ -354,6 +367,82 @@ export function GuineaPigGallery() {
             </motion.div>
           )
         })}
+        </div>
+
+        {/* Purchase Process */}
+        <div id="ostuprotsess" className="mb-16 scroll-mt-24">
+          <Card className="border border-pink-100 shadow-2xl bg-gradient-to-br from-pink-50 via-white to-orange-50">
+            <CardContent className="p-8 md:p-10">
+              <div className="text-center mb-8">
+                <h3 className="text-3xl font-bold text-gray-900 mb-2">
+                  Kuidas merisea ostmine käib?
+                </h3>
+                <p className="text-gray-600">Selge ja sõbralik protsess, et kõik sujuks.</p>
+              </div>
+
+              <div className="grid gap-5 md:grid-cols-2">
+                <div className="rounded-2xl bg-white/90 border border-pink-100 p-5 shadow-lg">
+                  <div className="flex items-start gap-4">
+                    <div className="h-12 w-12 rounded-full bg-pink-100 text-pink-600 flex items-center justify-center">
+                      <Heart className="w-6 h-6" />
+                    </div>
+                    <div>
+                      <h4 className="text-lg font-semibold text-gray-900">1. Vali sobiv merisiga</h4>
+                      <p className="text-gray-600">Tutvu galeriiga ning vali endale sobiv beebi.</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="rounded-2xl bg-white/90 border border-pink-100 p-5 shadow-lg">
+                  <div className="flex items-start gap-4">
+                    <div className="h-12 w-12 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center">
+                      <Mail className="w-6 h-6" />
+                    </div>
+                    <div>
+                      <h4 className="text-lg font-semibold text-gray-900">2. Võta meiega ühendust</h4>
+                      <p className="text-gray-600">Saada päring läbi kontaktivormi või helista: +372 512 7938.</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="rounded-2xl bg-white/90 border border-pink-100 p-5 shadow-lg">
+                  <div className="flex items-start gap-4">
+                    <div className="h-12 w-12 rounded-full bg-pink-100 text-pink-600 flex items-center justify-center">
+                      <Calendar className="w-6 h-6" />
+                    </div>
+                    <div>
+                      <h4 className="text-lg font-semibold text-gray-900">3. Lepime kokku külastuse</h4>
+                      <p className="text-gray-600">Külastus toimub kokkuleppel, et saaksime sulle rahulikult aega pühendada.</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="rounded-2xl bg-white/90 border border-pink-100 p-5 shadow-lg">
+                  <div className="flex items-start gap-4">
+                    <div className="h-12 w-12 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center">
+                      <PawPrint className="w-6 h-6" />
+                    </div>
+                    <div>
+                      <h4 className="text-lg font-semibold text-gray-900">4. Vali ja vormista</h4>
+                      <p className="text-gray-600">Kohtumisel saad merisea oma silmaga näha, valida ning vormistada ostu.</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="rounded-2xl bg-white/90 border border-pink-100 p-5 shadow-lg md:col-span-2">
+                  <div className="flex items-start gap-4">
+                    <div className="h-12 w-12 rounded-full bg-pink-100 text-pink-600 flex items-center justify-center">
+                      <Users className="w-6 h-6" />
+                    </div>
+                    <div>
+                      <h4 className="text-lg font-semibold text-gray-900">5. Dokumendid ja nõuanded</h4>
+                      <p className="text-gray-600">Anname kaasa pedigree info ja vajalikud hooldussoovitused.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
         {/* Info CTA */}

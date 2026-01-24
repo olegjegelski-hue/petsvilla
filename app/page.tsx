@@ -146,7 +146,7 @@ export default function Home() {
               name: 'PetsVilla'
             }
           },
-          price: '0.50',
+          price: '9.00',
           priceCurrency: 'EUR',
           availability: 'https://schema.org/InStock',
           seller: {
