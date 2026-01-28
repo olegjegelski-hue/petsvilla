@@ -218,14 +218,16 @@ export function HayOrderForm() {
   }
 
   // Calculate total price:
-  // - Hay: 9€ for 1 bag, 18€ for 2 bags, 27€ for 3+ bags
-  // - Guinea pig food: 9€ per kg
-  // - Rabbit food: 3€ per kg (6€ for 2kg package)
+  // - Hay: 9€ per bag
+  // - Guinea pig food: 9€ per 1 kg
+  // - Rabbit food: 6€ per 2kg package
   // - Delivery: FREE (tarne hinna sees)
   const quantity = parseInt(formData.quantity || '1')
-  const hayPrice = quantity === 1 ? 9 : quantity === 2 ? 18 : 27
-  const guineaPigFoodPrice = parseFloat(formData.guineaPigFood || '0') * 9
-  const rabbitFoodPrice = parseFloat(formData.rabbitFood || '0') * 3
+  const hayPrice = quantity * 9
+  const guineaPigFoodCount = parseInt(formData.guineaPigFood || '0')
+  const rabbitFoodCount = parseInt(formData.rabbitFood || '0')
+  const guineaPigFoodPrice = guineaPigFoodCount * 9
+  const rabbitFoodPrice = rabbitFoodCount * 6
   const deliveryPrice = 0 // FREE delivery
   const totalPrice = hayPrice + guineaPigFoodPrice + rabbitFoodPrice
 
@@ -420,13 +422,13 @@ export function HayOrderForm() {
                         <div className="space-y-2">
                           <Label htmlFor="guineaPigFood" className="text-gray-900 font-semibold flex items-center">
                             <ShoppingCart className="w-4 h-4 mr-2 text-gray-600" />
-                            Meriseatoit (kg, 9€/kg)
+                            Meriseatoit (1 kg, 9€)
                           </Label>
                           <Input
                             id="guineaPigFood"
                             type="number"
                             min="0"
-                            step="0.5"
+                            step="1"
                             value={formData.guineaPigFood}
                             onChange={(e) => handleInputChange('guineaPigFood', e.target.value)}
                             placeholder="0"
@@ -436,13 +438,13 @@ export function HayOrderForm() {
                         <div className="space-y-2">
                           <Label htmlFor="rabbitFood" className="text-gray-900 font-semibold flex items-center">
                             <ShoppingCart className="w-4 h-4 mr-2 text-gray-600" />
-                            Küülikutoit (kg, 3€/kg)
+                            Küülikutoit (2 kg pakk, 6€)
                           </Label>
                           <Input
                             id="rabbitFood"
                             type="number"
                             min="0"
-                            step="0.5"
+                            step="1"
                             value={formData.rabbitFood}
                             onChange={(e) => handleInputChange('rabbitFood', e.target.value)}
                             placeholder="0"
@@ -488,15 +490,17 @@ export function HayOrderForm() {
                             <span className="text-gray-700">Hein: {formData.quantity} kott{parseInt(formData.quantity) > 1 ? 'i' : ''}</span>
                             <span className="text-gray-900 font-semibold">{hayPrice.toFixed(2)}€</span>
                           </div>
-                          {parseFloat(formData.guineaPigFood || '0') > 0 && (
+                          {guineaPigFoodCount > 0 && (
                             <div className="flex justify-between items-center text-sm">
                               <span className="text-gray-700">Meriseatoit: {formData.guineaPigFood} kg × 9€</span>
                               <span className="text-gray-900 font-semibold">{guineaPigFoodPrice.toFixed(2)}€</span>
                             </div>
                           )}
-                          {parseFloat(formData.rabbitFood || '0') > 0 && (
+                          {rabbitFoodCount > 0 && (
                             <div className="flex justify-between items-center text-sm">
-                              <span className="text-gray-700">Küülikutoit: {formData.rabbitFood} kg × 3€</span>
+                              <span className="text-gray-700">
+                                Küülikutoit: {rabbitFoodCount} {rabbitFoodCount === 1 ? 'pakk' : 'pakki'} × 6€
+                              </span>
                               <span className="text-gray-900 font-semibold">{rabbitFoodPrice.toFixed(2)}€</span>
                             </div>
                           )}

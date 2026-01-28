@@ -45,13 +45,13 @@ export async function POST(request: NextRequest) {
     }
 
     // Calculate prices
-    const hayPrice = parseInt(hayAmount) === 1 ? 9 : parseInt(hayAmount) === 2 ? 18 : 27;
+    const hayPrice = parseInt(hayAmount) * 9;
     
-    // Guinea pig food: 9€ per kg
-    const guineaPigFoodPrice = parseFloat(guineaPigFood || '0') * 9;
+    // Guinea pig food: 9€ per 1 kg
+    const guineaPigFoodPrice = parseInt(guineaPigFood || '0') * 9;
     
-    // Rabbit food: 3€ per kg (6€ for 2kg package)
-    const rabbitFoodPrice = parseFloat(rabbitFood || '0') * 3;
+    // Rabbit food: 6€ per 2kg package
+    const rabbitFoodPrice = parseInt(rabbitFood || '0') * 6;
     
     // Delivery is FREE (included in product prices)
     const deliveryPrice = 0;
@@ -80,21 +80,21 @@ export async function POST(request: NextRequest) {
       finalPrice: hayPrice,
     });
 
-    // Add guinea pig food if ordered (9€ per kg)
-    if (guineaPigFood && parseFloat(guineaPigFood) > 0) {
+    // Add guinea pig food if ordered (9€ per 1 kg)
+    if (guineaPigFood && parseInt(guineaPigFood) > 0) {
       lineItems.push({
         name: `Meriseatoit (${guineaPigFood} kg)`,
         quantity: 1,
-        finalPrice: parseFloat(guineaPigFood) * 9,
+        finalPrice: parseInt(guineaPigFood) * 9,
       });
     }
 
-    // Add rabbit food if ordered (3€ per kg)
-    if (rabbitFood && parseFloat(rabbitFood) > 0) {
+    // Add rabbit food if ordered (6€ per 2kg package)
+    if (rabbitFood && parseInt(rabbitFood) > 0) {
       lineItems.push({
-        name: `Küülikutoit (${rabbitFood} kg)`,
+        name: `Küülikutoit (${rabbitFood} × 2 kg pakk)`,
         quantity: 1,
-        finalPrice: parseFloat(rabbitFood) * 3,
+        finalPrice: parseInt(rabbitFood) * 6,
       });
     }
 
@@ -179,10 +179,10 @@ export async function POST(request: NextRequest) {
           number: parseInt(hayAmount) 
         },
         'Meriseatoit (kg)': { 
-          number: parseFloat(guineaPigFood || '0') 
+          number: parseInt(guineaPigFood || '0') 
         },
         'Küülikutoit (kg)': { 
-          number: parseFloat(rabbitFood || '0') * 2  // Sold in 2kg packages
+          number: parseInt(rabbitFood || '0') * 2  // Sold in 2kg packages
         },
         'Total Price (EUR)': { 
           number: grandTotal 
@@ -214,8 +214,8 @@ export async function POST(request: NextRequest) {
         phone,
         terminal: parcelMachine || 'Määramata',
         quantity: parseInt(hayAmount),
-        guineaPigFood: parseFloat(guineaPigFood || '0'),
-        rabbitFood: parseFloat(rabbitFood || '0'),
+        guineaPigFood: parseInt(guineaPigFood || '0'),
+        rabbitFood: parseInt(rabbitFood || '0'),
         totalPrice: grandTotal,
         comments: notes || '',
       });
