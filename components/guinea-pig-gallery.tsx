@@ -4,7 +4,7 @@
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Heart, Calendar, Palette, Users, Mail, Phone, ArrowRight, Loader2, Cake, PawPrint, Filter } from 'lucide-react'
+import { Heart, Calendar, Palette, Users, Mail, Phone, ArrowRight, Loader2, Cake, PawPrint, Filter, CheckCircle } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import Image from 'next/image'
@@ -441,6 +441,66 @@ export function GuineaPigGallery() {
                   </div>
                 </div>
               </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Papagoi Center CTA */}
+        <div className="mb-16">
+          <Card className="border-0 shadow-2xl bg-gradient-to-br from-blue-50 via-white to-green-50">
+            <CardContent className="p-8 md:p-10">
+              <div className="text-center mb-6">
+                <h3 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
+                  🦜 Tule Papagoi Keskusesse!
+                </h3>
+                <p className="text-gray-700 text-lg leading-relaxed">
+                  Soovid näha meie merisigasid ja viirpapagoide enne ostu?
+                  <br />
+                  Külasta meie Papagoi Keskust, kus saad:
+                </p>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-4 max-w-3xl mx-auto">
+                {[
+                  'Tutvuda müügiloomadega rahulikult',
+                  'Küsida nõu ja saada eksperdivastuseid',
+                  'Veeta aega loomadega ja valida oma lemmik',
+                  'Näha, kuidas meie loomad elavad',
+                ].map((item) => (
+                  <div key={item} className="flex items-start gap-3 bg-white/90 rounded-xl p-4 shadow-md">
+                    <CheckCircle className="w-5 h-5 text-green-600 mt-0.5" />
+                    <p className="text-gray-700">{item}</p>
+                  </div>
+                ))}
+              </div>
+
+              <div className="flex justify-center mt-8">
+                <Link href="https://papagoi.ee" target="_blank" rel="noreferrer">
+                  <Button className="bg-gradient-to-r from-blue-500 to-green-500 hover:from-blue-600 hover:to-green-600 text-white px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300">
+                    Broneeri külastus →
+                  </Button>
+                </Link>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Care Guide CTA */}
+        <div className="mb-16">
+          <Card className="border-0 shadow-xl bg-gradient-to-br from-pink-50 via-white to-orange-50">
+            <CardContent className="p-8 md:p-10 text-center">
+              <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">
+                Kuidas merisea eest õigesti hoolitseda?
+              </h3>
+              <p className="text-gray-700 text-lg mb-6">
+                Meie blogist leiad praktilised juhendid, toitmissoovitused ja
+                igapäevase hoolduse nipid, et sinu merisiga oleks terve ja rõõmus.
+              </p>
+              <Link href="/blogi">
+                <Button className="bg-pink-600 hover:bg-pink-700 text-white px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300">
+                  Loe merisigade hooldusjuhiseid →
+                </Button>
+              </Link>
             </CardContent>
           </Card>
         </div>

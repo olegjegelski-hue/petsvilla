@@ -236,6 +236,31 @@ export function About() {
           </motion.div>
         </div>
 
+        {/* Merisea Care Guide CTA */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="mb-16"
+        >
+          <Card className="border-0 shadow-xl bg-gradient-to-br from-pink-50 via-white to-orange-50">
+            <div className="p-8 md:p-10 text-center">
+              <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">
+                Kuidas merisea eest õigesti hoolitseda?
+              </h3>
+              <p className="text-gray-700 text-lg mb-6">
+                Meie blogist leiad praktilised juhendid, toitmissoovitused ja
+                igapäevase hoolduse nipid, et sinu merisiga oleks terve ja rõõmus.
+              </p>
+              <Link href="/blogi">
+                <Button className="bg-pink-600 hover:bg-pink-700 text-white px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300">
+                  Loe merisigade hooldusjuhiseid →
+                </Button>
+              </Link>
+            </div>
+          </Card>
+        </motion.div>
+
         {/* Breeding Parents Gallery */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
