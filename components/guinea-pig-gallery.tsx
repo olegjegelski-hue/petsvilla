@@ -496,7 +496,7 @@ export function GuineaPigGallery() {
                 Meie blogist leiad praktilised juhendid, toitmissoovitused ja
                 igapäevase hoolduse nipid, et sinu merisiga oleks terve ja rõõmus.
               </p>
-              <Link href="/blogi">
+              <Link href="/blogi?loom=Merisead">
                 <Button className="bg-pink-600 hover:bg-pink-700 text-white px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300">
                   Loe merisigade hooldusjuhiseid →
                 </Button>

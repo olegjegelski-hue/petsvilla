@@ -64,9 +64,31 @@ export async function GET() {
         properties.Avaldamise_kuupaev?.date?.start || 
         '';
       
-      const category = 
-        properties.Kategooria?.select?.name || 
-        '';
+      const categories = (() => {
+        const prop = properties.Kategooria
+        if (prop?.select?.name) {
+          return [prop.select.name]
+        }
+        if (Array.isArray(prop?.multi_select)) {
+          return prop.multi_select.map((item: any) => item?.name).filter(Boolean)
+        }
+        const text = prop?.rich_text?.[0]?.plain_text
+        return text ? [text] : []
+      })()
+
+      const category = categories[0] || ''
+
+      const animals = (() => {
+        const prop = properties.Loom
+        if (prop?.select?.name) {
+          return [prop.select.name]
+        }
+        if (Array.isArray(prop?.multi_select)) {
+          return prop.multi_select.map((item: any) => item?.name).filter(Boolean)
+        }
+        const text = prop?.rich_text?.[0]?.plain_text
+        return text ? [text] : []
+      })()
       
       const author = 
         properties.Autor?.rich_text?.[0]?.plain_text || 
@@ -87,7 +109,9 @@ export async function GET() {
         content,
         publishedDate,
         category,
+        categories,
         author,
+        animals,
         readTime,
         coverImage,
       };

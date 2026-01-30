@@ -333,6 +333,26 @@ export function BudgieGallery() {
           </Card>
         </div>
 
+        {/* Care Guide CTA */}
+        <div className="mb-16">
+          <Card className="border-0 shadow-xl bg-gradient-to-br from-blue-50 via-white to-green-50">
+            <CardContent className="p-8 md:p-10 text-center">
+              <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">
+                Kuidas viirpapagoi eest õigesti hoolitseda?
+              </h3>
+              <p className="text-gray-700 text-lg mb-6">
+                Meie blogist leiad praktilised juhendid, toitmissoovitused ja
+                igapäevase hoolduse nipid, et lind oleks terve ja rõõmus.
+              </p>
+              <Link href="/blogi?loom=Papagoid">
+                <Button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300">
+                  Loe papagoide hooldusjuhiseid →
+                </Button>
+              </Link>
+            </CardContent>
+          </Card>
+        </div>
+
         {/* Info CTA */}
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
