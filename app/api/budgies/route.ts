@@ -10,19 +10,33 @@ const notion = new Client({
   notionVersion: '2022-06-28',
 })
 
+function fixMojibake(value: string): string {
+  if (!value) return value
+  if (!/[ÃÂâ]/.test(value)) return value
+  try {
+    return Buffer.from(value, 'latin1').toString('utf8')
+  } catch {
+    return value
+  }
+}
+
 function extractText(prop: any): string {
   if (!prop) return ''
   if (prop.rich_text?.length) {
-    return prop.rich_text.map((rt: any) => rt?.plain_text).filter(Boolean).join(' ').trim()
+    return fixMojibake(
+      prop.rich_text.map((rt: any) => rt?.plain_text).filter(Boolean).join(' ').trim()
+    )
   }
   if (prop.title?.length) {
-    return prop.title.map((rt: any) => rt?.plain_text).filter(Boolean).join(' ').trim()
+    return fixMojibake(
+      prop.title.map((rt: any) => rt?.plain_text).filter(Boolean).join(' ').trim()
+    )
   }
   if (prop.formula?.string) {
-    return String(prop.formula.string).trim()
+    return fixMojibake(String(prop.formula.string).trim())
   }
   if (prop.select?.name) {
-    return String(prop.select.name).trim()
+    return fixMojibake(String(prop.select.name).trim())
   }
   return ''
 }
