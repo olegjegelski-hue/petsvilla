@@ -63,20 +63,10 @@ export async function GET() {
             },
           },
           {
-            or: [
-              {
-                property: 'Liik',
-                select: {
-                  equals: 'Viirpapagoi (Tava)',
-                },
-              },
-              {
-                property: 'Liik',
-                select: {
-                  equals: 'Viirpapagoi (Inglane)',
-                },
-              },
-            ],
+            property: 'Liik',
+            select: {
+              equals: 'Viirpapagoi',
+            },
           },
         ],
       },
