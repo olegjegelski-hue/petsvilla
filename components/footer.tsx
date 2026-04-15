@@ -41,8 +41,8 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/viirpapagoid" className="text-gray-300 hover:text-orange-400 transition-colors">
-                  Viirpapagoid
+                <Link href="/papagoid" className="text-gray-300 hover:text-orange-400 transition-colors">
+                  Papagoid
                 </Link>
               </li>
               <li>

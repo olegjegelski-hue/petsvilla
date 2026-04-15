@@ -17,15 +17,6 @@ export const metadata: Metadata = {
 const categories = [
   {
     id: '1',
-    title: 'Papagoid',
-    slug: 'birds',
-    description: 'Erinevad linnuliigid - papagoid, kakaduud, ja muud eksootilised linnud',
-    icon: '🦜',
-    productCount: 4,
-    gradient: 'bg-gradient-to-br from-green-50 to-emerald-50',
-  },
-  {
-    id: '2',
     title: 'Elustoit',
     slug: 'feed-for-reptiles',
     description: 'Kvaliteetne elustoit roomajatele ja kahepaiksetele',
@@ -34,7 +25,7 @@ const categories = [
     gradient: 'bg-gradient-to-br from-amber-50 to-yellow-50',
   },
   {
-    id: '3',
+    id: '2',
     title: 'Roomajad ja Kahepaiksed',
     slug: 'reptiles-amphibians',
     description: 'Roomajad, kahepaiksed ja nende hooldus',
@@ -43,7 +34,7 @@ const categories = [
     gradient: 'bg-gradient-to-br from-amber-50 to-orange-50',
   },
   {
-    id: '4',
+    id: '3',
     title: 'Akvaariumi Taimed',
     slug: 'plants',
     description: 'Elavad akvaariumi taimed - ilu ja tervisliku keskkonna loomiseks',
