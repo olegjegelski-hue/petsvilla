@@ -12,7 +12,6 @@ interface CategoryCardProps {
   slug: string
   icon: string
   productCount: number
-  gradient: string
   index: number
 }
 
@@ -22,7 +21,6 @@ export function CategoryCard({
   slug,
   icon,
   productCount,
-  gradient,
   index,
 }: CategoryCardProps) {
   return (
@@ -32,22 +30,22 @@ export function CategoryCard({
       transition={{ duration: 0.5, delay: index * 0.1 }}
     >
       <Link href={`/pood/${slug}`}>
-        <Card className="group h-full overflow-hidden transition-all hover:shadow-xl hover:-translate-y-2 cursor-pointer border-2">
-          <CardContent className={`p-6 h-full ${gradient}`}>
+        <Card className="group h-full overflow-hidden transition-all hover:shadow-xl hover:-translate-y-2 cursor-pointer border border-[#D7CBBE] bg-[#E3D8CB]/90">
+          <CardContent className="p-6 h-full">
             <div className="flex flex-col h-full">
               <div className="text-6xl mb-4">{icon}</div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-2 group-hover:text-green-700 transition-colors">
+              <h3 className="text-2xl font-bold text-green-900 mb-2 group-hover:text-green-800 transition-colors">
                 {title}
               </h3>
               <p className="text-gray-600 mb-4 flex-grow">{description}</p>
               <div className="flex items-center justify-between">
-                <span className="text-sm font-medium text-gray-700">
+                <span className="text-sm font-medium text-green-900">
                   {productCount}+ toodet
                 </span>
                 <Button
-                  variant="ghost"
+                  variant="default"
                   size="sm"
-                  className="group-hover:text-green-700 group-hover:translate-x-1 transition-all"
+                  className="bg-gradient-to-r from-[#1F6A4C] to-[#C8A93E] hover:from-[#19563d] hover:to-[#B39133] text-white border border-[#C8A93E]/80 group-hover:translate-x-1 transition-all"
                 >
                   Vaata
                   <ArrowRight className="ml-2 h-4 w-4" />

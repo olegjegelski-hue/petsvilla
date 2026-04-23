@@ -2,7 +2,7 @@ import { Metadata } from 'next'
 import { CategoryCard } from '@/components/category-card'
 import { Navigation } from '@/components/navigation'
 import { Footer } from '@/components/footer'
-import { ShoppingBag, CheckCircle } from 'lucide-react'
+import { CheckCircle } from 'lucide-react'
 
 export const metadata: Metadata = {
   title: 'Pood - PetsVilla',
@@ -48,17 +48,14 @@ export default function PoodPage() {
   return (
     <>
       <Navigation />
-      <div className="min-h-screen bg-gradient-to-b from-green-50 to-white">
+      <div className="min-h-screen bg-background">
         <div className="container mx-auto px-4 py-16">
         <div className="text-center mb-12">
-          <div className="flex items-center justify-center mb-4">
-            <ShoppingBag className="h-12 w-12 text-green-700" />
-          </div>
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            PetsVilla Pood
+          <h1 className="text-4xl md:text-5xl font-bold text-green-900 mb-4">
+            PetsVilla E-pood
           </h1>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Avasta meie laia tootevaliku - kõik lemmikloomade tarbeks ühest kohast
+          <p className="text-sm md:text-base font-semibold text-gray-600 max-w-2xl mx-auto">
+            Avasta meie lai tootevalik...
           </p>
         </div>
 
@@ -69,13 +66,13 @@ export default function PoodPage() {
         </div>
 
         <div className="mt-12">
-          <div className="bg-gradient-to-br from-blue-50 via-white to-green-50 border-0 shadow-2xl rounded-2xl p-8 md:p-10 max-w-4xl mx-auto">
+          <div className="border border-[#D7CBBE] shadow-2xl bg-[#E3D8CB]/90 rounded-2xl p-8 md:p-10 max-w-4xl mx-auto">
             <div className="text-center mb-6">
-              <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">
+              <h2 className="text-3xl md:text-4xl font-bold text-green-900 mb-3">
                 🦜 Tule Papagoi Keskusesse!
               </h2>
               <p className="text-gray-700 text-lg leading-relaxed">
-                Soovid näha meie merisigasid ja viirpapagoide enne ostu?
+                Tahad näha, kuidas meie loomad päriselt elavad? Otsid perele meeldejäävat ja hariduslikku elamust?
                 <br />
                 Külasta meie Papagoi Keskust, kus saad:
               </p>
@@ -83,10 +80,10 @@ export default function PoodPage() {
 
             <div className="grid md:grid-cols-2 gap-4 max-w-3xl mx-auto">
               {[
-                'Tutvuda müügiloomadega rahulikult',
-                'Küsida nõu ja saada eksperdivastuseid',
-                'Veeta aega loomadega ja valida oma lemmik',
-                'Näha, kuidas meie loomad elavad',
+                'Vahetu kontakt: Toida ja suhtle meie sotsiaalsete papagoidega.',
+                'Teadlik valik: Tutvu merisigade ja lindudega isiklikult enne ostuotsuse tegemist.',
+                'Privaatkülastused: Broneeri rahulik aeg oma perele ja saa personaalset nõustamist.',
+                'Täielik läbipaistvus: Näe oma silmaga meie professionaalset aretuskeskkonda.',
               ].map((item) => (
                 <div key={item} className="flex items-start gap-3 bg-white/90 rounded-xl p-4 shadow-md">
                   <CheckCircle className="w-5 h-5 text-green-600 mt-0.5" />
@@ -100,7 +97,7 @@ export default function PoodPage() {
                 href="https://papagoi.ee"
                 target="_blank"
                 rel="noreferrer"
-                className="inline-block bg-gradient-to-r from-blue-500 to-green-500 hover:from-blue-600 hover:to-green-600 text-white font-semibold px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
+                className="inline-block bg-gradient-to-r from-[#1F6A4C] to-[#C8A93E] hover:from-[#19563d] hover:to-[#B39133] text-white font-semibold border border-[#C8A93E]/80 px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
               >
                 Broneeri külastus →
               </a>
@@ -118,7 +115,7 @@ export default function PoodPage() {
             </p>
             <a
               href="/kontakt"
-              className="inline-block bg-green-600 hover:bg-green-700 text-white font-semibold px-8 py-3 rounded-lg transition-colors"
+              className="inline-block bg-gradient-to-r from-[#1F6A4C] to-[#C8A93E] hover:from-[#19563d] hover:to-[#B39133] text-white font-semibold border border-[#C8A93E]/80 px-8 py-3 rounded-lg transition-colors"
             >
               Võta ühendust
             </a>
