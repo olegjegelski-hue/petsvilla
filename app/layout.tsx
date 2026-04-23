@@ -6,6 +6,7 @@ import { Toaster } from '@/components/ui/sonner'
 import { GoogleAnalytics } from '@/components/google-analytics'
 import { CookieConsent } from '@/components/cookie-consent'
 import { Metadata } from 'next'
+import { getSiteUrl } from '@/lib/site-url'
 
 const inter = Inter({ subsets: ['latin'] })
 const poppins = Poppins({ 
@@ -17,7 +18,7 @@ const poppins = Poppins({
 export const dynamic = "force-dynamic"
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || process.env.NEXTAUTH_URL || 'https://petsvilla.ee'),
+  metadataBase: new URL(getSiteUrl()),
   manifest: '/manifest.webmanifest',
   title: {
     default: 'PetsVilla OÜ — Merisead, Viirpapagoid ja Kvaliteetne Hein | Soinaste, Tartu',

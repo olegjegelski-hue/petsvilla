@@ -1,6 +1,7 @@
 
 import { MetadataRoute } from 'next'
 import { Client } from '@notionhq/client'
+import { getSiteUrl } from '@/lib/site-url'
 
 const notion = new Client({
   auth: process.env.NOTION_API_KEY,
@@ -8,7 +9,7 @@ const notion = new Client({
 })
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || process.env.NEXTAUTH_URL || 'https://petsvilla.ee'
+  const baseUrl = getSiteUrl()
   const categorySlugMap: Record<string, string> = {
     'BIRDS': 'birds',
     'FEED FOR REPTILES': 'feed-for-reptiles',
