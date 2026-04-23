@@ -16,6 +16,7 @@ export function Footer() {
                   src="/petsvilla-logo-stacked-transparent-v2.png"
                   alt="PetsVilla logo"
                   fill
+                  sizes="192px"
                   className="object-contain"
                 />
               </div>

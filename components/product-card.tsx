@@ -50,6 +50,7 @@ export function ProductCard({
               src={imageUrl || '/placeholder-guinea-pig.jpg'}
               alt={name}
               fill
+              sizes="(max-width: 640px) 100vw, (max-width: 1200px) 50vw, 25vw"
               className="object-contain transition-transform group-hover:scale-105"
             />
             {!inStock && (

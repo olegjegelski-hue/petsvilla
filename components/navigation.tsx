@@ -68,6 +68,7 @@ export function Navigation() {
                   src="/petsvilla-logo.png"
                   alt="PetsVilla logo"
                   fill
+                  sizes="(max-width: 768px) 208px, 256px"
                   className="object-cover object-left mix-blend-multiply scale-115"
                   priority
                 />

@@ -7,22 +7,27 @@ import { Metadata } from 'next'
 import Script from 'next/script'
 
 export const metadata: Metadata = {
-  title: 'Kvaliteetne hein — PetsVilla | Looduslikult kuivatatud',
-  description: 'Meie hein kasvab saastest eemal ja kuivatatakse päikese ning tuulega. 80L kott (~4kg), SmartPOST tarne.',
+  title: {
+    absolute: 'Kvaliteetne looduslik hein merisigadele ja küülikutele | PetsVilla',
+  },
+  description:
+    'Puhtas looduses kasvanud, päikese ja tuulega kuivatatud hein lemmikloomadele. 80L kott vaid 9€ koos TASUTA Smartpost tarnega üle Eesti!',
   keywords: ['hein', 'kvaliteetne hein', 'looduslik hein', 'hein merisiigadele', 'hein küülikutele', 'guinea pig hay', 'rabbit hay', 'hay Estonia', '80L kott'],
   alternates: {
     canonical: 'https://petsvilla.ee/hein',
   },
   openGraph: {
-    title: 'Kvaliteetne Looduslik Hein - PetsVilla OÜ',
-    description: 'Looduslikult kuivatatud kvaliteetne hein merisiigadele ja küülikutele. 80L kott.',
+    title: 'Kvaliteetne looduslik hein merisigadele ja küülikutele | PetsVilla',
+    description:
+      'Puhtas looduses kasvanud, päikese ja tuulega kuivatatud hein lemmikloomadele. 80L kott vaid 9€ koos TASUTA Smartpost tarnega üle Eesti!',
     url: 'https://petsvilla.ee/hein',
     images: ['/hay-product.jpg'],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Kvaliteetne Looduslik Hein - PetsVilla OÜ',
-    description: 'Looduslikult kuivatatud kvaliteetne hein merisiigadele ja küülikutele. 80L kott.',
+    title: 'Kvaliteetne looduslik hein merisigadele ja küülikutele | PetsVilla',
+    description:
+      'Puhtas looduses kasvanud, päikese ja tuulega kuivatatud hein lemmikloomadele. 80L kott vaid 9€ koos TASUTA Smartpost tarnega üle Eesti!',
     images: ['/hay-product.jpg'],
   },
 }
@@ -40,7 +45,7 @@ export default function HeinPage() {
     offers: {
       '@type': 'Offer',
       priceCurrency: 'EUR',
-      price: '8.00',
+      price: '9.00',
       priceValidUntil: '2025-12-31',
       availability: 'https://schema.org/InStock',
       seller: {
@@ -52,7 +57,7 @@ export default function HeinPage() {
         shippingRate: {
           '@type': 'MonetaryAmount',
           currency: 'EUR',
-          value: '1.00',
+          value: '0.00',
         },
         shippingDestination: {
           '@type': 'DefinedRegion',

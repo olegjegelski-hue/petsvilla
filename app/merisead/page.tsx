@@ -7,8 +7,11 @@ import { Metadata } from 'next'
 import Script from 'next/script'
 
 export const metadata: Metadata = {
-  title: 'Merisead Dokumenteeritud Päritoluga | Tõumerisead PetsVilla',
-  description: 'Lühikarvased tõumerisead dokumenteeritud päritoluga (pedigree). Üle 50 tõumeriseaga erinevate värvide ja karvastruktuuriga. Tervisekontroll, sotsialiseeritud, parasiiditõrge. Professionaalne nõustamine. Soinaste, Tartumaa. Tel: +372 512 7938.',
+  title: {
+    absolute: 'Tõumerisead ja beebid - Dokumenteeritud päritoluga | PetsVilla',
+  },
+  description:
+    'Lühikarvalised tõumerisead (Teddy, NonSelf, Rosett) otse aretajalt. Igal meriseal on kaasas päritolukaart (pedigree) ja eluaegne nõustamine.',
   keywords: [
     'merisead',
     'merisea ost',
@@ -31,8 +34,9 @@ export const metadata: Metadata = {
     canonical: 'https://petsvilla.ee/merisead',
   },
   openGraph: {
-    title: 'Tõumerisead Dokumenteeritud Päritoluga | PetsVilla OÜ',
-    description: 'Professionaalne tõumerisigade aretaja Soinastes. Üle 50 tõumeriseaga erinevate värvide ja karvastruktuuriga. Dokumenteeritud päritolu, tervisekontroll, sotsialiseeritud beebid.',
+    title: 'Tõumerisead ja beebid - Dokumenteeritud päritoluga | PetsVilla',
+    description:
+      'Lühikarvalised tõumerisead (Teddy, NonSelf, Rosett) otse aretajalt. Igal meriseal on kaasas päritolukaart (pedigree) ja eluaegne nõustamine.',
     url: 'https://petsvilla.ee/merisead',
     type: 'website',
     images: [
@@ -47,8 +51,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Tõumerisead | PetsVilla OÜ',
-    description: 'Lühikarvased tõumerisead dokumenteeritud päritoluga. Professionaalne aretamine ja nõustamine.',
+    title: 'Tõumerisead ja beebid - Dokumenteeritud päritoluga | PetsVilla',
+    description:
+      'Lühikarvalised tõumerisead (Teddy, NonSelf, Rosett) otse aretajalt. Igal meriseal on kaasas päritolukaart (pedigree) ja eluaegne nõustamine.',
     images: ['/parent-babies.jpg'],
   },
 }

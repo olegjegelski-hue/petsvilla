@@ -7,22 +7,27 @@ import { Metadata } from 'next'
 import Script from 'next/script'
 
 export const metadata: Metadata = {
-  title: 'Viirpapagoid — PetsVilla | Värvikad ja sõbralikud',
-  description: 'Värvikad ja hästi sotsialiseeritud viirpapagoid PetsVillast. Info hindade, saatmise ja hoolduse kohta.',
+  title: {
+    absolute: 'Sotsiaalsed viirpapagoid otse aretajalt | Papagoi Keskus',
+  },
+  description:
+    'Kirjud, terved ja inimestega harjunud viirpapagoid. Valikus ka kogukamad Inglise viirpapagoid. Pakume eluaegset tuge ja nõustamist.',
   keywords: ['viirpapagoid', 'budgies', 'budgie breeder', 'näituse kvaliteet', 'show quality budgies', 'viirpapagoide aretaja', 'Eesti', 'linnud', 'lemmiklinnud'],
   alternates: {
     canonical: 'https://petsvilla.ee/viirpapagoid',
   },
   openGraph: {
-    title: 'Näituse Kvaliteediga Viirpapagoid - PetsVilla OÜ',
-    description: 'Professionaalne viirpapagoide aretamine. Meie beebid on väga ilusa sulestiku ja uhke päritoluga.',
+    title: 'Sotsiaalsed viirpapagoid otse aretajalt | Papagoi Keskus',
+    description:
+      'Kirjud, terved ja inimestega harjunud viirpapagoid. Valikus ka kogukamad Inglise viirpapagoid. Pakume eluaegset tuge ja nõustamist.',
     url: 'https://petsvilla.ee/viirpapagoid',
     images: ['/og-image.png'],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Näituse Kvaliteediga Viirpapagoid - PetsVilla OÜ',
-    description: 'Professionaalne viirpapagoide aretamine. Meie beebid on väga ilusa sulestiku ja uhke päritoluga.',
+    title: 'Sotsiaalsed viirpapagoid otse aretajalt | Papagoi Keskus',
+    description:
+      'Kirjud, terved ja inimestega harjunud viirpapagoid. Valikus ka kogukamad Inglise viirpapagoid. Pakume eluaegset tuge ja nõustamist.',
     images: ['/og-image.png'],
   },
 }

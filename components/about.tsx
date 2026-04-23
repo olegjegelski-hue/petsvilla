@@ -173,6 +173,8 @@ export function About() {
                   src="https://cdn.abacus.ai/images/f5e50a94-2f96-4763-87cf-6f169e387d9a.png"
                   alt="PetsVilla - meie armastusega kasvatatud lemmikloomad"
                   fill
+                  sizes="100vw"
+                  priority
                   className="object-cover"
                 />
               </div>
@@ -216,6 +218,7 @@ export function About() {
                     src="/parent-babies.jpg"
                     alt="Meie merisead koos vanemaga"
                     fill
+                    sizes="(max-width: 1024px) 100vw, 50vw"
                     className="object-cover"
                   />
                 </div>
@@ -321,6 +324,7 @@ export function About() {
                     src="/budgies-aviary.jpg"
                     alt="PetsVilla viirpapagoid aretuskeskuses"
                     fill
+                    sizes="(max-width: 1024px) 100vw, 50vw"
                     className="object-cover"
                   />
                 </div>
@@ -380,6 +384,7 @@ export function About() {
                     src="/hay-meadow.jpg"
                     alt="PetsVilla kvaliteetse heina heinamaa"
                     fill
+                    sizes="(max-width: 1024px) 100vw, 50vw"
                     className="object-cover"
                   />
                 </div>

@@ -7,22 +7,27 @@ import { Metadata } from 'next'
 import Script from 'next/script'
 
 export const metadata: Metadata = {
-  title: 'Meist - Professionaalne Lemmikloomade Aretaja',
-  description: 'Tutvuge PetsVillaga - tõumerisigade ja näituse kvaliteediga viirpapagoidega aretaja Eestis. Meie lugu, statistika, aretuse vanemad ja filosoofia. Üle 15 aasta kogemus.',
+  title: {
+    absolute: 'Meist - PetsVilla Papagoi Keskus ja professionaalne aretus',
+  },
+  description:
+    'Loe PetsVilla lugu. Oleme tegutsenud üle 4 aasta, meie keskuses elab 50+ papagoid ja merisiga. Pakume peredele läbipaistvat ja hoolivat lemmikloomakogemust.',
   keywords: ['PetsVilla', 'meist', 'aretaja', 'lemmikloomade aretaja', 'guinea pig breeder', 'budgie breeder', 'Eesti', 'tõuloomad'],
   alternates: {
     canonical: 'https://petsvilla.ee/meist',
   },
   openGraph: {
-    title: 'Meist - PetsVilla OÜ',
-    description: 'Professionaalne tõumerisiigade ja viirpapagoidega aretaja. Meie lugu ja filosoofia.',
+    title: 'Meist - PetsVilla Papagoi Keskus ja professionaalne aretus',
+    description:
+      'Loe PetsVilla lugu. Oleme tegutsenud üle 4 aasta, meie keskuses elab 50+ papagoid ja merisiga. Pakume peredele läbipaistvat ja hoolivat lemmikloomakogemust.',
     url: 'https://petsvilla.ee/meist',
     images: ['/og-image.png'],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Meist - PetsVilla OÜ',
-    description: 'Professionaalne tõumerisiigade ja viirpapagoidega aretaja. Meie lugu ja filosoofia.',
+    title: 'Meist - PetsVilla Papagoi Keskus ja professionaalne aretus',
+    description:
+      'Loe PetsVilla lugu. Oleme tegutsenud üle 4 aasta, meie keskuses elab 50+ papagoid ja merisiga. Pakume peredele läbipaistvat ja hoolivat lemmikloomakogemust.',
     images: ['/og-image.png'],
   },
 }

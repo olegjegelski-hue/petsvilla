@@ -4,171 +4,58 @@ import { Hero } from '@/components/hero'
 import { ProductShowcase } from '@/components/product-showcase'
 import { Footer } from '@/components/footer'
 import Script from 'next/script'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: {
+    absolute: 'PetsVilla - Tõumerisead, Papagoid ja Kvaliteetne Hein',
+  },
+  description:
+    'PetsVilla on usaldusväärne lemmikloomade aretaja Tartumaal. Pakume dokumenteeritud päritoluga merisigu, papagoisid ja naturaalset heina. Tule Papagoi Keskusesse!',
+  alternates: {
+    canonical: 'https://petsvilla.ee',
+  },
+  openGraph: {
+    title: 'PetsVilla - Tõumerisead, Papagoid ja Kvaliteetne Hein',
+    description:
+      'PetsVilla on usaldusväärne lemmikloomade aretaja Tartumaal. Pakume dokumenteeritud päritoluga merisigu, papagoisid ja naturaalset heina. Tule Papagoi Keskusesse!',
+    url: 'https://petsvilla.ee',
+    images: ['/og-image.png'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'PetsVilla - Tõumerisead, Papagoid ja Kvaliteetne Hein',
+    description:
+      'PetsVilla on usaldusväärne lemmikloomade aretaja Tartumaal. Pakume dokumenteeritud päritoluga merisigu, papagoisid ja naturaalset heina. Tule Papagoi Keskusesse!',
+    images: ['/og-image.png'],
+  },
+}
 
 export default function Home() {
-  // LocalBusiness + PetStore Schema for better SEO and AI understanding
   const localBusinessSchema = {
     '@context': 'https://schema.org',
-    '@type': ['LocalBusiness', 'PetStore'],
-    '@id': 'https://petsvilla.ee/#organization',
-    name: 'PetsVilla OÜ',
-    alternateName: 'PetsVilla',
-    legalName: 'PetsVilla OÜ',
-    description: 'Professionaalne lemmikloomade aretaja Soinastes, Tartumaal. Spetsialiseerunud tõumerisiigade (guinea pigs) ja näituse kvaliteediga viirpapagoidide (budgerigars) aretamisele. Pakume ka kvaliteetset looduslikult kuivatatud heina.',
+    '@type': 'PetStore',
+    name: 'PetsVilla',
+    image: 'https://petsvilla.ee/logo.png',
+    '@id': 'https://petsvilla.ee',
     url: 'https://petsvilla.ee',
     telephone: '+372 512 7938',
     email: 'service@petsvilla.ee',
-    foundingDate: '2020',
-    priceRange: '€€',
-    image: [
-      'https://petsvilla.ee/og-image.png',
-      'https://petsvilla.ee/parent-babies.jpg',
-      'https://petsvilla.ee/budgies-aviary.jpg'
-    ],
-    logo: {
-      '@type': 'ImageObject',
-      url: 'https://petsvilla.ee/og-image.png',
-      width: 1200,
-      height: 630
-    },
     address: {
       '@type': 'PostalAddress',
-      streetAddress: 'Tartu mnt 80',
-      addressLocality: 'Soinaste',
+      streetAddress: 'Tartu mnt 80, Soinaste',
+      addressLocality: 'Kambja vald',
       addressRegion: 'Tartumaa',
       postalCode: '61709',
-      addressCountry: 'EE'
+      addressCountry: 'EE',
     },
     geo: {
       '@type': 'GeoCoordinates',
-      latitude: 58.2777,
-      longitude: 26.5419
+      latitude: 58.351,
+      longitude: 26.699,
     },
-    openingHoursSpecification: [
-      {
-        '@type': 'OpeningHoursSpecification',
-        dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-        opens: '09:00',
-        closes: '18:00'
-      },
-      {
-        '@type': 'OpeningHoursSpecification',
-        dayOfWeek: ['Saturday', 'Sunday'],
-        opens: '10:00',
-        closes: '16:00'
-      }
-    ],
-    contactPoint: [
-      {
-        '@type': 'ContactPoint',
-        telephone: '+372 512 7938',
-        contactType: 'customer service',
-        email: 'service@petsvilla.ee',
-        availableLanguage: ['et', 'en', 'ru'],
-        areaServed: 'EE'
-      },
-      {
-        '@type': 'ContactPoint',
-        telephone: '+372 512 7938',
-        contactType: 'sales',
-        email: 'info@petsvilla.ee',
-        availableLanguage: ['et', 'en', 'ru'],
-        areaServed: 'EE'
-      }
-    ],
-    sameAs: [
-      'https://petsvilla.ee',
-      'https://www.facebook.com/profile.php?id=100092538633994',
-      'https://www.instagram.com/petsvilla_lemmikloomadekodu/',
-      'https://www.youtube.com/@PetsVillaTartu'
-    ],
-    areaServed: [
-      {
-        '@type': 'Country',
-        name: 'Estonia'
-      },
-      {
-        '@type': 'AdministrativeArea',
-        name: 'Tartumaa'
-      }
-    ],
-    hasOfferCatalog: {
-      '@type': 'OfferCatalog',
-      name: 'Lemmikloomad ja Tarvikud',
-      itemListElement: [
-        {
-          '@type': 'Offer',
-          itemOffered: {
-            '@type': 'Product',
-            name: 'Merisead',
-            alternateName: 'Tõumerisead',
-            description: 'Lühikarvased tõumerisead dokumenteeritud päritoluga (pedigree). Professionaalne aretamine, tervisekontroll ja nõustamine. Üle 50 tõumeriseaga erinevate värvide ja karvastruktuuriga.',
-            url: 'https://petsvilla.ee/merisead',
-            category: 'Lemmikloomad',
-            brand: {
-              '@type': 'Brand',
-              name: 'PetsVilla'
-            }
-          },
-          availability: 'https://schema.org/InStock',
-          seller: {
-            '@type': 'Organization',
-            name: 'PetsVilla OÜ'
-          }
-        },
-        {
-          '@type': 'Offer',
-          itemOffered: {
-            '@type': 'Product',
-            name: 'Viirpapagoid',
-            alternateName: 'Budgerigars',
-            description: 'Näituse kvaliteediga viirpapagoid vastavad standarditele. Üle 20 paari, hoolikalt valitud tervislike omaduste, värvi ja suuruse järgi. Sotsialiseeritud ja terved linnud.',
-            url: 'https://petsvilla.ee/viirpapagoid',
-            category: 'Lemmikloomad',
-            brand: {
-              '@type': 'Brand',
-              name: 'PetsVilla'
-            }
-          },
-          availability: 'https://schema.org/PreOrder',
-          seller: {
-            '@type': 'Organization',
-            name: 'PetsVilla OÜ'
-          }
-        },
-        {
-          '@type': 'Offer',
-          itemOffered: {
-            '@type': 'Product',
-            name: 'Kvaliteetne hein',
-            description: 'Looduslikult kuivatatud hein merisiigadele ja küülikutele. Kasvanud puhtas keskkonnas, kuivatatud päikese ja tuule abil. Ei sisalda kunstväljaeid ega lisandeid.',
-            url: 'https://petsvilla.ee/hein',
-            category: 'Lemmikloomade toit',
-            brand: {
-              '@type': 'Brand',
-              name: 'PetsVilla'
-            }
-          },
-          price: '9.00',
-          priceCurrency: 'EUR',
-          availability: 'https://schema.org/InStock',
-          seller: {
-            '@type': 'Organization',
-            name: 'PetsVilla OÜ'
-          }
-        }
-      ]
-    },
-    knowsAbout: [
-      'Guinea Pig Breeding',
-      'Budgerigar Breeding', 
-      'Pedigree Documentation',
-      'Show Quality Animals',
-      'Pet Care',
-      'Animal Nutrition',
-      'Natural Hay Production'
-    ],
-    slogan: 'Hoitud lemmikud teie perele'
+    description:
+      'Professionaalne lemmikloomade aretaja Tartumaal. Pakume lühikarvalisi tõumerisigu, papagoisid ja kvaliteetset heina.',
   }
 
   // Breadcrumb Schema for navigation

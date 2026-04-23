@@ -76,6 +76,7 @@ export function ProductShowcase() {
               src={product.image}
               alt={product.title}
               fill
+              sizes="(max-width: 768px) 100vw, 33vw"
               className="object-cover group-hover:scale-110 transition-transform duration-700"
             />
             <div className="absolute top-4 right-4">
@@ -122,8 +123,15 @@ export function ProductShowcase() {
             <div className={`absolute inset-0 bg-gradient-to-br ${section.gradient} opacity-20`} />
             <Image
               src={section.image}
-              alt={section.title}
+              alt={
+                section.id === 'papagoid'
+                  ? 'Laps suhtleb sotsiaalse papagoiga Papagoi Keskuses Tartumaal'
+                  : section.id === 'merisead'
+                    ? 'Dokumenteeritud päritoluga tõumerisead PetsVilla aretusest'
+                    : section.title
+              }
               fill
+              sizes="(max-width: 768px) 100vw, 33vw"
               className="object-cover"
             />
             <div className="absolute top-4 right-4">

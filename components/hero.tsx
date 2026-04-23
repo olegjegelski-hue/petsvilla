@@ -6,6 +6,7 @@ import { Heart, Bird, Wheat, ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
+import Image from 'next/image'
 
 export function Hero() {
   const [mounted, setMounted] = useState(false)
@@ -20,13 +21,16 @@ export function Hero() {
 
   return (
     <section className="relative h-[600px] flex items-center justify-center overflow-hidden bg-gradient-to-r from-orange-100 to-green-100">
-      <div 
-        className="absolute inset-0 bg-cover bg-center opacity-40"
-        style={{
-          backgroundImage: "url('https://cdn.abacus.ai/images/f5e50a94-2f96-4763-87cf-6f169e387d9a.png')",
-          filter: "blur(1px)"
-        }}
-      />
+      <div className="absolute inset-0 opacity-40">
+        <Image
+          src="https://cdn.abacus.ai/images/f5e50a94-2f96-4763-87cf-6f169e387d9a.png"
+          alt="PetsVilla Papagoi Keskuse taustapilt"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover blur-[1px]"
+        />
+      </div>
       <div className="relative z-10 container mx-auto max-w-6xl px-4 text-center">
         <motion.div
           initial={{ opacity: 0, y: 30 }}

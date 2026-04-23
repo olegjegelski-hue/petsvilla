@@ -171,8 +171,13 @@ export function ExoticParrotGallery() {
                       return (
                         <Image
                           src={imageUrl}
-                          alt={parrot.name || 'Papagoi'}
+                          alt={
+                            parrot.name
+                              ? `Legaalne ja kontrollitud eksootiline papagoi PetsVillas - ${parrot.name}`
+                              : 'Legaalne ja kontrollitud Aafrika hallpapagoi Jako'
+                          }
                           fill
+                          sizes="(max-width: 768px) 100vw, 50vw"
                           className="object-contain bg-background hover:scale-105 transition-transform duration-700"
                         />
                       )

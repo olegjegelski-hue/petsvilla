@@ -5,21 +5,26 @@ import { Footer } from '@/components/footer'
 import { CheckCircle } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'E-pood - PetsVilla',
-  description: 'Avasta meie lai tootevalik: elustoit, roomajate ja kahepaiksete tooted ning akvaariumi taimed.',
+  title: {
+    absolute: 'PetsVilla E-pood - Hein, elustoit ja lemmikloomatarbed',
+  },
+  description:
+    'Avasta PetsVilla e-pood! Kvaliteetne hein, näriliste toit, elustoit roomajatele ja akvaariumitaimed. Mugav ja kiire tarne üle Eesti.',
   alternates: {
     canonical: 'https://petsvilla.ee/pood',
   },
   openGraph: {
-    title: 'PetsVilla E-pood',
-    description: 'Avasta meie lai tootevalik ühest kohast.',
+    title: 'PetsVilla E-pood - Hein, elustoit ja lemmikloomatarbed',
+    description:
+      'Avasta PetsVilla e-pood! Kvaliteetne hein, näriliste toit, elustoit roomajatele ja akvaariumitaimed. Mugav ja kiire tarne üle Eesti.',
     url: 'https://petsvilla.ee/pood',
     images: ['/og-image.png'],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'PetsVilla E-pood',
-    description: 'Avasta meie lai tootevalik ühest kohast.',
+    title: 'PetsVilla E-pood - Hein, elustoit ja lemmikloomatarbed',
+    description:
+      'Avasta PetsVilla e-pood! Kvaliteetne hein, näriliste toit, elustoit roomajatele ja akvaariumitaimed. Mugav ja kiire tarne üle Eesti.',
     images: ['/og-image.png'],
   },
 }

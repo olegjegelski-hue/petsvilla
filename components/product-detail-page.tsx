@@ -166,6 +166,8 @@ export function ProductDetailPage({
                   src={`/api/product-image/${product.id}`}
                   alt={product.commonName}
                   fill
+                  priority
+                  sizes="(max-width: 768px) 100vw, 50vw"
                   className="object-contain p-4"
                 />
               </div>

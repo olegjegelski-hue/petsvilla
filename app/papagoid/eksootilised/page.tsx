@@ -4,21 +4,26 @@ import { ExoticParrotGallery } from '@/components/exotic-parrot-gallery'
 import { Footer } from '@/components/footer'
 
 export const metadata: Metadata = {
-  title: 'Eksklusiivsed papagoid - PetsVilla',
-  description: 'Ettetellimisel Hollandist. Lai valik eksootilisi papagoiliike.',
+  title: {
+    absolute: 'Eksootilised papagoid - Ara, Jako - Legaalne import | PetsVilla',
+  },
+  description:
+    'Eksklusiivsed suured papagoid ettetellimisel Hollandi tunnustatud aretajatelt. 100% legaalsed linnud, CITES dokumendid, ametlik leping ja veterinaarkontroll.',
   alternates: {
     canonical: 'https://petsvilla.ee/papagoid/eksootilised',
   },
   openGraph: {
-    title: 'Eksklusiivsed papagoid - PetsVilla',
-    description: 'Ettetellimisel Hollandist. Lai valik eksootilisi papagoiliike.',
+    title: 'Eksootilised papagoid - Ara, Jako - Legaalne import | PetsVilla',
+    description:
+      'Eksklusiivsed suured papagoid ettetellimisel Hollandi tunnustatud aretajatelt. 100% legaalsed linnud, CITES dokumendid, ametlik leping ja veterinaarkontroll.',
     url: 'https://petsvilla.ee/papagoid/eksootilised',
     images: ['/og-image.png'],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Eksklusiivsed papagoid - PetsVilla',
-    description: 'Ettetellimisel Hollandist. Lai valik eksootilisi papagoiliike.',
+    title: 'Eksootilised papagoid - Ara, Jako - Legaalne import | PetsVilla',
+    description:
+      'Eksklusiivsed suured papagoid ettetellimisel Hollandi tunnustatud aretajatelt. 100% legaalsed linnud, CITES dokumendid, ametlik leping ja veterinaarkontroll.',
     images: ['/og-image.png'],
   },
 }

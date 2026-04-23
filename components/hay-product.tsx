@@ -99,8 +99,10 @@ export function HayProduct() {
               <div className="relative h-96 md:h-[500px]">
                 <Image
                   src="/hay-product.jpg"
-                  alt="Kvaliteetne hein - 80L kott"
+                  alt="Kvaliteetne looduslik hein merisigadele ja küülikutele - 80L kott"
                   fill
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  priority
                   className="object-cover"
                 />
               </div>
@@ -213,6 +215,7 @@ export function HayProduct() {
                     src="/dobele-transparent.png"
                     alt="Dobeles Dzīrnavnieks kvaliteetstoit"
                     fill
+                    sizes="192px"
                     className="object-contain"
                   />
                 </div>
@@ -221,6 +224,7 @@ export function HayProduct() {
                     src="/VerseleLaga-transparent.png"
                     alt="Versele-Laga kvaliteetstoit"
                     fill
+                    sizes="192px"
                     className="object-contain"
                   />
                 </div>

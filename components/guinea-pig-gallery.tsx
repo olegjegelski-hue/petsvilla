@@ -271,8 +271,13 @@ export function GuineaPigGallery() {
                   <div className="relative h-80 overflow-hidden group">
                     <Image
                       src={imageUrl}
-                      alt={pig.name || 'Merisiga'}
+                      alt={
+                        pig.name
+                          ? `Dokumenteeritud päritoluga tõumerisiga PetsVilla aretusest - ${pig.name}`
+                          : 'Dokumenteeritud päritoluga tõumerisead PetsVilla aretusest'
+                      }
                       fill
+                      sizes="(max-width: 768px) 100vw, 50vw"
                       className="object-cover hover:scale-110 transition-transform duration-700"
                     />
                   {/* Birth date - vasakul üleval */}

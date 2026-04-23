@@ -5,23 +5,29 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { CheckCircle } from 'lucide-react'
 import Link from 'next/link'
+import Image from 'next/image'
 
 export const metadata: Metadata = {
-  title: 'Papagoid - PetsVilla',
-  description: 'Papagoid jagunevad viirpapagoideks ja eksklusiivseteks eksootilisteks papagoideks.',
+  title: {
+    absolute: 'Papagoid: Sotsiaalsed viirpapagoid ja eksootilised linnud | PetsVilla',
+  },
+  description:
+    'Näitusekvaliteediga viirpapagoid ja legaalsed eksootilised papagoid (Ara, Jako) Hollandist. Ametlik päritolu, lepingud ja PetsVilla kvaliteedigarantii.',
   alternates: {
     canonical: 'https://petsvilla.ee/papagoid',
   },
   openGraph: {
-    title: 'Papagoid - PetsVilla',
-    description: 'Papagoid jagunevad viirpapagoideks ja eksklusiivseteks eksootilisteks papagoideks.',
+    title: 'Papagoid: Sotsiaalsed viirpapagoid ja eksootilised linnud | PetsVilla',
+    description:
+      'Näitusekvaliteediga viirpapagoid ja legaalsed eksootilised papagoid (Ara, Jako) Hollandist. Ametlik päritolu, lepingud ja PetsVilla kvaliteedigarantii.',
     url: 'https://petsvilla.ee/papagoid',
     images: ['/og-image.png'],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Papagoid - PetsVilla',
-    description: 'Papagoid jagunevad viirpapagoideks ja eksklusiivseteks eksootilisteks papagoideks.',
+    title: 'Papagoid: Sotsiaalsed viirpapagoid ja eksootilised linnud | PetsVilla',
+    description:
+      'Näitusekvaliteediga viirpapagoid ja legaalsed eksootilised papagoid (Ara, Jako) Hollandist. Ametlik päritolu, lepingud ja PetsVilla kvaliteedigarantii.',
     images: ['/og-image.png'],
   },
 }
@@ -62,11 +68,12 @@ export default function PapagoidPage() {
             <Card className="border border-[#D7CBBE] shadow-2xl bg-[#E3D8CB]/90">
               <CardContent className="p-8">
                 <div className="relative h-48 md:h-56 mb-6 rounded-xl overflow-hidden">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
+                  <Image
                     src="/papagoid-viirpapagoid.png"
-                    alt="Viirpapagoid"
-                    className="w-full h-full object-cover"
+                    alt="Sotsiaalsed viirpapagoid Papagoi Keskuses Tartumaal"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="object-cover"
                   />
                 </div>
                 <h2 className="text-2xl font-bold text-green-900 mb-3">Viirpapagoid</h2>
@@ -84,11 +91,12 @@ export default function PapagoidPage() {
             <Card className="border border-[#D7CBBE] shadow-2xl bg-[#E3D8CB]/90">
               <CardContent className="p-8">
                 <div className="relative h-48 md:h-56 mb-6 rounded-xl overflow-hidden">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
+                  <Image
                     src="/papagoid-eksootilised.png"
-                    alt="Eksklusiivsed eksootilised papagoid"
-                    className="w-full h-full object-cover"
+                    alt="Legaalne ja kontrollitud Aafrika hallpapagoi Jako"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="object-cover"
                   />
                 </div>
                 <h2 className="text-2xl font-bold text-green-900 mb-3">
