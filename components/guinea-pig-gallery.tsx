@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Heart, Calendar, Palette, Users, Mail, Phone, Loader2, Cake, PawPrint, Filter, CheckCircle } from 'lucide-react'
 import { motion } from 'framer-motion'
-import { useInView } from 'react-intersection-observer'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
@@ -34,11 +33,6 @@ const fallbackGuineaPigs: GuineaPig[] = [
 ]
 
 export function GuineaPigGallery() {
-  const [ref, inView] = useInView({
-    triggerOnce: true,
-    threshold: 0.1
-  })
-
   const [mounted, setMounted] = useState(false)
   const [guineaPigs, setGuineaPigs] = useState<GuineaPig[]>([])
   const [loading, setLoading] = useState(true)
@@ -103,9 +97,9 @@ export function GuineaPigGallery() {
       <div className="container mx-auto max-w-6xl px-4">
         {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.45 }}
           className="text-center mb-10"
         >
           <h1 className="text-4xl md:text-5xl font-bold text-green-900 mb-4">Merisead</h1>
@@ -160,11 +154,11 @@ export function GuineaPigGallery() {
         {/* Filters - keskele ja kitsamaks */}
         {guineaPigs.length > 0 && (
           <div className="max-w-3xl mx-auto mb-8">
-            <motion.div 
+            <motion.div
               className="bg-[#E3D8CB] rounded-lg shadow-md p-4 border border-[#D7CBBE]"
-              initial={{ opacity: 0, y: -20 }}
+              initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
+              transition={{ duration: 0.45, delay: 0.08 }}
             >
               <div className="flex flex-wrap items-center gap-3 justify-center">
                 <div className="flex items-center gap-2">
@@ -252,7 +246,7 @@ export function GuineaPigGallery() {
         )}
 
         {/* Guinea Pig Cards */}
-        <div ref={ref} className="grid md:grid-cols-2 lg:grid-cols-2 gap-8 mb-16">
+        <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-8 mb-16">
           {guineaPigs
             .filter(pig => {
               const breedMatch = selectedBreed === 'all' || pig.breed === selectedBreed
@@ -269,9 +263,9 @@ export function GuineaPigGallery() {
             return (
               <motion.div
                 key={pig.id}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 14 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
+                transition={{ duration: 0.45, delay: index * 0.05 }}
               >
                 <Card className="h-full hover:shadow-2xl transition-all duration-500 border border-[#D7CBBE] bg-[#E3D8CB]/90 shadow-lg overflow-hidden">
                   <div className="relative h-80 overflow-hidden group">
