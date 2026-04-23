@@ -80,7 +80,7 @@ export default function KontaktPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
-      <div className="min-h-screen bg-gradient-to-b from-orange-50 to-green-50">
+      <div className="min-h-screen bg-background">
         <Navigation />
         <ContactForm />
         <Footer />

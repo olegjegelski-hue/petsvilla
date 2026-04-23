@@ -353,7 +353,7 @@ export function About() {
                     parimat heina, mis on spetsiaalselt mõeldud merisigadele, küülikutele ja teistele närilistele.
                   </p>
                   <p>
-                    Kasutame ainult kvaliteetseid kiudainerikkaid heinasorte ning sisaldavad vajalikke vitamiine ning mineraale. Meie hein on puhas, kuiv ja tolmuvaba - hoolikalt valitud ja õigel ajal koristatud. Heinamaad asuvad eemal tiheda liiklusega teedest ja muudest saasteallikatest, pakkudes ideaalset keskkonda rikkaliku ja tervisliku heina kasvuks.
+                    Kasutame ainult kvaliteetseid kiudainerikkaid heinasorte mis sisaldavad vajalikke vitamiine ning mineraale. Meie hein on puhas, kuiv ja tolmuvaba - hoolikalt valitud ja õigel ajal koristatud. Heinamaad asuvad eemal tiheda liiklusega teedest ja muudest saasteallikatest, pakkudes ideaalset keskkonda rikkaliku ja tervisliku heina kasvuks.
                   </p>
                   <p>
                     Kuivatame heina traditsioonilisel ja loodussõbralikul viisil – päikese ja tuule abil. See 

@@ -112,13 +112,11 @@ export function ContactForm() {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-4">
-            <MessageSquare className="inline-block w-12 h-12 text-orange-500 mr-4" />
+          <h1 className="text-4xl md:text-5xl font-bold text-green-900 mb-4">
             Kontakt
           </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Võtke meiega ühendust meie lemmikloomade ja toodete kohta. 
-            Oleme siin, et aidata leida teile sobiv lemmikloom.
+          <p className="text-sm md:text-base font-semibold text-gray-600 max-w-3xl mx-auto">
+            Võtke meiega julgelt ühendust! Oleme siin, et aidata leida teie perele sobiv lemmikloom, nõustada hoolduse osas või vastata küsimustele meie toodete kohta.
           </p>
         </motion.div>
 
@@ -131,30 +129,30 @@ export function ContactForm() {
           className="mb-12"
         >
           <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto mb-8">
-            <Card className="border-0 shadow-lg">
+            <Card className="border border-[#D7CBBE] bg-[#E3D8CB]/90 shadow-lg">
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2">
-                  <MapPin className="w-5 h-5 text-orange-500" />
-                  <span>Asukoht</span>
+                  <MapPin className="w-5 h-5 text-green-900" />
+                  <span className="text-green-900">Asukoht</span>
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-gray-600 mb-2">Külastage meid:</p>
-                <p className="text-lg font-semibold text-gray-900">Tartu mnt 80, Soinaste</p>
-                <p className="text-sm text-gray-700 mt-1">Kambja vald, Tartumaa 61709</p>
+                <p className="text-base font-semibold text-gray-700">Tartu mnt 80, Soinaste</p>
+                <p className="text-base font-semibold text-gray-700">Kambja vald, Tartumaa 61709</p>
               </CardContent>
             </Card>
 
-            <Card className="border-0 shadow-lg">
+            <Card className="border border-[#D7CBBE] bg-[#E3D8CB]/90 shadow-lg">
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2">
-                  <Phone className="w-5 h-5 text-orange-500" />
-                  <span>Telefon</span>
+                  <Phone className="w-5 h-5 text-green-900" />
+                  <span className="text-green-900">Telefon</span>
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-gray-600 mb-2">Helistage meile:</p>
-                <a href="tel:+3725127938" className="text-lg font-semibold text-gray-900 hover:text-orange-500 transition-colors">
+                <a href="tel:+3725127938" className="text-lg font-semibold text-green-900 hover:text-green-800 transition-colors">
                   +372 512 7938
                 </a>
               </CardContent>
@@ -163,11 +161,11 @@ export function ContactForm() {
 
           {/* Important Notice */}
           <div className="max-w-4xl mx-auto">
-            <Card className="border-2 border-red-200 bg-red-50 shadow-lg">
+            <Card className="border border-[#D7CBBE] bg-[#E3D8CB]/90 shadow-lg">
               <CardContent className="p-6">
                 <div className="flex items-start space-x-3">
-                  <AlertCircle className="w-6 h-6 text-red-600 flex-shrink-0 mt-0.5" />
-                  <p className="text-red-700 font-semibold text-lg">
+                  <AlertCircle className="w-6 h-6 text-green-900 flex-shrink-0 mt-0.5" />
+                  <p className="text-green-900 font-semibold text-lg">
                     Enne kohale tulekut kindlasti helistada ja kokku leppida.
                   </p>
                 </div>
@@ -184,46 +182,44 @@ export function ContactForm() {
             animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            <Card className="border-0 shadow-xl">
+            <Card className="border border-[#D7CBBE] bg-[#E3D8CB]/90 shadow-xl">
               <CardHeader>
-                <CardTitle className="text-2xl text-gray-900">
+                <CardTitle className="text-2xl text-green-900">
                   Saada meile sõnum
                 </CardTitle>
-                <p className="text-gray-800">
+                <p className="text-sm md:text-base font-semibold text-gray-600">
                   Täitke vorm ja võtame teiega peagi ühendust
                 </p>
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleSubmit} className="space-y-6">
-                  {/* Honeypot field for bots */}
-                  <div className="hidden" aria-hidden="true">
-                    <Label htmlFor="website" className="text-gray-900 font-semibold">Veebileht</Label>
-                    <Input
-                      id="website"
-                      name="website"
-                      value={formData.website}
-                      onChange={(e) => handleInputChange('website', e.target.value)}
-                      placeholder="https://"
-                      tabIndex={-1}
-                      autoComplete="off"
-                    />
-                  </div>
+                  {/* Honeypot field for bots: always hidden from real users */}
+                  <input
+                    type="text"
+                    name="website"
+                    value={formData.website}
+                    onChange={(e) => handleInputChange('website', e.target.value)}
+                    tabIndex={-1}
+                    autoComplete="off"
+                    aria-hidden="true"
+                    style={{ display: 'none' }}
+                  />
 
                   <input type="hidden" name="formStartedAt" value={formStartedAt} />
                   <div className="grid md:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                      <Label htmlFor="name" className="text-gray-900 font-semibold">Nimi *</Label>
+                      <Label htmlFor="name" className="text-green-900 font-semibold">Nimi *</Label>
                       <Input
                         id="name"
                         value={formData.name}
                         onChange={(e) => handleInputChange('name', e.target.value)}
                         placeholder="Teie nimi"
                         required
-                        className="pl-4 text-gray-900 placeholder:text-gray-600"
+                        className="pl-4 text-gray-900 placeholder:text-gray-600 bg-white"
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="email" className="text-gray-900 font-semibold">E-post *</Label>
+                      <Label htmlFor="email" className="text-green-900 font-semibold">E-post *</Label>
                       <Input
                         id="email"
                         type="email"
@@ -231,30 +227,30 @@ export function ContactForm() {
                         onChange={(e) => handleInputChange('email', e.target.value)}
                         placeholder="teie@email.ee"
                         required
-                        className="pl-4 text-gray-900 placeholder:text-gray-600"
+                        className="pl-4 text-gray-900 placeholder:text-gray-600 bg-white"
                       />
                     </div>
                   </div>
 
                   <div className="grid md:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                      <Label htmlFor="phone" className="text-gray-900 font-semibold">Telefon</Label>
+                      <Label htmlFor="phone" className="text-green-900 font-semibold">Telefon</Label>
                       <Input
                         id="phone"
                         type="tel"
                         value={formData.phone}
                         onChange={(e) => handleInputChange('phone', e.target.value)}
                         placeholder="+372 XXX XXXX"
-                        className="pl-4 text-gray-900 placeholder:text-gray-600"
+                        className="pl-4 text-gray-900 placeholder:text-gray-600 bg-white"
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="product" className="text-gray-900 font-semibold">Huvitab toode</Label>
+                      <Label htmlFor="product" className="text-green-900 font-semibold">Huvitab toode</Label>
                       <Select 
                         value={formData.product || undefined}
                         onValueChange={(value) => handleInputChange('product', value)}
                       >
-                        <SelectTrigger className="text-gray-900">
+                        <SelectTrigger className="text-gray-900 bg-white">
                           <SelectValue placeholder="Valige toode" className="text-gray-500" />
                         </SelectTrigger>
                         <SelectContent>
@@ -283,18 +279,18 @@ export function ContactForm() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="subject" className="text-gray-900 font-semibold">Teema</Label>
+                    <Label htmlFor="subject" className="text-green-900 font-semibold">Teema</Label>
                     <Input
                       id="subject"
                       value={formData.subject}
                       onChange={(e) => handleInputChange('subject', e.target.value)}
                       placeholder="Sõnumi teema"
-                      className="pl-4 text-gray-900 placeholder:text-gray-600"
+                      className="pl-4 text-gray-900 placeholder:text-gray-600 bg-white"
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="message" className="text-gray-900 font-semibold">Sõnum *</Label>
+                    <Label htmlFor="message" className="text-green-900 font-semibold">Sõnum *</Label>
                     <Textarea
                       id="message"
                       value={formData.message}
@@ -302,7 +298,7 @@ export function ContactForm() {
                       placeholder="Kirjutage oma sõnum siia..."
                       rows={6}
                       required
-                      className="pl-4 pt-3 resize-none text-gray-900 placeholder:text-gray-600"
+                      className="pl-4 pt-3 resize-none text-gray-900 placeholder:text-gray-600 bg-white"
                     />
                   </div>
 
@@ -310,7 +306,7 @@ export function ContactForm() {
                     type="submit"
                     size="lg"
                     disabled={isSubmitting}
-                    className="w-full bg-gradient-to-r from-orange-500 to-green-500 hover:from-orange-600 hover:to-green-600 text-white py-4 text-lg disabled:opacity-50"
+                    className="w-full bg-gradient-to-r from-[#1F6A4C] to-[#C8A93E] hover:from-[#19563d] hover:to-[#B39133] text-white border border-[#C8A93E]/80 py-4 text-lg disabled:opacity-50"
                   >
                     {isSubmitting ? (
                       <div className="flex items-center space-x-2">
