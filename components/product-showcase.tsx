@@ -196,7 +196,7 @@ export function ProductShowcase() {
           transition={{ duration: 0.8, delay: 0.5 }}
           className="my-12"
         >
-          <Card className="border-0 shadow-2xl bg-gradient-to-br from-blue-50 via-white to-green-50">
+          <Card className="border border-[#D7CBBE] shadow-2xl bg-[#E3D8CB]/90">
             <CardContent className="p-8 md:p-10">
               <div className="text-center mb-6">
                 <h3 className="text-3xl md:text-4xl font-bold text-green-900 mb-3">
@@ -234,7 +234,6 @@ export function ProductShowcase() {
           </Card>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8" />
       </div>
     </section>
   )

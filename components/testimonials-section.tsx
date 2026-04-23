@@ -10,12 +10,16 @@ interface TestimonialsSectionProps {
   title: string
   items: TestimonialItem[]
   toneClassName?: string
+  cardClassName?: string
+  nameClassName?: string
 }
 
 export function TestimonialsSection({
   title,
   items,
   toneClassName = 'from-pink-50 via-white to-orange-50 border-pink-100',
+  cardClassName = 'bg-white/90',
+  nameClassName = 'text-gray-900',
 }: TestimonialsSectionProps) {
   return (
     <section className="py-16">
@@ -23,12 +27,12 @@ export function TestimonialsSection({
         <div
           className={`rounded-3xl border bg-gradient-to-br ${toneClassName} p-8 md:p-12 shadow-xl`}
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-10">
+          <h2 className="text-3xl md:text-4xl font-bold text-green-900 text-center mb-10">
             {title}
           </h2>
           <div className="grid gap-6 md:grid-cols-3">
             {items.map((item) => (
-              <Card key={item.name} className="border-0 bg-white/90 shadow-lg">
+              <Card key={item.name} className={`border-0 shadow-lg ${cardClassName}`}>
                 <CardContent className="p-6">
                   <div className="flex items-center gap-1 text-yellow-400 mb-4">
                     {Array.from({ length: 5 }).map((_, index) => (
@@ -36,7 +40,7 @@ export function TestimonialsSection({
                     ))}
                   </div>
                   <p className="text-gray-700 leading-relaxed">“{item.text}”</p>
-                  <p className="mt-4 text-sm font-semibold text-gray-900">{item.name}</p>
+                  <p className={`mt-4 text-sm font-semibold ${nameClassName}`}>{item.name}</p>
                 </CardContent>
               </Card>
             ))}
