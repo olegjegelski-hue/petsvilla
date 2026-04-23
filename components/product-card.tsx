@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
-import { ShoppingCart, Eye } from 'lucide-react'
+import { Eye } from 'lucide-react'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -43,9 +43,9 @@ export function ProductCard({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: index * 0.05 }}
     >
-      <Card className="group h-full overflow-hidden transition-all hover:shadow-lg">
+      <Card className="group h-full overflow-hidden transition-all hover:shadow-lg border border-[#D0C3B4] bg-background">
         <Link href={`/pood/${encodedCategory}/${encodedSlug}`}>
-          <div className="relative aspect-square bg-gray-50 overflow-hidden">
+          <div className="relative aspect-square bg-[#E1D6C8] overflow-hidden">
             <Image
               src={imageUrl || '/placeholder-guinea-pig.jpg'}
               alt={name}
@@ -63,7 +63,7 @@ export function ProductCard({
         </Link>
         <CardContent className="p-4">
           <Link href={`/pood/${encodedCategory}/${encodedSlug}`}>
-            <h3 className="font-semibold text-lg line-clamp-2 text-gray-900">
+            <h3 className="font-semibold text-lg line-clamp-2 text-green-900">
               {name}
             </h3>
             {scientificName && (
@@ -72,7 +72,7 @@ export function ProductCard({
           </Link>
           <div className="mt-2 flex items-center justify-between">
             {price > 0 ? (
-              <span className="text-2xl font-bold text-emerald-700">{price.toFixed(2)} €</span>
+              <span className="text-2xl font-bold text-green-900">{price.toFixed(2)} €</span>
             ) : (
               <span className="text-sm font-medium text-gray-800">Hind küsida</span>
             )}
@@ -85,7 +85,7 @@ export function ProductCard({
           <Button
             variant="default"
             size="lg"
-            className="w-full bg-emerald-700 hover:bg-emerald-800 text-white"
+            className="w-full bg-gradient-to-r from-[#1F6A4C] to-[#C8A93E] hover:from-[#19563d] hover:to-[#B39133] text-white border border-[#C8A93E]/80"
             asChild
           >
             <Link href={`/pood/${encodedCategory}/${encodedSlug}`} className="text-white">

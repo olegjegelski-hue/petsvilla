@@ -20,31 +20,31 @@ export function About() {
       icon: Heart,
       value: '50+',
       label: 'Merisiga aretuses',
-      color: 'text-pink-600'
+      color: 'text-green-900'
     },
     {
       icon: Bird,
       value: '50+',
       label: 'Papagoi keskuses',
-      color: 'text-blue-600'
+      color: 'text-green-800'
     },
     {
       icon: Award,
       value: '4+',
       label: 'Aastat kogemust',
-      color: 'text-orange-600'
+      color: 'text-green-700'
     },
     {
       icon: Users,
       value: '1000+',
       label: 'Rahulolevat pere',
-      color: 'text-green-600'
+      color: 'text-green-900'
     },
     {
       icon: Star,
       value: '5/5',
       label: 'Klientide hinnang',
-      color: 'text-yellow-600'
+      color: 'text-green-800'
     }
   ]
 
@@ -103,7 +103,7 @@ export function About() {
   ]
 
   return (
-    <section id="meist" className="py-20 bg-gradient-to-b from-white to-orange-50">
+    <section id="meist" className="py-20 bg-background">
       <div className="container mx-auto max-w-7xl px-4">
         {/* Header */}
         <motion.div
@@ -112,11 +112,11 @@ export function About() {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+          <h2 className="text-4xl md:text-5xl font-bold text-green-900 mb-4">
             PetsVilla - hoitud lemmikud teie perele
           </h2>
-          <div className="w-24 h-1 bg-gradient-to-r from-orange-500 to-pink-500 mx-auto mb-6"></div>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+          <div className="w-24 h-1 bg-[#C9BCAA] mx-auto mb-6"></div>
+          <p className="text-sm md:text-base font-semibold text-gray-600 max-w-3xl mx-auto leading-relaxed">
             Oleme usaldusväärne partner lemmikloomade maailmas. Tegeleme tõumerisigade ja 
             viirpapagoidega professionaalse aretamisega ning pakume kvaliteetset heina.
           </p>
@@ -132,7 +132,7 @@ export function About() {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
-              <Card className={`py-3 px-6 text-center border-0 shadow-lg hover:shadow-xl transition-all hover:scale-105 bg-gradient-to-r ${link.color} text-white cursor-pointer rounded-full`}>
+              <Card className="py-3 px-6 text-center border border-[#D7CBBE] bg-[#E3D8CB] text-green-900 shadow-lg hover:shadow-xl transition-all hover:scale-105 cursor-pointer rounded-full">
                 <div className="flex items-center justify-center gap-3">
                   <link.icon className="w-5 h-5" />
                   <h3 className="font-bold text-lg">{link.name}</h3>
@@ -149,10 +149,10 @@ export function About() {
           transition={{ duration: 0.8 }}
           className="mb-16"
         >
-          <Card className="p-8 md:p-12 border-0 shadow-xl bg-white">
+          <Card className="p-8 md:p-12 border border-[#D7CBBE] shadow-xl bg-[#E3D8CB]/90">
             <div className="grid md:grid-cols-2 gap-8 items-center">
               <div className="space-y-4 text-gray-600 leading-relaxed text-lg">
-                <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
+                <h3 className="text-2xl md:text-3xl font-bold text-green-900 mb-4">
                   Meie lugu
                 </h3>
                 <p>
@@ -194,12 +194,12 @@ export function About() {
             transition={{ duration: 0.8 }}
             className="mb-12"
           >
-            <h3 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 text-center">
+            <h3 className="text-3xl md:text-4xl font-bold text-green-900 mb-4 text-center">
               <Heart className="inline-block w-8 h-8 mr-2 text-pink-600" />
               Merisead
             </h3>
-            <div className="w-20 h-1 bg-gradient-to-r from-pink-500 to-orange-500 mx-auto mb-8"></div>
-            <Card className="p-8 md:p-12 border-0 shadow-xl bg-white">
+            <div className="w-20 h-1 bg-[#C9BCAA] mx-auto mb-8"></div>
+            <Card className="p-8 md:p-12 border border-[#D7CBBE] shadow-xl bg-[#E3D8CB]/90">
               <div className="grid md:grid-cols-2 gap-8 items-center">
                 <div className="space-y-4 text-gray-600 leading-relaxed text-lg">
                   <p>
@@ -219,7 +219,7 @@ export function About() {
                   <p>
                     Enne uude koju minekut saab iga beebi ka parasiiditõrje. Beebid on julged harjunud inimestega 
                     kuna meie keskust külastavad pidevalt grupid. <Link href="/kontakt" 
-                    className="text-orange-600 hover:text-orange-700 font-semibold underline transition-colors">(Võta 
+                    className="text-green-800 hover:text-green-900 font-semibold underline transition-colors">(Võta 
                     meiega ühendus külastuseks)</Link>
                   </p>
                 </div>
@@ -243,9 +243,9 @@ export function About() {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="mb-16"
         >
-          <Card className="border-0 shadow-xl bg-gradient-to-br from-pink-50 via-white to-orange-50">
+          <Card className="border border-[#D7CBBE] shadow-xl bg-[#E3D8CB]/90">
             <div className="p-8 md:p-10 text-center">
-              <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">
+              <h3 className="text-2xl md:text-3xl font-bold text-green-900 mb-3">
                 Kuidas merisea eest õigesti hoolitseda?
               </h3>
               <p className="text-gray-700 text-lg mb-6">
@@ -253,7 +253,7 @@ export function About() {
                 igapäevase hoolduse nipid, et sinu merisiga oleks terve ja rõõmus.
               </p>
               <Link href="/blogi">
-                <Button className="bg-pink-600 hover:bg-pink-700 text-white px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300">
+                <Button className="bg-gradient-to-r from-[#1F6A4C] to-[#C8A93E] hover:from-[#19563d] hover:to-[#B39133] text-white border border-[#C8A93E]/80 px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300">
                   Loe merisigade hooldusjuhiseid →
                 </Button>
               </Link>
@@ -268,11 +268,11 @@ export function About() {
           transition={{ duration: 0.8, delay: 0.4 }}
           className="mb-20"
         >
-          <h3 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 text-center">
+          <h3 className="text-3xl md:text-4xl font-bold text-green-900 mb-4 text-center">
             <Heart className="inline-block w-8 h-8 mr-2 text-pink-600" />
             Meie aretuse merisead
           </h3>
-          <div className="w-20 h-1 bg-gradient-to-r from-pink-500 to-orange-500 mx-auto mb-8"></div>
+          <div className="w-20 h-1 bg-[#C9BCAA] mx-auto mb-8"></div>
           <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
             {allParents.map((parent, index) => (
               <motion.div
@@ -281,8 +281,8 @@ export function About() {
                 animate={inView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.9 }}
                 transition={{ duration: 0.5, delay: 0.5 + index * 0.05 }}
               >
-                <Card className="overflow-hidden border-0 shadow-lg hover:shadow-xl transition-all hover:scale-105">
-                  <div className="relative h-64 bg-gray-100">
+                <Card className="overflow-hidden border border-[#D7CBBE] bg-[#E3D8CB]/90 shadow-lg hover:shadow-xl transition-all hover:scale-105">
+                  <div className="relative h-64 bg-background">
                     <Image
                       src={parent.image}
                       alt={parent.name}
@@ -307,12 +307,12 @@ export function About() {
             transition={{ duration: 0.8 }}
             className="mb-12"
           >
-            <h3 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 text-center">
+            <h3 className="text-3xl md:text-4xl font-bold text-green-900 mb-4 text-center">
               <Bird className="inline-block w-8 h-8 mr-2 text-blue-600" />
               Viirpapagoid
             </h3>
-            <div className="w-20 h-1 bg-gradient-to-r from-blue-500 to-cyan-500 mx-auto mb-8"></div>
-            <Card className="p-8 md:p-12 border-0 shadow-xl bg-white">
+            <div className="w-20 h-1 bg-[#C9BCAA] mx-auto mb-8"></div>
+            <Card className="p-8 md:p-12 border border-[#D7CBBE] shadow-xl bg-[#E3D8CB]/90">
               <div className="grid md:grid-cols-2 gap-8 items-center">
                 <div className="space-y-4 text-gray-600 leading-relaxed text-lg">
                   <p>
@@ -359,15 +359,15 @@ export function About() {
             transition={{ duration: 0.8 }}
             className="mb-12"
           >
-            <h3 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 text-center">
+            <h3 className="text-3xl md:text-4xl font-bold text-green-900 mb-4 text-center">
               <Wheat className="inline-block w-8 h-8 mr-2 text-green-600" />
               Lemmiklooma hein
             </h3>
-            <div className="w-20 h-1 bg-gradient-to-r from-green-500 to-yellow-500 mx-auto mb-8"></div>
-            <Card className="p-8 md:p-12 border-0 shadow-xl bg-white">
+            <div className="w-20 h-1 bg-[#C9BCAA] mx-auto mb-8"></div>
+            <Card className="p-8 md:p-12 border border-[#D7CBBE] shadow-xl bg-[#E3D8CB]/90">
               <div className="grid md:grid-cols-2 gap-8 items-center">
                 <div className="space-y-4 text-gray-600 leading-relaxed text-lg">
-                  <h4 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
+                  <h4 className="text-2xl md:text-3xl font-bold text-green-900 mb-4">
                     PetsVilla hein: Puhas loodus ja tõestatud kvaliteet
                   </h4>
                   <p>
@@ -415,10 +415,10 @@ export function About() {
 
         {/* Stats */}
         <div className="mb-16">
-          <h3 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8 text-center">
+          <h3 className="text-3xl md:text-4xl font-bold text-green-900 mb-8 text-center">
             Statistika
           </h3>
-          <div className="w-20 h-1 bg-gradient-to-r from-orange-500 to-pink-500 mx-auto mb-12"></div>
+          <div className="w-20 h-1 bg-[#C9BCAA] mx-auto mb-12"></div>
         </div>
         <div ref={ref} className="grid grid-cols-2 md:grid-cols-5 gap-6 mb-16">
           {stats.map((stat, index) => (
@@ -428,9 +428,9 @@ export function About() {
               animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
             >
-              <Card className="p-6 text-center border-0 shadow-lg hover:shadow-xl transition-shadow">
+              <Card className="p-6 text-center border border-[#D7CBBE] bg-[#E3D8CB]/90 shadow-lg hover:shadow-xl transition-shadow">
                 <stat.icon className={`w-10 h-10 mx-auto mb-3 ${stat.color}`} />
-                <div className="text-3xl font-bold text-gray-900 mb-1">{stat.value}</div>
+                <div className="text-3xl font-bold text-green-900 mb-1">{stat.value}</div>
                 <div className="text-sm text-gray-600">{stat.label}</div>
               </Card>
             </motion.div>

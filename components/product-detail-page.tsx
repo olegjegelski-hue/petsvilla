@@ -75,8 +75,8 @@ export function ProductDetailPage({
     return (
       <>
         <Navigation />
-        <div className="min-h-screen bg-gradient-to-b from-green-50 to-white flex items-center justify-center">
-          <Loader2 className="h-12 w-12 animate-spin text-green-600" />
+        <div className="min-h-screen bg-background flex items-center justify-center">
+          <Loader2 className="h-12 w-12 animate-spin text-green-900" />
         </div>
         <Footer />
       </>
@@ -87,11 +87,11 @@ export function ProductDetailPage({
     return (
       <>
         <Navigation />
-        <div className="min-h-screen bg-gradient-to-b from-green-50 to-white">
+        <div className="min-h-screen bg-background">
           <div className="container mx-auto px-4 py-16">
             <Link
               href={`/pood/${categorySlug}`}
-              className="inline-flex items-center text-green-700 hover:text-green-800 mb-8 font-medium"
+              className="inline-flex items-center text-green-900 hover:text-green-800 mb-8 font-medium"
             >
               <ChevronLeft className="h-5 w-5 mr-1" />
               Tagasi kategooriasse
@@ -143,25 +143,25 @@ export function ProductDetailPage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
       />
       <Navigation />
-      <div className="min-h-screen bg-gradient-to-b from-green-50 to-white">
+      <div className="min-h-screen bg-background">
         <div className="container mx-auto px-4 py-8 md:py-16">
           {/* Breadcrumbs */}
           <div className="mb-8 flex items-center gap-2 text-sm text-gray-600">
-            <Link href="/pood" className="hover:text-green-700 transition-colors">
+            <Link href="/pood" className="hover:text-green-800 transition-colors">
               Pood
             </Link>
             <span>/</span>
-            <Link href={`/pood/${categorySlug}`} className="hover:text-green-700 transition-colors">
+            <Link href={`/pood/${categorySlug}`} className="hover:text-green-800 transition-colors">
               {categoryTitle}
             </Link>
             <span>/</span>
-            <span className="text-gray-900 font-medium">{product.commonName}</span>
+            <span className="text-green-900 font-medium">{product.commonName}</span>
           </div>
 
           <div className="grid md:grid-cols-2 gap-8 md:gap-12">
             {/* Toote pilt */}
             <div className="space-y-4">
-              <div className="relative aspect-square bg-gray-50 rounded-xl overflow-hidden border-2 border-gray-200">
+              <div className="relative aspect-square bg-[#E1D6C8] rounded-xl overflow-hidden border border-[#D0C3B4]">
                 <Image
                   src={`/api/product-image/${product.id}`}
                   alt={product.commonName}
@@ -188,7 +188,7 @@ export function ProductDetailPage({
             {/* Toote info */}
             <div className="space-y-6">
               <div>
-                <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
+                <h1 className="text-3xl md:text-4xl font-bold text-green-900 mb-2">
                   {product.commonName}
                 </h1>
 
@@ -200,9 +200,9 @@ export function ProductDetailPage({
               </div>
 
               {/* Hind */}
-              <div className="bg-gradient-to-br from-green-50 to-emerald-50 border-2 border-green-200 rounded-xl p-6 text-center">
+              <div className="bg-[#E3D8CB]/90 border border-[#D7CBBE] rounded-xl p-6 text-center">
                 {product.price > 0 ? (
-                  <span className="text-4xl font-bold text-green-700">
+                  <span className="text-4xl font-bold text-green-900">
                     {product.price.toFixed(2)} €
                   </span>
                 ) : (
@@ -220,7 +220,7 @@ export function ProductDetailPage({
                 >
                   <Button
                     size="lg"
-                    className="w-full bg-green-600 hover:bg-green-700 text-lg py-6 shadow-lg hover:shadow-xl transition-all"
+                    className="w-full bg-gradient-to-r from-[#1F6A4C] to-[#C8A93E] hover:from-[#19563d] hover:to-[#B39133] text-white border border-[#C8A93E]/80 text-lg py-6 shadow-lg hover:shadow-xl transition-all"
                     disabled={!isInStock}
                   >
                     <ShoppingCart className="mr-2 h-5 w-5" />
@@ -235,7 +235,7 @@ export function ProductDetailPage({
                   <Button
                     variant="outline"
                     size="lg"
-                    className="w-full text-lg py-6 border-2"
+                    className="w-full text-lg py-6 border-2 border-[#D7CBBE] text-green-900 bg-[#E3D8CB] hover:bg-[#DCCFBE]"
                   >
                     <Info className="mr-2 h-5 w-5" />
                     Küsi lisainfot
@@ -249,7 +249,7 @@ export function ProductDetailPage({
           <div className="mt-12">
             <Link
               href={`/pood/${categorySlug}`}
-              className="inline-flex items-center text-green-700 hover:text-green-800 font-medium"
+              className="inline-flex items-center text-green-900 hover:text-green-800 font-medium"
             >
               <ChevronLeft className="h-5 w-5 mr-1" />
               Tagasi kategooriasse: {categoryTitle}
