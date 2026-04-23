@@ -94,7 +94,7 @@ export function TerminalPicker({ value, onChange, required = false }: TerminalPi
     // Fallback to text input if API fails
     return (
       <div className="space-y-2">
-        <Label htmlFor="terminal" className="text-gray-900 font-semibold flex items-center">
+        <Label htmlFor="terminal" className="text-green-900 font-semibold flex items-center">
           <MapPin className="w-4 h-4 mr-2 text-gray-600" />
           Smartpost Pakiautomaat *
         </Label>
@@ -104,7 +104,7 @@ export function TerminalPicker({ value, onChange, required = false }: TerminalPi
           onChange={(e) => onChange(e.target.value, '')}
           placeholder="Nt. Tartu Lõunakeskus Smartpost pakiautomaat"
           required={required}
-          className="pl-4 text-gray-900 placeholder:text-gray-500"
+          className="pl-4 text-gray-900 placeholder:text-gray-500 bg-white"
         />
         <p className="text-xs text-amber-600">Pakiautomaatide loend pole saadaval, sisesta manuaalselt</p>
       </div>
@@ -113,7 +113,7 @@ export function TerminalPicker({ value, onChange, required = false }: TerminalPi
 
   return (
     <div className="space-y-2">
-      <Label htmlFor="terminal-picker" className="text-gray-900 font-semibold flex items-center">
+      <Label htmlFor="terminal-picker" className="text-green-900 font-semibold flex items-center">
         <MapPin className="w-4 h-4 mr-2 text-gray-600" />
         Smartpost Pakiautomaat *
       </Label>

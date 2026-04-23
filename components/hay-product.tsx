@@ -3,8 +3,7 @@
 
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
-import { Wheat, Package, Scale, Truck, MapPin, Euro, CheckCircle } from 'lucide-react'
+import { Wheat, Package, Scale, Truck, MapPin, Euro } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import Image from 'next/image'
@@ -20,7 +19,7 @@ const features = [
   {
     icon: Scale,
     title: '~4kg Kaal',
-    description: 'Kvaliteetne ja värsketent'
+    description: 'Kvaliteetne ja tolmuvaba'
   },
   {
     icon: Wheat,
@@ -60,7 +59,7 @@ export function HayProduct() {
   }
 
   return (
-    <section className="py-20">
+    <section className="pt-20 pb-0">
       <div className="container mx-auto max-w-6xl px-4">
         {/* Header */}
         <motion.div
@@ -69,14 +68,22 @@ export function HayProduct() {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-4">
-            <Wheat className="inline-block w-12 h-12 text-yellow-600 mr-4" />
-            Kvaliteetne Hein
+          <h1 className="text-4xl md:text-5xl font-bold text-green-900 mb-4">
+            Kvaliteetne hein
           </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Meie hein on kasvanud puhtas keskkonnas, eemal teedest ja saasteallikatest. 
+          <p className="text-sm md:text-base font-semibold text-gray-600 max-w-3xl mx-auto">
+            Meie hein on kasvanud puhtas keskkonnas, eemal teedest ja saasteallikatest.
+            <br />
             Kuivatame heina looduslikult päikese ja tuule abil.
           </p>
+          <Link href="/meist#heinast">
+            <Button
+              variant="outline"
+              className="mt-4 border-2 border-[#D7CBBE] text-green-900 bg-[#E3D8CB] hover:bg-[#DCCFBE] px-6 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
+            >
+              Meie hein
+            </Button>
+          </Link>
         </motion.div>
 
         {/* Main Product Section */}
@@ -96,12 +103,6 @@ export function HayProduct() {
                   fill
                   className="object-cover"
                 />
-                <div className="absolute top-4 left-4">
-                  <Badge className="bg-green-500 text-white">
-                    <CheckCircle className="w-3 h-3 mr-1" />
-                    Saadaval
-                  </Badge>
-                </div>
               </div>
             </Card>
           </motion.div>
@@ -114,52 +115,52 @@ export function HayProduct() {
           >
             <div className="space-y-6">
               <div>
-                <h2 className="text-3xl font-bold text-gray-900 mb-4">
+                <h2 className="text-3xl font-bold text-green-900 mb-4">
                   Hein
                 </h2>
-                <div className="text-lg text-gray-600 leading-relaxed space-y-2">
+                <div className="text-sm md:text-base font-semibold text-gray-600 leading-relaxed space-y-2">
                   <p>(pakitud 80L viljakotti, ca 4 kg)</p>
-                  <p>Sobib meriseadele, küülikutele ja teistele närilistele.</p>
+                  <p>Sobib merisigadele, küülikutele ja teistele närilistele.</p>
                 </div>
               </div>
 
               {/* Pricing */}
-              <div className="bg-gradient-to-r from-yellow-100 to-green-100 rounded-2xl p-6">
+              <div className="bg-[#E3D8CB]/90 border border-[#D7CBBE] rounded-2xl p-6">
                 <div className="flex items-center justify-between mb-4">
                   <div>
-                    <h3 className="text-2xl font-bold text-gray-900">Hinnad</h3>
+                    <h3 className="text-2xl font-bold text-green-900">Hinnad</h3>
                   </div>
-                  <Euro className="w-8 h-8 text-yellow-600" />
+                  <Euro className="w-8 h-8 text-green-900" />
                 </div>
                 
                 <div className="space-y-4">
-                  <div className="flex items-center justify-between p-4 bg-white rounded-lg shadow-sm">
+                  <div className="flex items-center justify-between p-4 bg-background rounded-lg shadow-sm border border-[#D7CBBE]">
                     <div className="flex items-center space-x-3">
-                      <MapPin className="w-5 h-5 text-gray-500 flex-shrink-0" />
+                      <MapPin className="w-5 h-5 text-green-800 flex-shrink-0" />
                       <div className="font-medium">
                         <div>Kohapeal Tartu mnt 80, Soinaste</div>
                         <div className="text-sm text-gray-600">(enne tulekut helista tel 512 7938)</div>
                       </div>
                     </div>
-                    <div className="text-2xl font-bold text-green-600">8€</div>
+                    <div className="text-2xl font-bold text-green-900">8€</div>
                   </div>
                   
-                  <div className="flex items-center justify-between p-4 bg-white rounded-lg shadow-sm">
+                  <div className="flex items-center justify-between p-4 bg-background rounded-lg shadow-sm border border-[#D7CBBE]">
                     <div className="flex items-center space-x-3">
-                      <Truck className="w-5 h-5 text-gray-500 flex-shrink-0" />
+                      <Truck className="w-5 h-5 text-green-800 flex-shrink-0" />
                       <div className="font-medium">
                         <div>Smartpost tarne üle Eesti</div>
                         <div className="text-sm text-gray-600">(koti hind koos saatmisega)</div>
                       </div>
                     </div>
-                    <div className="text-2xl font-bold text-orange-600">9€</div>
+                    <div className="text-2xl font-bold text-green-900">9€</div>
                   </div>
                 </div>
               </div>
 
               {/* CTA Button */}
               <Link href="/telli-hein">
-                <Button size="lg" className="w-full bg-gradient-to-r from-yellow-500 to-green-500 hover:from-yellow-600 hover:to-green-600 text-white py-4 text-lg">
+                <Button size="lg" className="w-full bg-gradient-to-r from-[#1F6A4C] to-[#C8A93E] hover:from-[#19563d] hover:to-[#B39133] text-white border border-[#C8A93E]/80 py-4 text-lg">
                   <Truck className="w-5 h-5 mr-2" />
                   Telli Smartposti kaudu
                 </Button>
@@ -179,9 +180,9 @@ export function HayProduct() {
             {features.map((feature, index) => {
               const Icon = feature.icon
               return (
-                <Card key={index} className="border-0 shadow-lg">
+                <Card key={index} className="border border-[#D7CBBE] bg-[#E3D8CB]/90 shadow-lg">
                   <CardContent className="p-4 text-center">
-                    <Icon className="w-8 h-8 text-yellow-600 mx-auto mb-2" />
+                    <Icon className="w-8 h-8 text-green-900 mx-auto mb-2" />
                     <h4 className="font-semibold text-gray-900 mb-1">{feature.title}</h4>
                     <p className="text-sm text-gray-800 font-medium">{feature.description}</p>
                   </CardContent>
@@ -196,17 +197,20 @@ export function HayProduct() {
           initial={{ opacity: 0, y: 30 }}
           animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
           transition={{ duration: 0.8, delay: 0.5 }}
-          className="mb-16"
+          className="mb-0"
         >
-          <Card className="border-2 border-orange-200 bg-gradient-to-r from-orange-50 to-yellow-50">
+          <Card className="border border-[#D7CBBE] bg-[#E3D8CB]/90">
             <CardContent className="p-8">
-              <h3 className="text-2xl font-bold text-center text-gray-900 mb-6">
+              <h3 className="text-2xl font-bold text-center text-green-900 mb-3">
                 Pakume heinaga kaasa ka kvaliteettoitu
               </h3>
+              <p className="text-sm md:text-base font-semibold text-gray-600 text-center max-w-3xl mx-auto mb-6">
+                Kvaliteetse lisatoidu saad mugavalt ja ilma eraldi postikuluta oma ostukorvi lisada otse heina tellimuse lehel.
+              </p>
               <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12">
                 <div className="relative w-40 h-20 md:w-48 md:h-24">
                   <Image
-                    src="/dobele.png"
+                    src="/dobele-transparent.png"
                     alt="Dobeles Dzīrnavnieks kvaliteetstoit"
                     fill
                     className="object-contain"
@@ -214,7 +218,7 @@ export function HayProduct() {
                 </div>
                 <div className="relative w-40 h-20 md:w-48 md:h-24">
                   <Image
-                    src="/VerseleLaga.jpg"
+                    src="/VerseleLaga-transparent.png"
                     alt="Versele-Laga kvaliteetstoit"
                     fill
                     className="object-contain"
@@ -225,30 +229,6 @@ export function HayProduct() {
           </Card>
         </motion.div>
 
-        {/* Benefits Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-        >
-          <Card className="bg-gradient-to-r from-yellow-500 to-green-500 text-white border-0 shadow-2xl">
-            <CardContent className="p-12">
-              <h3 className="text-3xl font-bold text-center mb-8">Miks valida meie hein?</h3>
-              
-              <div className="text-center">
-                <Link href="/meist#heinast">
-                  <Button 
-                    size="lg" 
-                    className="bg-white text-green-600 hover:bg-gray-100 hover:text-green-700 text-lg px-8 py-6 shadow-xl"
-                  >
-                    <Wheat className="w-5 h-5 mr-2" />
-                    Loe Lähemalt Meie Heinast
-                  </Button>
-                </Link>
-              </div>
-            </CardContent>
-          </Card>
-        </motion.div>
       </div>
     </section>
   )

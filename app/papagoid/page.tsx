@@ -20,7 +20,7 @@ export default function PapagoidPage() {
       <Navigation />
       <div className="min-h-screen bg-background">
         <div className="container mx-auto max-w-6xl px-4 pt-20 pb-16">
-          <div className="text-center mb-12">
+          <div className="text-center mb-12 animate-fade-in-up">
             <h1 className="text-4xl md:text-5xl font-bold text-green-900 mb-4">Papagoid</h1>
             <p className="text-sm md:text-base font-semibold text-gray-600 max-w-3xl mx-auto">
               Otsid seltsiliseks sotsiaalset viirpapagoid või unistad suurest eksootilisest
@@ -30,7 +30,7 @@ export default function PapagoidPage() {
             </p>
           </div>
 
-          <div className="max-w-4xl mx-auto mb-8 text-center">
+          <div className="max-w-4xl mx-auto mb-8 text-center animate-fade-in-up">
             <p className="text-xs md:text-sm italic font-semibold text-[#2E3A32] leading-relaxed">
               Tutvu enne papagoi valikut nende vajadustega, et pakkuda oma tulevasele lemmikule parimat.
               <br />
@@ -46,7 +46,7 @@ export default function PapagoidPage() {
             </Link>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid md:grid-cols-2 gap-8 animate-fade-in-up">
             <Card className="border border-[#D7CBBE] shadow-2xl bg-[#E3D8CB]/90">
               <CardContent className="p-8">
                 <div className="relative h-48 md:h-56 mb-6 rounded-xl overflow-hidden">
@@ -94,7 +94,7 @@ export default function PapagoidPage() {
             </Card>
           </div>
 
-          <div className="my-12">
+          <div className="my-12 animate-fade-in-up">
             <Card className="border border-[#D7CBBE] shadow-2xl bg-[#E3D8CB]/90">
               <CardContent className="p-8 md:p-10">
                 <div className="text-center mb-6">

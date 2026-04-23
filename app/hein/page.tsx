@@ -137,7 +137,9 @@ export default function HeinPage() {
         <HayProduct />
         <TestimonialsSection
           title="Mida meie kliendid ütlevad"
-          toneClassName="from-yellow-50 via-white to-green-50 border-yellow-100"
+          toneClassName="from-[#EAE0D5] via-[#EAE0D5] to-[#EAE0D5] border-[#D7CBBE]"
+          cardClassName="bg-[#E3D8CB]/90"
+          nameClassName="text-green-900"
           items={[
             {
               name: 'Kristel',

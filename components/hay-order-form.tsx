@@ -239,24 +239,13 @@ export function HayOrderForm() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="text-center mb-16"
+          className="text-center mb-10"
         >
-          <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-4">
-            <Truck className="inline-block w-12 h-12 text-orange-500 mr-4" />
-            Telli Hein
+          <h1 className="text-4xl md:text-5xl font-bold text-green-900 mb-4">
+            Telli hein
           </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            {montonioEnabled ? (
-              <>
-                Täida tellimuse vorm ja maksa turvaliselt läbi Montonio.
-                Hind: 9€/kott (tarne hinna sees)
-              </>
-            ) : (
-              <>
-                Täida tellimuse vorm. Saadame sulle emailiga makseinfo.
-                Hind: 9€/kott (tarne hinna sees)
-              </>
-            )}
+          <p className="text-sm md:text-base font-semibold text-gray-600 max-w-3xl mx-auto">
+            Täida tellimuse vorm ja maksa turvaliselt läbi Montonio. Hind: 9€/kott (tarne hinna sees)
           </p>
         </motion.div>
 
@@ -269,10 +258,10 @@ export function HayOrderForm() {
           className="mb-12"
         >
           <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto mb-8">
-            <Card className="border-0 shadow-lg bg-gradient-to-br from-yellow-50 to-green-50">
+            <Card className="border border-[#D7CBBE] bg-[#E3D8CB]/90 shadow-lg">
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2 text-lg">
-                  <Package className="w-5 h-5 text-yellow-600" />
+                  <Package className="w-5 h-5 text-green-900" />
                   <span>Maht</span>
                 </CardTitle>
               </CardHeader>
@@ -282,10 +271,10 @@ export function HayOrderForm() {
               </CardContent>
             </Card>
 
-            <Card className="border-0 shadow-lg bg-gradient-to-br from-green-50 to-yellow-50">
+            <Card className="border border-[#D7CBBE] bg-[#E3D8CB]/90 shadow-lg">
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2 text-lg">
-                  <Wheat className="w-5 h-5 text-green-600" />
+                  <Wheat className="w-5 h-5 text-green-900" />
                   <span>Kaal</span>
                 </CardTitle>
               </CardHeader>
@@ -295,10 +284,10 @@ export function HayOrderForm() {
               </CardContent>
             </Card>
 
-            <Card className="border-0 shadow-lg bg-gradient-to-br from-orange-50 to-yellow-50">
+            <Card className="border border-[#D7CBBE] bg-[#E3D8CB]/90 shadow-lg">
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2 text-lg">
-                  <Truck className="w-5 h-5 text-orange-600" />
+                  <Truck className="w-5 h-5 text-green-900" />
                   <span>Tarne</span>
                 </CardTitle>
               </CardHeader>
@@ -331,12 +320,12 @@ export function HayOrderForm() {
             animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            <Card className="border-0 shadow-xl">
+            <Card className="border border-[#D7CBBE] bg-[#E3D8CB]/90 shadow-xl">
               <CardHeader>
-                <CardTitle className="text-2xl text-gray-900">
+                <CardTitle className="text-2xl text-green-900">
                   Tellimuse andmed
                 </CardTitle>
-                <p className="text-gray-700">
+                <p className="text-sm md:text-base font-semibold text-gray-600">
                   Täitke vorm ja võtame teiega peagi ühendust
                 </p>
               </CardHeader>
@@ -344,7 +333,7 @@ export function HayOrderForm() {
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="grid md:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                      <Label htmlFor="name" className="text-gray-900 font-semibold flex items-center">
+                      <Label htmlFor="name" className="text-green-900 font-semibold flex items-center">
                         <User className="w-4 h-4 mr-2 text-gray-600" />
                         Nimi *
                       </Label>
@@ -354,11 +343,11 @@ export function HayOrderForm() {
                         onChange={(e) => handleInputChange('name', e.target.value)}
                         placeholder="Teie nimi"
                         required
-                        className="pl-4 text-gray-900 placeholder:text-gray-500"
+                        className="pl-4 text-gray-900 placeholder:text-gray-500 bg-white"
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="email" className="text-gray-900 font-semibold flex items-center">
+                      <Label htmlFor="email" className="text-green-900 font-semibold flex items-center">
                         <Mail className="w-4 h-4 mr-2 text-gray-600" />
                         E-post *
                       </Label>
@@ -369,14 +358,14 @@ export function HayOrderForm() {
                         onChange={(e) => handleInputChange('email', e.target.value)}
                         placeholder="teie@email.ee"
                         required
-                        className="pl-4 text-gray-900 placeholder:text-gray-500"
+                        className="pl-4 text-gray-900 placeholder:text-gray-500 bg-white"
                       />
                     </div>
                   </div>
 
                   <div className="grid md:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                      <Label htmlFor="phone" className="text-gray-900 font-semibold flex items-center">
+                      <Label htmlFor="phone" className="text-green-900 font-semibold flex items-center">
                         <Phone className="w-4 h-4 mr-2 text-gray-600" />
                         Telefon *
                       </Label>
@@ -387,7 +376,7 @@ export function HayOrderForm() {
                         onChange={(e) => handleInputChange('phone', e.target.value)}
                         placeholder="5XXX XXXX"
                         required
-                        className="pl-4 text-gray-900 placeholder:text-gray-500"
+                        className="pl-4 text-gray-900 placeholder:text-gray-500 bg-white"
                       />
                       <p className="text-xs text-gray-700 font-medium flex items-center">
                         <AlertCircle className="w-3 h-3 mr-1" />
@@ -395,7 +384,7 @@ export function HayOrderForm() {
                       </p>
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="quantity" className="text-gray-900 font-semibold flex items-center">
+                      <Label htmlFor="quantity" className="text-green-900 font-semibold flex items-center">
                         <ShoppingCart className="w-4 h-4 mr-2 text-gray-600" />
                         Hein (kotid) *
                       </Label>
@@ -407,23 +396,24 @@ export function HayOrderForm() {
                         onChange={(e) => handleInputChange('quantity', e.target.value)}
                         placeholder="1"
                         required
-                        className="pl-4 text-gray-900 placeholder:text-gray-500"
+                        className="pl-4 text-gray-900 placeholder:text-gray-500 bg-white"
                       />
                     </div>
                   </div>
 
                   {/* Food Products Section */}
-                  <Card className="border-2 border-orange-200 bg-gradient-to-r from-orange-50 to-yellow-50">
-                    <CardContent className="p-6">
-                      <h3 className="text-lg font-semibold text-gray-900 mb-4 text-center">
-                        Vajadusel lisa ka toit
-                      </h3>
-                      <div className="grid md:grid-cols-2 gap-6">
-                        <div className="space-y-2">
-                          <Label htmlFor="guineaPigFood" className="text-gray-900 font-semibold flex items-center">
-                            <ShoppingCart className="w-4 h-4 mr-2 text-gray-600" />
-                            Meriseatoit (1 kg, 9€)
-                          </Label>
+                  <div className="py-2">
+                    <div className="h-px w-4/5 mx-auto bg-[#C9BCAA] mb-4" />
+                    <h3 className="text-lg font-semibold text-green-900 mb-4 text-center">
+                      Vajadusel lisa ka toit
+                    </h3>
+                    <div className="grid md:grid-cols-2 gap-6 max-w-xl mx-auto">
+                      <div className="space-y-2">
+                        <Label htmlFor="guineaPigFood" className="text-green-900 font-semibold flex items-center">
+                          <ShoppingCart className="w-4 h-4 mr-2 text-gray-600" />
+                          Meriseatoit (1 kg, 9€)
+                        </Label>
+                        <div className="flex items-center gap-3">
                           <Input
                             id="guineaPigFood"
                             type="number"
@@ -432,14 +422,17 @@ export function HayOrderForm() {
                             value={formData.guineaPigFood}
                             onChange={(e) => handleInputChange('guineaPigFood', e.target.value)}
                             placeholder="0"
-                            className="pl-4 text-gray-900 placeholder:text-gray-500"
+                            className="w-16 pl-3 text-gray-900 placeholder:text-gray-500 bg-white"
                           />
+                          <span className="text-sm font-semibold text-green-900">Versele-Laga COMPLETE</span>
                         </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="rabbitFood" className="text-gray-900 font-semibold flex items-center">
-                            <ShoppingCart className="w-4 h-4 mr-2 text-gray-600" />
-                            Küülikutoit (2 kg pakk, 6€)
-                          </Label>
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="rabbitFood" className="text-green-900 font-semibold flex items-center">
+                          <ShoppingCart className="w-4 h-4 mr-2 text-gray-600" />
+                          Küülikutoit (2 kg pakk, 6€)
+                        </Label>
+                        <div className="flex items-center gap-3">
                           <Input
                             id="rabbitFood"
                             type="number"
@@ -448,12 +441,14 @@ export function HayOrderForm() {
                             value={formData.rabbitFood}
                             onChange={(e) => handleInputChange('rabbitFood', e.target.value)}
                             placeholder="0"
-                            className="pl-4 text-gray-900 placeholder:text-gray-500"
+                            className="w-16 pl-3 text-gray-900 placeholder:text-gray-500 bg-white"
                           />
+                          <span className="text-sm font-semibold text-green-900">Dobele</span>
                         </div>
                       </div>
-                    </CardContent>
-                  </Card>
+                    </div>
+                    <div className="h-px w-4/5 mx-auto bg-[#C9BCAA] mt-4" />
+                  </div>
 
                   <TerminalPicker
                     value={formData.terminal}
@@ -468,7 +463,7 @@ export function HayOrderForm() {
                   />
 
                   <div className="space-y-2">
-                    <Label htmlFor="comments" className="text-gray-900 font-semibold">
+                    <Label htmlFor="comments" className="text-green-900 font-semibold">
                       Kommentaar (valikuline)
                     </Label>
                     <Textarea
@@ -477,12 +472,12 @@ export function HayOrderForm() {
                       onChange={(e) => handleInputChange('comments', e.target.value)}
                       placeholder="Lisainfo või küsimused..."
                       rows={4}
-                      className="pl-4 pt-3 resize-none text-gray-900 placeholder:text-gray-500"
+                      className="pl-4 pt-3 resize-none text-gray-900 placeholder:text-gray-500 bg-white"
                     />
                   </div>
 
                   {/* Price Summary */}
-                  <Card className="bg-gradient-to-r from-yellow-100 to-green-100 border-0">
+                  <Card className="bg-background border border-[#D7CBBE]">
                     <CardContent className="p-6">
                       <div className="space-y-3">
                         <div className="space-y-1">
@@ -506,7 +501,7 @@ export function HayOrderForm() {
                           )}
                           <div className="flex justify-between items-center text-sm">
                             <span className="text-gray-700">SmartPost tarne</span>
-                            <span className="text-green-600 font-semibold">TASUTA</span>
+                            <span className="text-green-900 font-semibold">TASUTA</span>
                           </div>
                         </div>
                         <div className="border-t border-gray-300 pt-3 flex justify-between items-center">
@@ -522,7 +517,7 @@ export function HayOrderForm() {
                     type="submit"
                     size="lg"
                     disabled={isSubmitting}
-                    className="w-full bg-gradient-to-r from-yellow-500 to-green-500 hover:from-yellow-600 hover:to-green-600 text-white py-4 text-lg disabled:opacity-50"
+                    className="w-full bg-gradient-to-r from-[#1F6A4C] to-[#C8A93E] hover:from-[#19563d] hover:to-[#B39133] text-white border border-[#C8A93E]/80 py-4 text-lg disabled:opacity-50"
                   >
                     {isSubmitting ? (
                       <div className="flex items-center space-x-2">
@@ -536,6 +531,9 @@ export function HayOrderForm() {
                       </div>
                     )}
                   </Button>
+                  <p className="text-sm font-semibold text-green-900 text-center">
+                    Paneme paki teele 1-3 tööpäeva jooksul!
+                  </p>
                 </form>
               </CardContent>
             </Card>
