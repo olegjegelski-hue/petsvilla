@@ -156,22 +156,16 @@ export function About() {
                   Meie lugu
                 </h3>
                 <p>
-                  PetsVilla on kasvanud väikesest papagoi perest mitmekülgseks ja professionaalseks Papagoi 
-                  Keskuseks. Meie tegevus ühendab kolm põhivaldkonda: Papagoi Keskus (üle 50 papagoi) - 
-                  külastused gruppidele, lühikarvaliste tõumerisigade ja viirpapagoide aretus ning kvaliteetse, 
-                  looduslikult kuivatatud heina müük väikeste ja suurte lemmikloomapidajate jaoks.
+                  PetsVilla sündis sügavast armastusest loomade vastu ja soovist pakkuda peredele tervet, turvalist ning teadlikku alternatiivi tavalistele loomapoodidele.
                 </p>
                 <p>
-                  Pesakonnad sotsialiseeritud ning terved; iga merisea beebi saab dokumenteeritud päritolu 
-                  (pedigree). Heina kasvatame puhastes kohtades eemal teedest ja saasteallikatest ning 
-                  kuivatame loodusselt päikese ja tuulega — sama heina sööb ja hindab ka meie üle 50 
-                  tõumerisiga.
+                  Praeguseks oleme kasvanud väikesest papagoi perest mitmekülgseks ja professionaalseks Papagoi Keskuseks. Meie tegevus ühendab kolm põhivaldkonda: Papagoi Keskus (üle 50 papagoi) - külastused gruppidele, lühikarvaliste tõumerisigade ja viirpapagoide aretus ning kvaliteetse, looduslikult kuivatatud heina müük väikeste ja suurte lemmikloomapidajate jaoks. Lisaks kohapeal aretatud näitusekvaliteediga viirpapagoidele pakume ka ametliku päritoluga eksootilisi papagoisid usaldusväärsetelt partneritelt Hollandist.
                 </p>
                 <p>
-                  PetsVilla pakub kvaliteeti, läbipaistvust ja pidevat tuge lemmikute omanikele. Pakume 
-                  nõu toitumisest, hooldusest ja varustusest. Kutsume huvilisi külastama Papagoi Keskust, 
-                  tutvuma meie lindude ja merisigadega ning veenduma meie töö eetikas ja elukeskkonna 
-                  kvaliteedis.
+                  Merisigade pesakonnad sotsialiseeritud ning terved; iga merisea beebi saab dokumenteeritud päritolu (pedigree). Heina kasvatame puhastes kohtades eemal teedest ja saasteallikatest ning kuivatame looduslikult päikese ja tuulega — sama heina sööb ja hindab ka meie üle 50 tõumerisiga.
+                </p>
+                <p>
+                  PetsVilla pakub kvaliteeti, läbipaistvust ja pidevat tuge lemmikute omanikele. Pakume nõu toitumisest, hooldusest ja varustusest. Kutsume huvilisi külastama Papagoi Keskust, tutvuma meie lindude ja merisigadega ning veenduma meie töö eetikas ja elukeskkonna kvaliteedis.
                 </p>
               </div>
               <div className="relative h-64 md:h-96 rounded-lg overflow-hidden shadow-lg">
@@ -203,22 +197,16 @@ export function About() {
               <div className="grid md:grid-cols-2 gap-8 items-center">
                 <div className="space-y-4 text-gray-600 leading-relaxed text-lg">
                   <p>
-                    <strong>PetsVilla — usaldusväärne merisigade kasvataja.</strong> Oleme spetsialiseerunud 
-                    lühikarvalistele tõumerisigadele ning töötame valdkonnas juba üle 4 aasta. Meie aretuses on 
-                    rohkem kui 50 tõumeriseaga erinevate värvide ja karvastruktuuriga.
+                    <strong>PetsVilla — usaldusväärne merisigade kasvataja.</strong> Oleme spetsialiseerunud lühikarvalistele tõumerisigadele ning töötame valdkonnas juba üle 4 aasta. Meie aretuses on üle 50 erineva värvi ja karvastruktuuriga tõumerisea.
                   </p>
                   <p>
-                    Kõik meie merisea beebid on <strong>dokumenteeritud päritoluga (pedigree)</strong>, mis kinnitab 
-                    nende tõuomadusi ja tervise tausta.
+                    Kõik meie merisea beebid on dokumenteeritud päritoluga (pedigree), mis kinnitab nende tõuomadusi ja tervise tausta.
                   </p>
                   <p>
-                    Me paneme suurt rõhku vanemapopulatsiooni tervisele ja iseloomule — iga ema ja isa on hoolikalt 
-                    valitud, et tagada terved, sõbralikud ja kaunid järglased. Iga beebi kasvab armastuses ning 
-                    saab vajaliku hoolduse ja sotsialiseerimise.
+                    Me paneme suurt rõhku vanemapopulatsiooni tervisele ja iseloomule — iga ema ja isa on hoolikalt valitud, et tagada terved, sõbralikud ja kaunid järglased. Iga beebi kasvab armastuses ning saab vajaliku hoolduse ja sotsialiseerimise.
                   </p>
                   <p>
-                    Enne uude koju minekut saab iga beebi ka parasiiditõrje. Beebid on julged harjunud inimestega 
-                    kuna meie keskust külastavad pidevalt grupid. <Link href="/kontakt" 
+                    Enne uude koju minekut saab iga beebi ka parasiiditõrje. Beebid on julged ja harjunud inimestega, kuna meie keskust külastavad pidevalt grupid. <Link href="/kontakt" 
                     className="text-green-800 hover:text-green-900 font-semibold underline transition-colors">(Võta 
                     meiega ühendus külastuseks)</Link>
                   </p>
@@ -316,26 +304,16 @@ export function About() {
               <div className="grid md:grid-cols-2 gap-8 items-center">
                 <div className="space-y-4 text-gray-600 leading-relaxed text-lg">
                   <p>
-                    Üks meie tegevusteks on <strong>Papagoi Keskus</strong> - oleme uhked, et meie juures elab 
-                    üle 50 papagoi! Tegeleme ka väikeste papagoidega professionaalse aretamisega, keskendudes 
-                    eelkõige <strong>viirpapagoidele (budgerigars)</strong>.
+                    Üks meie tegevusteks on Papagoi Keskus - oleme uhked, et meie juures elab üle 50 papagoi! Tegeleme ka väikeste papagoidega professionaalse aretamisega, keskendudes eelkõige viirpapagoidele (budgerigars).
                   </p>
                   <p>
-                    Meie keskuses on üle 20 viirpapagoi paari, kes vastavad näituste standardile. Iga paar on 
-                    hoolikalt valitud nende tervislike omaduste, värvi, suuruse ja iseloomu järgi. Meie eesmärk 
-                    on kasvatada standardile vastavaid, terveid ja elujõulisi viirpapagoisi.
+                    Meie keskuses on üle 20 viirpapagoi paari, kes vastavad näituste standardile. Iga paar on hoolikalt valitud nende tervislike omaduste, värvi, suuruse ja iseloomu järgi. Meie eesmärk on kasvatada standardile vastavaid, terveid ja elujõulisi viirpapagoisid.
                   </p>
                   <p>
-                    Viirpapagoid on suurepased lemmiklinnud - nad on sõbralikud, õppimisvõimelised ja 
-                    rõõmsameelsed. Meie aretuse viirpapagoid kasvavad sotsialiseeritud keskkonnas, kus nad 
-                    saavad pidevalt inimkontakte ja õiget hooldust.
+                    Viirpapagoid on suurepärased lemmiklinnud - nad on sõbralikud, õppimisvõimelised ja rõõmsameelsed. Meie aretuse viirpapagoid kasvavad sotsialiseeritud keskkonnas, kus nad saavad pidevalt inimkontakte ja õiget hooldust.
                   </p>
                   <p>
-                    Pakume nõu ja tuge viirpapagoi pidamisel, õigel toitmisel ja hooldamisel. Meie kogemus 
-                    ja teadmised tagavad, et iga linnuke leiab armastava kodu, kus teda osatakse õigesti hoida.
-                  </p>
-                  <p className="text-sm text-gray-500 italic">
-                    💡 Täpsem info viirpapagoidest ja saadaolevate linnukeste kohta - võtke meiega ühendust!
+                    Pakume nõu ja tuge viirpapagoi pidamisel, õigel toitmisel ja hooldamisel. Meie kogemus ja teadmised tagavad, et iga linnuke leiab armastava kodu, kus teda osatakse õigesti hoida.
                   </p>
                 </div>
                 <div className="relative h-64 md:h-96 rounded-lg overflow-hidden shadow-lg">
@@ -375,10 +353,7 @@ export function About() {
                     parimat heina, mis on spetsiaalselt mõeldud merisigadele, küülikutele ja teistele närilistele.
                   </p>
                   <p>
-                    Kasutame ainult kvaliteetseid heinasorte, mis on rikkalikud kiudainete poolest ja sisaldavad 
-                    vajalikke vitamiine ning mineraale. Meie hein on puhas, kuiv ja tolmuvaba - hoolikalt valitud 
-                    ja õigel ajal koristatud. Heinamaad asuvad eemal tiheda liiklusega teedest ja muudest 
-                    saasteallikatest, pakkudes ideaalset keskkonda rikkaliku ja tervisliku heina kasvuks.
+                    Kasutame ainult kvaliteetseid kiudainerikkaid heinasorte ning sisaldavad vajalikke vitamiine ning mineraale. Meie hein on puhas, kuiv ja tolmuvaba - hoolikalt valitud ja õigel ajal koristatud. Heinamaad asuvad eemal tiheda liiklusega teedest ja muudest saasteallikatest, pakkudes ideaalset keskkonda rikkaliku ja tervisliku heina kasvuks.
                   </p>
                   <p>
                     Kuivatame heina traditsioonilisel ja loodussõbralikul viisil – päikese ja tuule abil. See 
