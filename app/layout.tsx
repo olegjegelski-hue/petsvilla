@@ -127,9 +127,15 @@ export const metadata: Metadata = {
     // google: 'your-google-verification-code',
   },
   icons: {
-    icon: '/favicon.svg',
-    shortcut: '/favicon.svg',
-    apple: '/favicon.svg',
+    icon: [
+      { url: '/favicon.ico?v=1', type: 'image/x-icon', sizes: 'any' },
+      { url: '/petsvilla-favicon-16x16.png?v=3', type: 'image/png', sizes: '16x16' },
+      { url: '/petsvilla-favicon-32x32.png?v=3', type: 'image/png', sizes: '32x32' },
+      { url: '/petsvilla-favicon-pv.png?v=3', type: 'image/png', sizes: '512x512' },
+      { url: '/favicon.svg?v=3', type: 'image/svg+xml' },
+    ],
+    shortcut: '/favicon.ico?v=1',
+    apple: '/apple-touch-icon.png?v=3',
   },
   other: {
     'og:phone_number': '+372 512 7938',

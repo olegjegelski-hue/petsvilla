@@ -12,6 +12,16 @@ export default function manifest(): MetadataRoute.Manifest {
     lang: 'et-EE',
     icons: [
       {
+        src: '/petsvilla-icon-192.png',
+        sizes: '192x192',
+        type: 'image/png',
+      },
+      {
+        src: '/petsvilla-favicon-pv.png',
+        sizes: '512x512',
+        type: 'image/png',
+      },
+      {
         src: '/favicon.svg',
         sizes: 'any',
         type: 'image/svg+xml',
