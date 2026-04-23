@@ -4,7 +4,7 @@ import { ExoticParrotGallery } from '@/components/exotic-parrot-gallery'
 import { Footer } from '@/components/footer'
 
 export const metadata: Metadata = {
-  title: 'Eksklusiivsed eksootilised papagoid - PetsVilla',
+  title: 'Eksklusiivsed papagoid - PetsVilla',
   description: 'Ettetellimisel Hollandist. Lai valik eksootilisi papagoiliike.',
   alternates: {
     canonical: 'https://petsvilla.ee/papagoid/eksootilised',

@@ -2,7 +2,6 @@
 
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
 import { Bird, Calendar, Palette, Users, Mail, Phone, ArrowRight, Loader2, CheckCircle } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
@@ -78,7 +77,7 @@ export function ExoticParrotGallery() {
   }
 
   return (
-    <section className="py-20">
+    <section className="pt-20 pb-0">
       <div className="container mx-auto max-w-6xl px-4">
         {/* Header */}
         <motion.div
@@ -87,34 +86,49 @@ export function ExoticParrotGallery() {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-4">
-            <Bird className="inline-block w-12 h-12 text-green-500 mr-4" />
-            Eksklusiivsed eksootilised papagoid
+          <h1 className="text-4xl md:text-5xl font-bold text-green-900 mb-4">
+            Eksklusiivsed papagoid
           </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-4">
-            Ettetellimisel Hollandist. Aitame leida sobiva liigi ja vormistada tellimuse.
+          <p className="text-sm md:text-base font-semibold text-gray-600 max-w-3xl mx-auto mb-8">
+            Eksklusiivsed eksootilised papagoid tunnustatud ja kontrollitud aretajatelt Hollandist. Pakume täisteenust: aitame valida sobiva liigi, korraldame turvalise transpordi ja vormistame ametliku käsunduslepingu. Iga linnuga on kaasas veterinaarsertifikaat, CITES/päritoludokumendid ja PetsVilla kvaliteedigarantii.
           </p>
+
+          <div className="max-w-4xl mx-auto mb-8 text-center">
+            <p className="text-xs md:text-sm italic font-semibold text-[#2E3A32] leading-relaxed">
+              Tutvu enne papagoi valikut nende vajadustega, et pakkuda oma tulevasele lemmikule parimat.
+              <br />
+              Meie blogist leiad praktilisi nõuandeid ja hooldusjuhiseid nii uuele kui ka kogenud omanikule.
+            </p>
+            <Link href="/blogi?loom=Papagoid">
+              <Button
+                variant="ghost"
+                className="mt-4 inline-flex h-7 w-[4.5rem] items-center justify-center rounded-full border text-[11px] font-semibold leading-[1] tracking-wide border-muted-foreground/60 text-muted-foreground hover:border-green-800 hover:text-green-800 transition-colors"
+              >
+                BLOGI
+              </Button>
+            </Link>
+          </div>
 
           {/* Info Cards */}
           <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-            <Card className="border-0 shadow-lg">
+            <Card className="border border-[#D7CBBE] bg-[#E3D8CB]/90 shadow-lg">
               <CardContent className="p-4 text-center">
-                <Calendar className="w-8 h-8 text-green-500 mx-auto mb-2" />
-                <p className="font-semibold">Ettetellimisel</p>
+                <Calendar className="w-8 h-8 text-green-900 mx-auto mb-2" />
+                <p className="font-semibold text-green-900">Ettetellimisel</p>
                 <p className="text-sm text-gray-600">Hollandist</p>
               </CardContent>
             </Card>
-            <Card className="border-0 shadow-lg">
+            <Card className="border border-[#D7CBBE] bg-[#E3D8CB]/90 shadow-lg">
               <CardContent className="p-4 text-center">
-                <Palette className="w-8 h-8 text-green-500 mx-auto mb-2" />
-                <p className="font-semibold">Suur valik</p>
+                <Palette className="w-8 h-8 text-green-900 mx-auto mb-2" />
+                <p className="font-semibold text-green-900">Suur valik</p>
                 <p className="text-sm text-gray-600">Erinevad liigid</p>
               </CardContent>
             </Card>
-            <Card className="border-0 shadow-lg">
+            <Card className="border border-[#D7CBBE] bg-[#E3D8CB]/90 shadow-lg">
               <CardContent className="p-4 text-center">
-                <Users className="w-8 h-8 text-green-500 mx-auto mb-2" />
-                <p className="font-semibold">Nõustamine</p>
+                <Users className="w-8 h-8 text-green-900 mx-auto mb-2" />
+                <p className="font-semibold text-green-900">Nõustamine</p>
                 <p className="text-sm text-gray-600">Professionaalne tugi</p>
               </CardContent>
             </Card>
@@ -145,7 +159,7 @@ export function ExoticParrotGallery() {
                 animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
                 transition={{ duration: 0.8, delay: index * 0.2 }}
               >
-                <Card className="h-full hover:shadow-2xl transition-all duration-500 border-0 shadow-lg overflow-hidden">
+                <Card className="h-full hover:shadow-2xl transition-all duration-500 border border-[#D7CBBE] bg-[#E3D8CB]/90 shadow-lg overflow-hidden">
                   <div className="relative h-80 overflow-hidden">
                     {(() => {
                       const imageUrl =
@@ -159,7 +173,7 @@ export function ExoticParrotGallery() {
                           src={imageUrl}
                           alt={parrot.name || 'Papagoi'}
                           fill
-                          className="object-contain bg-white hover:scale-105 transition-transform duration-700"
+                          className="object-contain bg-background hover:scale-105 transition-transform duration-700"
                         />
                       )
                     })()}
@@ -167,14 +181,14 @@ export function ExoticParrotGallery() {
 
                   <CardContent className="p-6">
                     <div className="flex items-center justify-between mb-4">
-                      <h3 className="text-2xl font-bold text-gray-900">
+                      <h3 className="text-2xl font-bold text-green-900">
                         {parrot.name}
                         {parrot.code && (
                           <span className="text-gray-500 font-semibold"> ({parrot.code})</span>
                         )}
                       </h3>
                       {parrot.price > 0 && (
-                        <div className="text-2xl font-bold text-green-600">{parrot.price}€</div>
+                        <div className="text-2xl font-bold text-green-900">{parrot.price}€</div>
                       )}
                     </div>
 
@@ -183,7 +197,7 @@ export function ExoticParrotGallery() {
                     )}
 
                     <Link href={`/kontakt?product=papagoi&id=${parrot.id}${parrot.code ? `&code=${encodeURIComponent(parrot.code)}` : ''}`}>
-                      <Button className="w-full bg-green-500 hover:bg-green-600 text-white">
+                      <Button className="w-full bg-gradient-to-r from-[#1F6A4C] to-[#C8A93E] hover:from-[#19563d] hover:to-[#B39133] text-white border border-[#C8A93E]/80">
                         <Bird className="w-4 h-4 mr-2" />
                         Küsi infot
                         <ArrowRight className="w-4 h-4 ml-2" />
@@ -198,19 +212,19 @@ export function ExoticParrotGallery() {
 
         {/* Purchase Process */}
         <div className="mb-16">
-          <Card className="border border-green-100 shadow-2xl bg-gradient-to-br from-green-50 via-white to-blue-50">
+          <Card className="border border-[#D7CBBE] shadow-2xl bg-[#E3D8CB]/90">
             <CardContent className="p-8 md:p-10">
               <div className="text-center mb-8">
-                <h3 className="text-3xl font-bold text-gray-900 mb-2">
+                <h3 className="text-3xl font-bold text-green-900 mb-2">
                   Kuidas eksootilise papagoi tellimine käib?
                 </h3>
                 <p className="text-gray-600">Selge ja personaalne protsess, et kõik sujuks.</p>
               </div>
 
               <div className="grid gap-5 md:grid-cols-2">
-                <div className="rounded-2xl bg-white/90 border border-green-100 p-5 shadow-lg">
+                <div className="rounded-2xl bg-background border border-[#D7CBBE] p-5 shadow-lg">
                   <div className="flex items-start gap-4">
-                    <div className="h-12 w-12 rounded-full bg-green-100 text-green-600 flex items-center justify-center">
+                    <div className="h-12 w-12 rounded-full bg-[#E3D8CB] text-green-900 flex items-center justify-center">
                       <Bird className="w-6 h-6" />
                     </div>
                     <div>
@@ -220,9 +234,9 @@ export function ExoticParrotGallery() {
                   </div>
                 </div>
 
-                <div className="rounded-2xl bg-white/90 border border-green-100 p-5 shadow-lg">
+                <div className="rounded-2xl bg-background border border-[#D7CBBE] p-5 shadow-lg">
                   <div className="flex items-start gap-4">
-                    <div className="h-12 w-12 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center">
+                    <div className="h-12 w-12 rounded-full bg-[#E3D8CB] text-green-900 flex items-center justify-center">
                       <Mail className="w-6 h-6" />
                     </div>
                     <div>
@@ -232,26 +246,26 @@ export function ExoticParrotGallery() {
                   </div>
                 </div>
 
-                <div className="rounded-2xl bg-white/90 border border-green-100 p-5 shadow-lg">
+                <div className="rounded-2xl bg-background border border-[#D7CBBE] p-5 shadow-lg">
                   <div className="flex items-start gap-4">
-                    <div className="h-12 w-12 rounded-full bg-green-100 text-green-600 flex items-center justify-center">
+                    <div className="h-12 w-12 rounded-full bg-[#E3D8CB] text-green-900 flex items-center justify-center">
                       <Calendar className="w-6 h-6" />
                     </div>
                     <div>
                       <h4 className="text-lg font-semibold text-gray-900">3. Lepime kokku detailid</h4>
-                      <p className="text-gray-600">Kinnitame liigi, hinna ja saabumise aja.</p>
+                      <p className="text-gray-600">Kinnitame liigi, hinna ja saabumise aja ning allkirjastame ametliku käsunduslepingu, mis kaitseb mõlema poole huve.</p>
                     </div>
                   </div>
                 </div>
 
-                <div className="rounded-2xl bg-white/90 border border-green-100 p-5 shadow-lg">
+                <div className="rounded-2xl bg-background border border-[#D7CBBE] p-5 shadow-lg">
                   <div className="flex items-start gap-4">
-                    <div className="h-12 w-12 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center">
+                    <div className="h-12 w-12 rounded-full bg-[#E3D8CB] text-green-900 flex items-center justify-center">
                       <Phone className="w-6 h-6" />
                     </div>
                     <div>
                       <h4 className="text-lg font-semibold text-gray-900">4. Kättesaamine ja nõustamine</h4>
-                      <p className="text-gray-600">Saad papagoi kätte koos vajalike juhistega.</p>
+                      <p className="text-gray-600">Saad papagoi kätte meie Papagoi Keskuses koos ametliku üleandmis-vastuvõtmisakti ja hooldusjuhistega.</p>
                     </div>
                   </div>
                 </div>
@@ -261,15 +275,15 @@ export function ExoticParrotGallery() {
         </div>
 
         {/* Papagoi Center CTA */}
-        <div className="mb-16">
-          <Card className="border-0 shadow-2xl bg-gradient-to-br from-blue-50 via-white to-green-50">
+        <div className="mb-12">
+          <Card className="border border-[#D7CBBE] shadow-2xl bg-[#E3D8CB]/90">
             <CardContent className="p-8 md:p-10">
               <div className="text-center mb-6">
-                <h3 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
+                <h3 className="text-3xl md:text-4xl font-bold text-green-900 mb-3">
                   🦜 Tule Papagoi Keskusesse!
                 </h3>
                 <p className="text-gray-700 text-lg leading-relaxed">
-                  Soovid näha meie merisigasid ja viirpapagoide enne ostu?
+                  Tahad näha, kuidas meie loomad päriselt elavad? Otsid perele meeldejäävat ja hariduslikku elamust?
                   <br />
                   Külasta meie Papagoi Keskust, kus saad:
                 </p>
@@ -277,10 +291,10 @@ export function ExoticParrotGallery() {
 
               <div className="grid md:grid-cols-2 gap-4 max-w-3xl mx-auto">
                 {[
-                  'Tutvuda müügiloomadega rahulikult',
-                  'Küsida nõu ja saada eksperdivastuseid',
-                  'Veeta aega loomadega ja valida oma lemmik',
-                  'Näha, kuidas meie loomad elavad',
+                  'Vahetu kontakt: Toida ja suhtle meie sotsiaalsete papagoidega.',
+                  'Teadlik valik: Tutvu merisigade ja lindudega isiklikult enne ostuotsuse tegemist.',
+                  'Privaatkülastused: Broneeri rahulik aeg oma perele ja saa personaalset nõustamist.',
+                  'Täielik läbipaistvus: Näe oma silmaga meie professionaalset aretuskeskkonda.',
                 ].map((item) => (
                   <div key={item} className="flex items-start gap-3 bg-white/90 rounded-xl p-4 shadow-md">
                     <CheckCircle className="w-5 h-5 text-green-600 mt-0.5" />
@@ -291,7 +305,7 @@ export function ExoticParrotGallery() {
 
               <div className="flex justify-center mt-8">
                 <Link href="https://papagoi.ee" target="_blank" rel="noreferrer">
-                  <Button className="bg-gradient-to-r from-blue-500 to-green-500 hover:from-blue-600 hover:to-green-600 text-white px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300">
+                  <Button className="bg-gradient-to-r from-[#1F6A4C] to-[#C8A93E] hover:from-[#19563d] hover:to-[#B39133] text-white border border-[#C8A93E]/80 px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300">
                     Broneeri külastus →
                   </Button>
                 </Link>

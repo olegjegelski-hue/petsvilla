@@ -93,8 +93,7 @@ export function BudgieGallery() {
             Viirpapagoid
           </h1>
           <p className="text-sm md:text-base font-semibold text-gray-600 max-w-3xl mx-auto mb-4">
-            Kirjud ja elurõõmsad viirpapagoid, kes toovad teie koju rõõmu ja värvikust. 
-            Meie linnud on terved ja hästi sotsiaalsed.
+            Kirjud ja elurõõmsad viirpapagoid otse meie Papagoi Keskusest! Aretame näitusekvaliteediga linde, pöörates erilist tähelepanu nende tervisele, värvidele ja iseloomule. Kuna linnud kasvavad meie Keskuses sotsiaalses keskkonnas ja on harjunud inimestega, toovad nad teie perre palju rõõmu. Nõustame uusi omanikke igal sammul.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3 mb-8">
             <Link href="#ostuprotsess-viirpapagoid">
@@ -326,7 +325,7 @@ export function BudgieGallery() {
                     </div>
                     <div>
                       <h4 className="text-lg font-semibold text-gray-900">4. Vali ja vormista</h4>
-                      <p className="text-gray-600">Kohtumisel saad viirpapagoisi oma silmaga näha, valida ning vormistada ostu.</p>
+                      <p className="text-gray-600">Kohtumisel saad viirpapagoisid oma silmaga näha, valida ning vormistada ostu.</p>
                     </div>
                   </div>
                 </div>
