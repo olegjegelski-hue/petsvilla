@@ -19,6 +19,12 @@ export const metadata: Metadata = {
     url: 'https://petsvilla.ee/meist',
     images: ['/og-image.png'],
   },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Meist - PetsVilla OÜ',
+    description: 'Professionaalne tõumerisiigade ja viirpapagoidega aretaja. Meie lugu ja filosoofia.',
+    images: ['/og-image.png'],
+  },
 }
 
 export default function MeistPage() {

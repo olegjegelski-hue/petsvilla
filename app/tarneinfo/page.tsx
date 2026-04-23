@@ -5,10 +5,20 @@ import { ArrowLeft, Package, MapPin, Clock, Euro, Truck } from 'lucide-react'
 export const metadata: Metadata = {
   title: 'Tarneinfo | PetsVilla',
   description: 'SmartPost pakiautomaat tarne. Tarneajad, kulud ja pakiautomaatide asukohad. Eluslooma üleandmine.',
+  alternates: {
+    canonical: 'https://petsvilla.ee/tarneinfo',
+  },
   openGraph: {
     title: 'Tarneinfo | PetsVilla',
     description: 'SmartPost pakiautomaat tarne. Tarneajad ja kulud.',
     url: 'https://petsvilla.ee/tarneinfo',
+    images: ['/og-image.png'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Tarneinfo | PetsVilla',
+    description: 'SmartPost pakiautomaat tarne. Tarneajad ja kulud.',
+    images: ['/og-image.png'],
   },
 }
 

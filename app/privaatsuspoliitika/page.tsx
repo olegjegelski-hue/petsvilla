@@ -12,6 +12,18 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://petsvilla.ee/privaatsuspoliitika',
   },
+  openGraph: {
+    title: 'Privaatsuspoliitika — PetsVilla OÜ',
+    description: 'PetsVilla OÜ privaatsuspoliitika ja isikuandmete töötlemise põhimõtted.',
+    url: 'https://petsvilla.ee/privaatsuspoliitika',
+    images: ['/og-image.png'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Privaatsuspoliitika — PetsVilla OÜ',
+    description: 'PetsVilla OÜ privaatsuspoliitika ja isikuandmete töötlemise põhimõtted.',
+    images: ['/og-image.png'],
+  },
   robots: {
     index: true,
     follow: true,

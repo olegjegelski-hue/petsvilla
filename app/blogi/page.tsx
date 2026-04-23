@@ -18,6 +18,12 @@ export const metadata: Metadata = {
     url: 'https://petsvilla.ee/blogi',
     images: ['/og-image.png'],
   },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Blogi - PetsVilla OÜ',
+    description: 'Huvitavad artiklid lemmikloomade hoolduse kohta',
+    images: ['/og-image.png'],
+  },
 }
 
 export default function BlogPage() {

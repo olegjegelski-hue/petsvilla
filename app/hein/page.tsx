@@ -19,6 +19,12 @@ export const metadata: Metadata = {
     url: 'https://petsvilla.ee/hein',
     images: ['/hay-product.jpg'],
   },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Kvaliteetne Looduslik Hein - PetsVilla OÜ',
+    description: 'Looduslikult kuivatatud kvaliteetne hein merisiigadele ja küülikutele. 80L kott.',
+    images: ['/hay-product.jpg'],
+  },
 }
 
 export default function HeinPage() {

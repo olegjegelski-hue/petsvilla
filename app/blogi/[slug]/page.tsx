@@ -160,7 +160,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     }
   }
 
-  const baseUrl = process.env.NEXTAUTH_URL || 'https://petsvilla.ee'
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || process.env.NEXTAUTH_URL || 'https://petsvilla.ee'
 
   return {
     title: `${post.title} - PetsVilla Blogi`,
@@ -209,7 +209,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     return notFound()
   }
 
-  const baseUrl = process.env.NEXTAUTH_URL || 'https://petsvilla.ee'
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || process.env.NEXTAUTH_URL || 'https://petsvilla.ee'
 
   // Schema.org Article structured data
   const articleJsonLd = {

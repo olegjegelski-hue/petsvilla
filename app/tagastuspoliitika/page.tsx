@@ -5,10 +5,20 @@ import { ArrowLeft, Package, Clock, Euro, AlertCircle } from 'lucide-react'
 export const metadata: Metadata = {
   title: 'Tagastuspoliitika | PetsVilla',
   description: '14 päeva taganemisõigus. PetsVilla tagastamise tingimused ja kord. Eluslooma erandid.',
+  alternates: {
+    canonical: 'https://petsvilla.ee/tagastuspoliitika',
+  },
   openGraph: {
     title: 'Tagastuspoliitika | PetsVilla',
     description: '14 päeva taganemisõigus. Tagastamise tingimused ja kord.',
     url: 'https://petsvilla.ee/tagastuspoliitika',
+    images: ['/og-image.png'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Tagastuspoliitika | PetsVilla',
+    description: '14 päeva taganemisõigus. Tagastamise tingimused ja kord.',
+    images: ['/og-image.png'],
   },
 }
 

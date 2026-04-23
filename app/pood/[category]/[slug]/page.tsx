@@ -30,11 +30,27 @@ export async function generateMetadata({ params }: { params: Promise<{ category:
   const decodedCat = decodeURIComponent(resolved.category)
   const decodedSlug = decodeURIComponent(resolved.slug)
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || process.env.NEXTAUTH_URL || 'https://petsvilla.ee'
+  const productTitle = decodedSlug.replace(/-/g, ' ')
+  const canonical = `${baseUrl}/pood/${decodedCat}/${decodedSlug}`
+  const description = `Tutvu tootega "${productTitle}" PetsVilla E-poes.`
 
   return {
-    title: decodedSlug.replace(/-/g, ' '),
+    title: productTitle,
+    description,
     alternates: {
-      canonical: `${baseUrl}/pood/${decodedCat}/${decodedSlug}`,
+      canonical,
+    },
+    openGraph: {
+      title: productTitle,
+      description,
+      url: canonical,
+      images: ['/og-image.png'],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: productTitle,
+      description,
+      images: ['/og-image.png'],
     },
   }
 }

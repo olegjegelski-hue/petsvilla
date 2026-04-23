@@ -77,7 +77,10 @@ export default function Home() {
       }
     ],
     sameAs: [
-      'https://petsvilla.ee'
+      'https://petsvilla.ee',
+      'https://www.facebook.com/profile.php?id=100092538633994',
+      'https://www.instagram.com/petsvilla_lemmikloomadekodu/',
+      'https://www.youtube.com/@PetsVillaTartu'
     ],
     areaServed: [
       {

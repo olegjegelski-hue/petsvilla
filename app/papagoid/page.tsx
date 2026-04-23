@@ -12,6 +12,18 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://petsvilla.ee/papagoid',
   },
+  openGraph: {
+    title: 'Papagoid - PetsVilla',
+    description: 'Papagoid jagunevad viirpapagoideks ja eksklusiivseteks eksootilisteks papagoideks.',
+    url: 'https://petsvilla.ee/papagoid',
+    images: ['/og-image.png'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Papagoid - PetsVilla',
+    description: 'Papagoid jagunevad viirpapagoideks ja eksklusiivseteks eksootilisteks papagoideks.',
+    images: ['/og-image.png'],
+  },
 }
 
 export default function PapagoidPage() {

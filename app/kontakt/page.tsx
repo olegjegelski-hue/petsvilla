@@ -18,6 +18,12 @@ export const metadata: Metadata = {
     url: 'https://petsvilla.ee/kontakt',
     images: ['/og-image.png'],
   },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Kontakt - PetsVilla OÜ',
+    description: 'Võtke meiega ühendust. Oleme siin, et aidata!',
+    images: ['/og-image.png'],
+  },
 }
 
 export default function KontaktPage() {

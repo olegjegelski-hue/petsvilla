@@ -5,11 +5,21 @@ import { Footer } from '@/components/footer'
 import { CheckCircle } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'Pood - PetsVilla',
-  description: 'Avasta meie laia tootevalikut - papagoid, elustoit, lemmikloomatoit ja akvaariumi taimed.',
+  title: 'E-pood - PetsVilla',
+  description: 'Avasta meie lai tootevalik: elustoit, roomajate ja kahepaiksete tooted ning akvaariumi taimed.',
+  alternates: {
+    canonical: 'https://petsvilla.ee/pood',
+  },
   openGraph: {
-    title: 'PetsVilla Pood',
-    description: 'Kõik lemmikloomade tarbeks ühest kohast',
+    title: 'PetsVilla E-pood',
+    description: 'Avasta meie lai tootevalik ühest kohast.',
+    url: 'https://petsvilla.ee/pood',
+    images: ['/og-image.png'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'PetsVilla E-pood',
+    description: 'Avasta meie lai tootevalik ühest kohast.',
     images: ['/og-image.png'],
   },
 }

@@ -18,6 +18,7 @@ export const dynamic = "force-dynamic"
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || process.env.NEXTAUTH_URL || 'https://petsvilla.ee'),
+  manifest: '/manifest.webmanifest',
   title: {
     default: 'PetsVilla OÜ — Merisead, Viirpapagoid ja Kvaliteetne Hein | Soinaste, Tartu',
     template: '%s | PetsVilla OÜ'
@@ -176,7 +177,10 @@ export default function RootLayout({
       areaServed: 'EE'
     },
     sameAs: [
-      'https://petsvilla.ee'
+      'https://petsvilla.ee',
+      'https://www.facebook.com/profile.php?id=100092538633994',
+      'https://www.instagram.com/petsvilla_lemmikloomadekodu/',
+      'https://www.youtube.com/@PetsVillaTartu'
     ],
     email: 'service@petsvilla.ee',
     telephone: '+372 512 7938',
@@ -194,12 +198,30 @@ export default function RootLayout({
     ]
   }
 
+  const websiteSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    '@id': 'https://petsvilla.ee/#website',
+    url: 'https://petsvilla.ee',
+    name: 'PetsVilla OÜ',
+    inLanguage: 'et-EE',
+    publisher: {
+      '@type': 'Organization',
+      '@id': 'https://petsvilla.ee/#organization',
+      name: 'PetsVilla OÜ',
+    },
+  }
+
   return (
     <html lang="et" suppressHydrationWarning>
       <head>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
         />
       </head>
       <body className={`${inter.className} ${poppins.variable}`} suppressHydrationWarning>

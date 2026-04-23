@@ -19,6 +19,12 @@ export const metadata: Metadata = {
     url: 'https://petsvilla.ee/viirpapagoid',
     images: ['/og-image.png'],
   },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Näituse Kvaliteediga Viirpapagoid - PetsVilla OÜ',
+    description: 'Professionaalne viirpapagoide aretamine. Meie beebid on väga ilusa sulestiku ja uhke päritoluga.',
+    images: ['/og-image.png'],
+  },
 }
 
 export default function ViirpapagoidPage() {

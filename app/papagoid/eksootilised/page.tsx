@@ -9,6 +9,18 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://petsvilla.ee/papagoid/eksootilised',
   },
+  openGraph: {
+    title: 'Eksklusiivsed papagoid - PetsVilla',
+    description: 'Ettetellimisel Hollandist. Lai valik eksootilisi papagoiliike.',
+    url: 'https://petsvilla.ee/papagoid/eksootilised',
+    images: ['/og-image.png'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Eksklusiivsed papagoid - PetsVilla',
+    description: 'Ettetellimisel Hollandist. Lai valik eksootilisi papagoiliike.',
+    images: ['/og-image.png'],
+  },
 }
 
 export default function EksootilisedPapagoidPage() {

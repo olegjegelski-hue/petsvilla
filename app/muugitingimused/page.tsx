@@ -5,10 +5,20 @@ import { ArrowLeft } from 'lucide-react'
 export const metadata: Metadata = {
   title: 'Müügitingimused | PetsVilla',
   description: 'PetsVilla OÜ e-poe müügitingimused ja tarnetingimused. Lemmikloomade tarvikud, hein ja eluslooma müük.',
+  alternates: {
+    canonical: 'https://petsvilla.ee/muugitingimused',
+  },
   openGraph: {
     title: 'Müügitingimused | PetsVilla',
     description: 'PetsVilla OÜ e-poe müügitingimused ja tarnetingimused.',
     url: 'https://petsvilla.ee/muugitingimused',
+    images: ['/og-image.png'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Müügitingimused | PetsVilla',
+    description: 'PetsVilla OÜ e-poe müügitingimused ja tarnetingimused.',
+    images: ['/og-image.png'],
   },
 }
 

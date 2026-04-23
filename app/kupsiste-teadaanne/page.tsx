@@ -12,6 +12,18 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://petsvilla.ee/kupsiste-teadaanne',
   },
+  openGraph: {
+    title: 'Küpsiste teadaanne — PetsVilla OÜ',
+    description: 'PetsVilla OÜ küpsiste kasutamise põhimõtted ja seaded.',
+    url: 'https://petsvilla.ee/kupsiste-teadaanne',
+    images: ['/og-image.png'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Küpsiste teadaanne — PetsVilla OÜ',
+    description: 'PetsVilla OÜ küpsiste kasutamise põhimõtted ja seaded.',
+    images: ['/og-image.png'],
+  },
   robots: {
     index: true,
     follow: true,

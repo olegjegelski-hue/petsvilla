@@ -8,7 +8,7 @@ const notion = new Client({
 })
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXTAUTH_URL || 'https://petsvilla.ee'
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || process.env.NEXTAUTH_URL || 'https://petsvilla.ee'
   const categorySlugMap: Record<string, string> = {
     'BIRDS': 'birds',
     'FEED FOR REPTILES': 'feed-for-reptiles',
@@ -31,10 +31,28 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.9,
     },
     {
+      url: `${baseUrl}/meriseabeebid`,
+      lastModified: new Date(),
+      changeFrequency: 'daily',
+      priority: 0.8,
+    },
+    {
       url: `${baseUrl}/viirpapagoid`,
       lastModified: new Date(),
       changeFrequency: 'daily',
       priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/papagoid`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/papagoid/eksootilised`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.7,
     },
     {
       url: `${baseUrl}/hein`,
@@ -113,12 +131,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: new Date(),
       changeFrequency: 'yearly',
       priority: 0.3,
-    },
-    {
-      url: `${baseUrl}/sonum-saadetud`,
-      lastModified: new Date(),
-      changeFrequency: 'yearly',
-      priority: 0.1,
     },
     {
       url: `${baseUrl}/privaatsuspoliitika`,
