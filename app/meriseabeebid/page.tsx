@@ -224,7 +224,7 @@ export default function MeriseabeebidPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
-      <div className="min-h-screen bg-gradient-to-b from-pink-50 to-orange-50">
+      <div className="min-h-screen bg-background">
         <Navigation />
         <GuineaPigGallery />
         <Footer />

@@ -33,14 +33,12 @@ export function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
         >
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl mb-6 leading-tight">
-            <span className="font-[family-name:var(--font-poppins)] font-semibold tracking-[0.075rem] text-[#222222] block whitespace-nowrap">
-              <span className="text-orange-500">Pets</span>
-              <span className="text-green-600">Villa</span>
-              <span className="font-normal text-[90%] text-[#6B7280]"> - hoitud lemmikud teie perele</span>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl mb-6 leading-tight">
+            <span className="font-[family-name:var(--font-poppins)] font-semibold tracking-[0.05rem] text-[#1F6A4C] block whitespace-nowrap">
+              PetsVilla - hoitud lemmikud teie perele
             </span>
           </h1>
-          <p className="text-xl md:text-2xl text-gray-700 mb-8 max-w-3xl mx-auto leading-relaxed font-medium">
+          <p className="text-xl md:text-2xl text-[#2E3A32] mb-8 max-w-3xl mx-auto leading-relaxed font-medium">
             Kasvatus, nõu ja varustus ühest kohast. Meie kodust teie koju!
           </p>
         </motion.div>
@@ -52,21 +50,21 @@ export function Hero() {
           className="flex flex-wrap justify-center gap-4 mb-8"
         >
           <Link href="/merisead">
-            <Button size="lg" className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300">
+            <Button size="lg" variant="outline" className="border-2 border-[#C8A93E] text-[#1F6A4C] bg-white/60 hover:bg-[#C8A93E]/15 hover:text-[#1F6A4C] px-8 py-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300">
               <Heart className="w-5 h-5 mr-2" />
               Merisead
               <ArrowRight className="w-5 h-5 ml-2" />
             </Button>
           </Link>
           <Link href="/viirpapagoid">
-            <Button size="lg" variant="outline" className="border-2 border-green-500 text-green-600 hover:bg-green-500 hover:text-white px-8 py-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300">
+            <Button size="lg" className="bg-[#2F7A5B] hover:bg-[#25674D] text-white px-8 py-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300">
               <Bird className="w-5 h-5 mr-2" />
-              Viirpapagoid
+              Papagoid
               <ArrowRight className="w-5 h-5 ml-2" />
             </Button>
           </Link>
           <Link href="/hein">
-            <Button size="lg" variant="outline" className="border-2 border-yellow-600 text-yellow-700 hover:bg-yellow-600 hover:text-white px-8 py-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300">
+            <Button size="lg" variant="outline" className="border-2 border-[#C8A93E] text-[#1F6A4C] bg-white/60 hover:bg-[#C8A93E]/15 hover:text-[#1F6A4C] px-8 py-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300">
               <Wheat className="w-5 h-5 mr-2" />
               Kvaliteetne Hein
               <ArrowRight className="w-5 h-5 ml-2" />
@@ -78,9 +76,10 @@ export function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 0.6 }}
-          className="text-sm text-gray-600"
+          className="text-base font-semibold text-[#2E3A32]/80"
         >
-          Professionaalne hooldus • Armastus loomade vastu • Usaldusväärne teenindus
+          <p>Professionaalne hooldus • Usaldusväärne teenindus</p>
+          <p>Armastus loomade vastu</p>
         </motion.div>
       </div>
     </section>

@@ -3,7 +3,7 @@
 
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Heart, Bird, Wheat, ArrowRight, Star, CheckCircle } from 'lucide-react'
+import { Heart, Bird, Wheat, ArrowRight, CheckCircle } from 'lucide-react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
@@ -13,7 +13,7 @@ const products = [
   {
     id: 'hein',
     title: 'Kvaliteetne hein',
-    description: 'Meie hein on kasvanud puhtas keskkonnas, eemal teedest ja saasteallikatest. Kuivatame heina looduslikult - päikese ja tuule abil.',
+    description: 'Meie hein on kasvanud puhtas keskkonnas, eemal teedest ja saasteallikatest. Kuivatame heina looduslikult - päikese ja tuule abil. Sinu lemmiku tervise alustala. Smartpost tarne üle Eesti.',
     icon: Wheat,
     color: 'from-yellow-400 to-green-500',
     href: '/hein',
@@ -37,7 +37,7 @@ const featuredSections: Array<{
     title: 'Merisead',
     href: '/merisead',
     image: 'https://cdn.abacus.ai/images/9981df73-bb04-4c4b-822a-37d612af899f.png',
-    buttonLabel: 'Vaata merisigu',
+    buttonLabel: 'Tutvu merisigadega',
     icon: Heart,
     gradient: 'from-pink-400 to-red-500',
   },
@@ -79,45 +79,25 @@ export function ProductShowcase() {
               className="object-cover group-hover:scale-110 transition-transform duration-700"
             />
             <div className="absolute top-4 right-4">
-              <div className={`p-3 rounded-full bg-gradient-to-br ${product.color} shadow-lg`}>
+              <div className="p-3 rounded-full bg-gradient-to-br from-[#1F6A4C] to-[#2F7A5B] shadow-lg">
                 <Icon className="w-6 h-6 text-white" />
               </div>
             </div>
           </div>
           
-          <CardContent className="p-6 md:p-8">
+          <CardContent className="p-6 md:p-8 flex flex-col flex-1">
             <div className="flex items-center justify-between mb-2">
-              <h3 className="text-2xl font-bold text-gray-900">{product.title}</h3>
-              <div className="flex items-center">
-                <Star className="w-4 h-4 text-yellow-400 fill-current" />
-                <Star className="w-4 h-4 text-yellow-400 fill-current" />
-                <Star className="w-4 h-4 text-yellow-400 fill-current" />
-                <Star className="w-4 h-4 text-yellow-400 fill-current" />
-                <Star className="w-4 h-4 text-yellow-400 fill-current" />
-              </div>
+              <h3 className="text-2xl font-bold text-green-900">{product.title}</h3>
             </div>
             
             <p className="text-gray-600 mb-4 leading-relaxed text-sm md:text-base">
               {product.description}
             </p>
 
-            <div className="mb-4">
-              <div className="flex flex-wrap gap-2">
-                {product.features?.map((feature, idx) => (
-                  <span
-                    key={idx}
-                    className="px-3 py-1 text-xs bg-gray-100 text-gray-700 rounded-full"
-                  >
-                    {feature}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            <div className="flex items-center justify-center mt-2">
+            <div className="flex-1 flex items-end justify-center mt-2 pb-2">
               <Link href={product.href}>
-                <Button size="sm" className="group bg-gradient-to-r from-orange-500 to-green-500 hover:from-orange-600 hover:to-green-600 text-white border-0 px-6 py-2 rounded-full shadow-lg hover:shadow-xl transition-all duration-300">
-                  Vaata lähemalt
+                <Button size="sm" className="group bg-gradient-to-r from-[#1F6A4C] to-[#C8A93E] hover:from-[#19563d] hover:to-[#B39133] text-white border border-[#C8A93E]/80 px-6 py-2 rounded-full shadow-lg hover:shadow-xl transition-all duration-300">
+                  Telli heina
                   <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
                 </Button>
               </Link>
@@ -137,7 +117,7 @@ export function ProductShowcase() {
         animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
         transition={{ duration: 0.8, delay: index * 0.2 }}
       >
-        <Card className="border-0 shadow-xl bg-white/90 overflow-hidden">
+        <Card className="border-0 shadow-xl bg-white/90 overflow-hidden h-full">
           <div className="relative h-40 md:h-52">
             <div className={`absolute inset-0 bg-gradient-to-br ${section.gradient} opacity-20`} />
             <Image
@@ -147,35 +127,42 @@ export function ProductShowcase() {
               className="object-cover"
             />
             <div className="absolute top-4 right-4">
-              <div className={`p-3 rounded-full bg-gradient-to-br ${section.gradient} shadow-lg`}>
+              <div className="p-3 rounded-full bg-gradient-to-br from-[#1F6A4C] to-[#2F7A5B] shadow-lg">
                 <Icon className="w-6 h-6 text-white" />
               </div>
             </div>
           </div>
-          <CardContent className="p-6 md:p-8">
-            <h3 className="text-2xl font-bold text-gray-900 mb-2">{section.title}</h3>
+          <CardContent className="p-6 md:p-8 flex flex-col flex-1">
+            <h3 className="text-2xl font-bold text-green-900 mb-2">{section.title}</h3>
             <p className="text-gray-700 mb-4 leading-relaxed text-sm md:text-base">
-              Tutvu meie hoitud lemmikutega, kellele on tagatud hooldus,
-              tervisekontroll ja rahulik keskkond.
+              {section.id === 'merisead'
+                ? 'Vastutustundlik aretus, kus esikohal on loomade tervis, puhas geneetika ja suurepärane iseloom. Iga meriseaga on kaasas ametlik päritolukaart ja meiepoolne eluaegne nõustamine.'
+                : section.id === 'papagoid'
+                  ? 'Pakume ametliku päritoluga ja legaalseid eksootilisi papagoisid (Hollandi import) ning meie enda Keskuses kasvanud sotsiaalseid viirpapagoisid. Kõikidele lindudele kehtib PetsVilla kvaliteedigarantii ja eluaegne nõustamine.'
+                  : 'Tutvu meie hoitud lemmikutega, kellele on tagatud hooldus, tervisekontroll ja rahulik keskkond.'}
             </p>
             {section.buttons ? (
-              <div className="flex flex-wrap gap-3">
-                {section.buttons.map((button) => (
-                  <Link key={button.href} href={button.href}>
-                    <Button size="sm" className="bg-gradient-to-r from-orange-500 to-green-500 hover:from-orange-600 hover:to-green-600 text-white">
-                      {button.label}
-                      <ArrowRight className="w-4 h-4 ml-2" />
-                    </Button>
-                  </Link>
-                ))}
+              <div className="mt-2">
+                <div className="flex flex-wrap gap-3">
+                  {section.buttons.map((button) => (
+                    <Link key={button.href} href={button.href}>
+                      <Button size="sm" className="bg-gradient-to-r from-[#1F6A4C] to-[#C8A93E] hover:from-[#19563d] hover:to-[#B39133] text-white border border-[#C8A93E]/80 rounded-full px-6 py-2">
+                        {button.label}
+                        <ArrowRight className="w-4 h-4 ml-2" />
+                      </Button>
+                    </Link>
+                  ))}
+                </div>
               </div>
             ) : (
-              <Link href={section.href || '#'}>
-                <Button size="sm" className="bg-gradient-to-r from-orange-500 to-green-500 hover:from-orange-600 hover:to-green-600 text-white">
-                  {section.buttonLabel}
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </Button>
-              </Link>
+              <div className="flex-1 flex items-end justify-center mt-2 pb-2">
+                <Link href={section.href || '#'}>
+                  <Button size="sm" className="bg-gradient-to-r from-[#1F6A4C] to-[#C8A93E] hover:from-[#19563d] hover:to-[#B39133] text-white border border-[#C8A93E]/80 rounded-full px-6 py-2">
+                    {section.buttonLabel}
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </Button>
+                </Link>
+              </div>
             )}
           </CardContent>
         </Card>
@@ -184,16 +171,16 @@ export function ProductShowcase() {
   }
 
   return (
-    <section ref={ref} className="py-20 bg-white">
+    <section ref={ref} className="pt-10 pb-16 bg-background">
       <div className="container mx-auto max-w-6xl px-4">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
           transition={{ duration: 0.8 }}
-          className="text-center mb-16"
+          className="text-center mb-8"
         >
-          <p className="text-xl md:text-2xl text-gray-700 mb-8 max-w-3xl mx-auto leading-relaxed font-medium">
-            Karvased sõbrad, sulelised lauljad ja kvaliteetne hein
+          <p className="text-xl md:text-2xl text-[#1F6A4C] mb-4 max-w-3xl mx-auto leading-relaxed font-semibold">
+            Karvased ja sulelised sõbrad, kvaliteetne hein
           </p>
         </motion.div>
 
@@ -212,11 +199,11 @@ export function ProductShowcase() {
           <Card className="border-0 shadow-2xl bg-gradient-to-br from-blue-50 via-white to-green-50">
             <CardContent className="p-8 md:p-10">
               <div className="text-center mb-6">
-                <h3 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
+                <h3 className="text-3xl md:text-4xl font-bold text-green-900 mb-3">
                   🦜 Tule Papagoi Keskusesse!
                 </h3>
                 <p className="text-gray-700 text-lg leading-relaxed">
-                  Soovid näha meie merisigasid ja viirpapagoide enne ostu?
+                  Tahad näha, kuidas meie loomad päriselt elavad? Otsid perele meeldejäävat ja hariduslikku elamust?
                   <br />
                   Külasta meie Papagoi Keskust, kus saad:
                 </p>
@@ -224,10 +211,10 @@ export function ProductShowcase() {
 
               <div className="grid md:grid-cols-2 gap-4 max-w-3xl mx-auto">
                 {[
-                  'Tutvuda müügiloomadega rahulikult',
-                  'Küsida nõu ja saada eksperdivastuseid',
-                  'Veeta aega loomadega ja valida oma lemmik',
-                  'Näha, kuidas meie loomad elavad',
+                  'Vahetu kontakt: Toida ja suhtle meie sotsiaalsete papagoidega.',
+                  'Teadlik valik: Tutvu merisigade ja lindudega isiklikult enne ostuotsuse tegemist.',
+                  'Privaatkülastused: Broneeri rahulik aeg oma perele ja saa personaalset nõustamist.',
+                  'Täielik läbipaistvus: Näe oma silmaga meie professionaalset aretuskeskkonda.',
                 ].map((item) => (
                   <div key={item} className="flex items-start gap-3 bg-white/90 rounded-xl p-4 shadow-md">
                     <CheckCircle className="w-5 h-5 text-green-600 mt-0.5" />
@@ -238,7 +225,7 @@ export function ProductShowcase() {
 
               <div className="flex justify-center mt-8">
                 <Link href="https://papagoi.ee" target="_blank" rel="noreferrer">
-                  <Button className="bg-gradient-to-r from-blue-500 to-green-500 hover:from-blue-600 hover:to-green-600 text-white px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300">
+                  <Button className="bg-gradient-to-r from-[#1F6A4C] to-[#C8A93E] hover:from-[#19563d] hover:to-[#B39133] text-white border border-[#C8A93E]/80 px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300">
                     Broneeri külastus →
                   </Button>
                 </Link>

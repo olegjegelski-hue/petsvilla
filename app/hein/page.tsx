@@ -132,7 +132,7 @@ export default function HeinPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
-      <div className="min-h-screen bg-gradient-to-b from-yellow-50 to-green-50">
+      <div className="min-h-screen bg-background">
         <Navigation />
         <HayProduct />
         <TestimonialsSection

@@ -18,7 +18,7 @@ export default function PapagoidPage() {
   return (
     <>
       <Navigation />
-      <div className="min-h-screen bg-gradient-to-b from-blue-50 to-green-50">
+      <div className="min-h-screen bg-background">
         <div className="container mx-auto max-w-6xl px-4 py-16">
           <div className="text-center mb-12">
             <div className="flex items-center justify-center mb-4">
