@@ -83,17 +83,16 @@ export default function MeriseadPage() {
       }
     },
     offers: {
-      '@type': 'AggregateOffer',
+      '@type': 'Offer',
       priceCurrency: 'EUR',
-      lowPrice: '25',
-      highPrice: '50',
-      offerCount: '10',
+      price: '25.00',
       availability: 'https://schema.org/InStock',
+      itemCondition: 'https://schema.org/NewCondition',
       seller: {
         '@type': 'Organization',
         name: 'PetsVilla OÜ'
       },
-      priceValidUntil: '2026-12-31',
+      priceValidUntil: '2027-12-31',
       url: 'https://petsvilla.ee/merisead'
     },
     image: [

@@ -46,8 +46,10 @@ export default function HeinPage() {
       '@type': 'Offer',
       priceCurrency: 'EUR',
       price: '9.00',
-      priceValidUntil: '2025-12-31',
+      priceValidUntil: '2027-12-31',
       availability: 'https://schema.org/InStock',
+      itemCondition: 'https://schema.org/NewCondition',
+      url: 'https://petsvilla.ee/hein',
       seller: {
         '@type': 'Organization',
         name: 'PetsVilla OÜ',

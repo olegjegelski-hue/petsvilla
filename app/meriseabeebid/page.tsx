@@ -77,11 +77,9 @@ export default function MeriseabeebidPage() {
       }
     },
     offers: {
-      '@type': 'AggregateOffer',
+      '@type': 'Offer',
       priceCurrency: 'EUR',
-      lowPrice: '25',
-      highPrice: '50',
-      offerCount: '10',
+      price: '25.00',
       availability: 'https://schema.org/InStock',
       seller: {
         '@type': 'Organization',

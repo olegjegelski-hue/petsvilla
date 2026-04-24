@@ -125,7 +125,7 @@ export function ProductDetailPage({
     offers: {
       '@type': 'Offer',
       priceCurrency: 'EUR',
-      price: product.price > 0 ? product.price.toFixed(2) : undefined,
+      price: product.price > 0 ? product.price.toFixed(2) : '0.00',
       availability: isInStock ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
       url: `${baseUrl}/pood/${categorySlug}/${productSlug}`,
     },

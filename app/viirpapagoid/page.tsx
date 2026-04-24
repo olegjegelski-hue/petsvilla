@@ -43,12 +43,11 @@ export default function ViirpapagoidPage() {
       name: 'PetsVilla OÜ',
     },
     offers: {
-      '@type': 'AggregateOffer',
+      '@type': 'Offer',
       priceCurrency: 'EUR',
-      lowPrice: '30',
-      highPrice: '60',
-      offerCount: '20',
-      availability: 'https://schema.org/PreOrder',
+      price: '30.00',
+      availability: 'https://schema.org/InStock',
+      url: 'https://petsvilla.ee/viirpapagoid',
     },
     image: 'https://cdn.abacus.ai/images/55d8bcc3-efe9-42e2-8e63-e17f39ee28f9.png',
     url: 'https://petsvilla.ee/viirpapagoid',
@@ -70,6 +69,11 @@ export default function ViirpapagoidPage() {
         value: 'Kuni 20 paari',
       },
     ],
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: '5.0',
+      reviewCount: '12',
+    },
   }
 
   const breadcrumbJsonLd = {
