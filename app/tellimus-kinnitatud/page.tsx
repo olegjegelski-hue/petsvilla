@@ -8,6 +8,7 @@ import { CheckCircle2, Home, Package, Mail } from 'lucide-react'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
+import { trackPurchase } from '@/lib/meta'
 
 export default function TellimusKinnitatudPage() {
   const searchParams = useSearchParams()
@@ -47,6 +48,23 @@ export default function TellimusKinnitatudPage() {
       if (response.ok) {
         console.log('✅ Order status updated successfully!')
         setStatusUpdated(true)
+
+        if (data.purchase) {
+          const trackingKey = `meta_purchase_tracked_${reference}`
+          const alreadyTracked = sessionStorage.getItem(trackingKey) === '1'
+
+          if (!alreadyTracked) {
+            await trackPurchase({
+              orderId: data.purchase.orderId,
+              value: data.purchase.value,
+              currency: data.purchase.currency,
+              email: data.purchase.email,
+              phone: data.purchase.phone,
+              numItems: data.purchase.numItems,
+            })
+            sessionStorage.setItem(trackingKey, '1')
+          }
+        }
       } else {
         console.error('❌ Failed to update order status:', data)
       }

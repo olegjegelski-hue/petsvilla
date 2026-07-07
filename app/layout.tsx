@@ -4,6 +4,7 @@ import './globals.css'
 import { ThemeProvider } from '@/components/theme-provider'
 import { Toaster } from '@/components/ui/sonner'
 import { GoogleAnalytics } from '@/components/google-analytics'
+import { MetaPixel } from '@/components/meta-pixel'
 import { CookieConsent } from '@/components/cookie-consent'
 import { Metadata } from 'next'
 import { getSiteUrl } from '@/lib/site-url'
@@ -234,6 +235,7 @@ export default function RootLayout({
       </head>
       <body className={`${inter.className} ${poppins.variable}`} suppressHydrationWarning>
         <GoogleAnalytics />
+        <MetaPixel />
         <ThemeProvider
           attribute="class"
           defaultTheme="light"

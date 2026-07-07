@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Client } from '@notionhq/client';
 import { createMontonioShipment } from '@/lib/montonio-shipping';
+import { calculateHayOrderNumItems } from '@/lib/meta-capi-server';
 
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
 
@@ -56,6 +57,14 @@ export async function POST(request: NextRequest) {
     const customerPhone = props.Phone?.phone_number || '';
     const comments = props.Comments?.rich_text?.[0]?.plain_text || '';
     const hayQuantity = props['Quantity (pakkide arv)']?.number || 1;
+    const guineaPigFoodKg = props['Meriseatoit (kg)']?.number || 0;
+    const rabbitFoodKg = props['Küülikutoit (kg)']?.number || 0;
+    const totalPrice = props['Total Price (EUR)']?.number || 0;
+    const numItems = calculateHayOrderNumItems({
+      hayQuantity,
+      guineaPigFoodKg,
+      rabbitFoodKg,
+    });
     
     // Extract terminal UUID from comments (format: "Pickup Point UUID: xxx")
     const uuidMatch = comments.match(/Pickup Point UUID: ([a-zA-Z0-9-]+)/);
@@ -157,6 +166,14 @@ export async function POST(request: NextRequest) {
       success: true,
       message: 'Order status updated to Uus',
       merchantReference,
+      purchase: {
+        orderId: merchantReference,
+        value: totalPrice,
+        currency: 'EUR',
+        email: customerEmail,
+        phone: customerPhone,
+        numItems,
+      },
       shipments: shipmentResults,
       shipmentsCreated: shipmentResults.filter(r => r.success).length,
     });
