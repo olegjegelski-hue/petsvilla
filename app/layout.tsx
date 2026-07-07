@@ -138,6 +138,7 @@ export const metadata: Metadata = {
     apple: '/apple-touch-icon.png?v=3',
   },
   other: {
+    'facebook-domain-verification': 'ax3kbnsq6qnm70o5tocmm1esc5m2fu',
     'og:phone_number': '+372 512 7938',
     'og:email': 'service@petsvilla.ee',
     'og:country-name': 'Estonia',
