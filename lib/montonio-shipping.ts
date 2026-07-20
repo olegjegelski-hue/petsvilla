@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import { getMontonioSenderAddress } from '@/lib/site-contact';
 
 interface ShipmentData {
   merchantReference: string;
@@ -68,17 +69,7 @@ export async function createMontonioShipment(data: ShipmentData): Promise<{
         id: data.pickupPointUuid,
       },
       merchantReference: data.merchantReference,
-      sender: {
-        name: 'PetsVilla OÜ',
-        email: 'service@petsvilla.ee',
-        phoneCountryCode: '+372',
-        phoneNumber: '5127938',
-        streetAddress: 'Tartu mnt 80',
-        locality: 'Soinaste',
-        region: 'Tartumaa',
-        postalCode: '61709',
-        country: 'EE',
-      },
+      sender: getMontonioSenderAddress(),
       receiver: {
         name: `${data.shippingFirstName} ${data.shippingLastName || ''}`.trim(),
         email: data.shippingEmail,

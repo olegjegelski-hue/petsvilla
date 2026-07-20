@@ -51,16 +51,14 @@ Enne production'i deploy'imist testi:
 - ✅ Montonio integratsioon töötab (kui konfigureeritud)
 
 ### 4. Montonio Shipping Aadress
-**Kontrolli:** `lib/montonio-shipping.ts` failis on aadress:
-```typescript
-streetAddress: 'Männi 17',
-locality: 'Jüri',
-region: 'Harjumaa',
-postalCode: '75301',
+**Staatus (2026-07):** Koodis kanooniline aadress — `lib/site-contact.ts` → `getMontonioSenderAddress()`.
+
+```
+Tartu mnt 80, Soinaste, Kambja vald, Tartumaa 61709
 ```
 
-Kontrolli, kas see on õige aadress või peaks olema:
-- Tartu mnt 80, Soinaste, Tartumaa (nagu lehelt näha)
+Ära kasuta vanu variante (Männi 17, Jüri, Harjumaa).  
+Kontrolli ka **Montonio dashboardis** saatja aadressi (võib olla eraldi koodist).
 
 ### 5. Database (Valikuline)
 Kui soovid kasutada Prisma + PostgreSQL:

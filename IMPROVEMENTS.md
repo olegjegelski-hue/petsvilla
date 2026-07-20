@@ -119,12 +119,11 @@
   - Juriidilised nõuded
 
 ### 12. Montonio Shipping Aadress Kontrollimine
-- **Prioriteet**: Madal
-- **Kirjeldus**: Veenduda, et `lib/montonio-shipping.ts` failis olev aadress on õige
-- **Praegune aadress**: Männi 17, Jüri, Harjumaa (kontrollida vastab see tegelikkusele)
-- **Alternatiivid lehelt leitud**: 
-  - Tartu mnt 80, Soinaste, Tartumaa
-  - Kambja vald, Tartumaa
+- **Prioriteet**: Madal → **Valmis (2026-07)**
+- **Kirjeldus**: Saatja aadress peab olema kanooniline Soinaste, mitte vana Jüri
+- **Lahendus**: `lib/site-contact.ts` + `lib/montonio-shipping.ts` kasutab `getMontonioSenderAddress()`
+- **Aadress**: Tartu mnt 80, Soinaste, Kambja vald, Tartumaa 61709
+- **Märkus**: kontrolli ka Montonio partneriportaali saatja seadeid
 
 ## 🔍 Lisatud Uued Failid
 
@@ -142,6 +141,6 @@
 
 1. Testida kõiki muudatusi staging keskkonnas
 2. Kontrollida, et `.env` fail on õigesti seadistatud
-3. Veenduda, et Montonio shipping aadress on õige
+3. Veenduda, et Montonio shipping aadress on õige (kood OK; dashboard eraldi)
 4. Kaaluda error tracking süsteemi lisamist
 5. Kaaluda tellimuste andmebaasi salvestamist PostgreSQL'i
