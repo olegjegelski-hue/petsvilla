@@ -81,13 +81,15 @@
 @layer components {
   /* Mobiili-sõbralik pealkirjade skaala (clamp — ei voola üle kitsal ekraanil) */
   .page-title {
-    @apply font-bold text-green-900 leading-tight tracking-tight break-words text-balance;
+    @apply font-bold text-green-900 leading-tight tracking-tight break-words;
     font-size: clamp(1.5rem, 1.15rem + 2vw, 3rem);
+    text-wrap: balance;
   }
 
   .section-title {
-    @apply font-bold text-green-900 leading-snug tracking-tight break-words text-balance;
+    @apply font-bold text-green-900 leading-snug tracking-tight break-words;
     font-size: clamp(1.25rem, 1.05rem + 1.4vw, 2.25rem);
+    text-wrap: balance;
   }
 
   .page-lead {
