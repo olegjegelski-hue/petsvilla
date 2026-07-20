@@ -1,113 +1,109 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server'
 import {
   createMontonioOrder,
   generateMerchantReference,
-} from '@/lib/montonio';
-import { Client } from '@notionhq/client';
-import { sendHayOrderEmail } from '@/lib/email';
-import { reportError } from '@/lib/report-error';
+} from '@/lib/montonio'
+import { Client } from '@notionhq/client'
+import { sendHayOrderEmail } from '@/lib/email'
+import { reportError } from '@/lib/report-error'
+import { validateHayOrderForm } from '@/lib/hay-order-validation'
+import { rateLimitExceededResponse } from '@/lib/rate-limit'
 
-const notion = new Client({ auth: process.env.NOTION_API_KEY });
+const notion = new Client({ auth: process.env.NOTION_API_KEY })
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
+    const limited = rateLimitExceededResponse(request, {
+      bucket: 'hay-order',
+      route: 'montonio/create-order',
+      max: 5,
+      windowMs: 10 * 60 * 1000,
+    })
+    if (limited) return limited
+
+    const body = await request.json()
+    const result = validateHayOrderForm(body)
+
+    if (!result.ok) {
+      return NextResponse.json(
+        { error: result.error },
+        { status: result.status }
+      )
+    }
+
+    if (result.honeypot) {
+      reportError(new Error('Montonio create-order honeypot triggered'), {
+        tags: { area: 'abuse', route: 'montonio/create-order' },
+      })
+      return NextResponse.json({
+        success: true,
+        paymentUrl: 'https://petsvilla.ee/tellimus-kinnitatud?payment=success',
+        merchantReference: 'HP-BLOCKED',
+        uuid: 'honeypot',
+      })
+    }
+
     const {
-      // Customer info
       name,
       email,
       phone,
-      address,
-      city,
-      postalCode,
-      // Order items
-      hayAmount,
+      terminal,
+      quantity,
       guineaPigFood,
       rabbitFood,
-      deliveryMethod,
-      parcelMachine,
-      parcelMachineUuid,
-      notes,
-    } = body;
+      comments,
+      totalPrice,
+    } = result.data
 
-    // Validate required fields
-    if (!name || !email || !phone) {
-      return NextResponse.json(
-        { error: 'Palun täida kõik kohustuslikud väljad' },
-        { status: 400 }
-      );
+    const { address, city, postalCode, parcelMachineUuid } = body
+
+    const hayAmount = quantity
+    const parcelMachine = terminal
+    const notes = comments
+    const grandTotal = totalPrice
+    const hayPrice = quantity * 9
+
+    const merchantReference = generateMerchantReference('HAY')
+
+    let origin =
+      request.headers.get('origin') || process.env.NEXT_PUBLIC_BASE_URL || ''
+
+    if (
+      origin.includes('localhost') ||
+      origin.includes('127.0.0.1') ||
+      !origin
+    ) {
+      origin = 'https://petsvilla.ee'
     }
 
-    if (!hayAmount || parseInt(hayAmount) <= 0) {
-      return NextResponse.json(
-        { error: 'Palun vali heina kogus' },
-        { status: 400 }
-      );
-    }
+    const lineItems = []
 
-    // Calculate prices
-    const hayPrice = parseInt(hayAmount) * 9;
-    
-    // Guinea pig food: 9€ per 1 kg
-    const guineaPigFoodPrice = parseInt(guineaPigFood || '0') * 9;
-    
-    // Rabbit food: 6€ per 2kg package
-    const rabbitFoodPrice = parseInt(rabbitFood || '0') * 6;
-    
-    // Delivery is FREE (included in product prices)
-    const deliveryPrice = 0;
-    
-    const grandTotal = hayPrice + guineaPigFoodPrice + rabbitFoodPrice + deliveryPrice;
-
-    // Generate unique merchant reference
-    const merchantReference = generateMerchantReference('HAY');
-
-    // Get origin for return and notification URLs
-    // For Montonio, we need a public HTTPS URL, not localhost
-    let origin = request.headers.get('origin') || process.env.NEXT_PUBLIC_BASE_URL || '';
-    
-    // If using localhost, fallback to production only (never non-prod domains)
-    if (origin.includes('localhost') || origin.includes('127.0.0.1') || !origin) {
-      origin = 'https://petsvilla.ee';
-    }
-
-    // Prepare line items
-    const lineItems = [];
-
-    // Add hay
     lineItems.push({
-      name: `Lemmiklooma hein (${hayAmount} kott${parseInt(hayAmount) > 1 ? 'i' : ''})`,
-      quantity: parseInt(hayAmount),
+      name: `Lemmiklooma hein (${hayAmount} kott${hayAmount > 1 ? 'i' : ''})`,
+      quantity: hayAmount,
       finalPrice: hayPrice,
-    });
+    })
 
-    // Add guinea pig food if ordered (9€ per 1 kg)
-    if (guineaPigFood && parseInt(guineaPigFood) > 0) {
+    if (guineaPigFood > 0) {
       lineItems.push({
         name: `Meriseatoit (${guineaPigFood} kg)`,
         quantity: 1,
-        finalPrice: parseInt(guineaPigFood) * 9,
-      });
+        finalPrice: guineaPigFood * 9,
+      })
     }
 
-    // Add rabbit food if ordered (6€ per 2kg package)
-    if (rabbitFood && parseInt(rabbitFood) > 0) {
+    if (rabbitFood > 0) {
       lineItems.push({
         name: `Küülikutoit (${rabbitFood} × 2 kg pakk)`,
         quantity: 1,
-        finalPrice: parseInt(rabbitFood) * 6,
-      });
+        finalPrice: rabbitFood * 6,
+      })
     }
 
-    // Delivery included in product price (tarne hinna sees) — no separate line item
-    // No separate delivery line item needed
+    const nameParts = name.trim().split(/\s+/)
+    const firstName = nameParts[0] || name
+    const lastName = nameParts.slice(1).join(' ') || '-'
 
-    // Split name into first and last name
-    const nameParts = name.trim().split(/\s+/);
-    const firstName = nameParts[0] || name;
-    const lastName = nameParts.slice(1).join(' ') || '-';
-
-    // Create Montonio order
     const orderData = {
       merchantReference,
       returnUrl: `${origin}/tellimus-kinnitatud?reference=${merchantReference}`,
@@ -136,122 +132,121 @@ export async function POST(request: NextRequest) {
           preferredCountry: 'EE',
         },
       },
-    };
-
-    // Create order in Montonio
-    console.log('=== STARTING MONTONIO ORDER CREATION ===');
-    console.log('Sending order to Montonio:', JSON.stringify(orderData, null, 2));
-    
-    let paymentUrl, uuid;
-    try {
-      console.log('Calling createMontonioOrder...');
-      const result = await createMontonioOrder(orderData);
-      paymentUrl = result.paymentUrl;
-      uuid = result.uuid;
-      console.log('Montonio order created successfully!');
-      console.log('Payment URL:', paymentUrl);
-      console.log('UUID:', uuid);
-      console.log('=== MONTONIO ORDER CREATION COMPLETED ===');
-    } catch (montonioError) {
-      console.error('=== MONTONIO ORDER CREATION FAILED ===');
-      console.error('Montonio API error:', montonioError);
-      console.error('Error type:', typeof montonioError);
-      console.error('Error message:', montonioError instanceof Error ? montonioError.message : 'Unknown error');
-      throw new Error(`Montonio API viga: ${montonioError instanceof Error ? montonioError.message : 'Tundmatu viga'}`);
     }
 
-    // Save order to Notion with payment status "pending"
+    console.log('=== STARTING MONTONIO ORDER CREATION ===')
+    console.log('Sending order to Montonio:', JSON.stringify(orderData, null, 2))
+
+    let paymentUrl, uuid
     try {
-      // Build properties object with only fields that exist in database
-      const properties: any = {
-        Name: { 
-          title: [{ text: { content: name } }] 
+      console.log('Calling createMontonioOrder...')
+      const montonioResult = await createMontonioOrder(orderData)
+      paymentUrl = montonioResult.paymentUrl
+      uuid = montonioResult.uuid
+      console.log('Montonio order created successfully!')
+      console.log('Payment URL:', paymentUrl)
+      console.log('UUID:', uuid)
+      console.log('=== MONTONIO ORDER CREATION COMPLETED ===')
+    } catch (montonioError) {
+      console.error('=== MONTONIO ORDER CREATION FAILED ===')
+      console.error('Montonio API error:', montonioError)
+      throw new Error(
+        `Montonio API viga: ${
+          montonioError instanceof Error
+            ? montonioError.message
+            : 'Tundmatu viga'
+        }`
+      )
+    }
+
+    try {
+      const properties: Record<string, unknown> = {
+        Name: {
+          title: [{ text: { content: name } }],
         },
-        Email: { 
-          email 
+        Email: {
+          email,
         },
-        Phone: { 
-          phone_number: phone 
+        Phone: {
+          phone_number: phone,
         },
-        Terminal: { 
-          rich_text: [{ text: { content: parcelMachine || '' } }] 
+        Terminal: {
+          rich_text: [{ text: { content: parcelMachine || '' } }],
         },
-        'Quantity (pakkide arv)': { 
-          number: parseInt(hayAmount) 
+        'Quantity (pakkide arv)': {
+          number: hayAmount,
         },
-        'Meriseatoit (kg)': { 
-          number: parseInt(guineaPigFood || '0') 
+        'Meriseatoit (kg)': {
+          number: guineaPigFood,
         },
-        'Küülikutoit (kg)': { 
-          number: parseInt(rabbitFood || '0') * 2  // Sold in 2kg packages
+        'Küülikutoit (kg)': {
+          number: rabbitFood * 2,
         },
-        'Total Price (EUR)': { 
-          number: grandTotal 
+        'Total Price (EUR)': {
+          number: grandTotal,
         },
-        Comments: { 
-          rich_text: [{ text: { content: `${notes || ''}\n\nMontonio Reference: ${merchantReference}\nMontonio UUID: ${uuid}${parcelMachineUuid ? `\nPickup Point UUID: ${parcelMachineUuid}` : ''}` } }] 
+        Comments: {
+          rich_text: [
+            {
+              text: {
+                content: `${notes || ''}\n\nMontonio Reference: ${merchantReference}\nMontonio UUID: ${uuid}${
+                  parcelMachineUuid
+                    ? `\nPickup Point UUID: ${parcelMachineUuid}`
+                    : ''
+                }`,
+              },
+            },
+          ],
         },
-        Status: { 
-          select: { name: 'Töötlemisel' } 
+        Status: {
+          select: { name: 'Töötlemisel' },
         },
-      };
+      }
 
       await notion.pages.create({
         parent: { database_id: process.env.NOTION_HAY_DATABASE_ID! },
-        properties,
-      });
-      console.log(`Order ${merchantReference} saved to Notion with status: Töötlemisel`);
+        properties: properties as any,
+      })
+      console.log(
+        `Order ${merchantReference} saved to Notion with status: Töötlemisel`
+      )
     } catch (notionError) {
-      console.error('Error saving to Notion:', notionError);
-      console.error('Notion error details:', JSON.stringify(notionError, null, 2));
-      // Continue even if Notion save fails - payment can still proceed
+      console.error('Error saving to Notion:', notionError)
     }
 
-    // Send email notification with order details
     try {
       await sendHayOrderEmail({
         name,
         email,
         phone,
         terminal: parcelMachine || 'Määramata',
-        quantity: parseInt(hayAmount),
-        guineaPigFood: parseInt(guineaPigFood || '0'),
-        rabbitFood: parseInt(rabbitFood || '0'),
+        quantity: hayAmount,
+        guineaPigFood,
+        rabbitFood,
         totalPrice: grandTotal,
         comments: notes || '',
-      });
-      console.log(`Order confirmation email sent for ${merchantReference}`);
+      })
+      console.log(`Order confirmation email sent for ${merchantReference}`)
     } catch (emailError) {
-      console.error('Error sending email:', emailError);
-      // Continue even if email fails - order is still valid
+      console.error('Error sending email:', emailError)
     }
 
-    console.log('=== RETURNING SUCCESS RESPONSE ===');
-    console.log('Success:', true);
-    console.log('Payment URL:', paymentUrl);
-    console.log('Merchant Reference:', merchantReference);
-    console.log('UUID:', uuid);
-    
     return NextResponse.json({
       success: true,
       paymentUrl,
       merchantReference,
       uuid,
-    });
+    })
   } catch (error) {
-    reportError(error, { tags: { area: 'montonio', route: 'create-order' } });
-    console.error('=== ERROR IN ORDER CREATION ===');
-    console.error('Error creating Montonio order:', error);
-    console.error('Error type:', typeof error);
-    console.error('Error message:', error instanceof Error ? error.message : 'Unknown error');
-    console.error('Error stack:', error instanceof Error ? error.stack : 'No stack trace');
-    
+    reportError(error, { tags: { area: 'montonio', route: 'create-order' } })
+    console.error('Error creating Montonio order:', error)
+
     return NextResponse.json(
       {
         error: 'Tellimuse loomisel tekkis viga. Palun proovi uuesti.',
         details: error instanceof Error ? error.message : 'Unknown error',
       },
       { status: 500 }
-    );
+    )
   }
 }

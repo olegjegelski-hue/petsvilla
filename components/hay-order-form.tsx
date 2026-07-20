@@ -28,6 +28,7 @@ export function HayOrderForm() {
     : false
 
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [formStartedAt] = useState(() => Date.now())
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -37,7 +38,8 @@ export function HayOrderForm() {
     quantity: '1',
     guineaPigFood: '0',
     rabbitFood: '0',
-    comments: ''
+    comments: '',
+    website: '',
   })
 
   const handleInputChange = (field: string, value: string) => {
@@ -109,7 +111,9 @@ export function HayOrderForm() {
             deliveryMethod: 'smartpost',
             parcelMachine: formData.terminal,
             parcelMachineUuid: formData.terminalUuid,
-            notes: formData.comments
+            notes: formData.comments,
+            website: formData.website,
+            formStartedAt,
           }),
         })
 
@@ -189,7 +193,9 @@ export function HayOrderForm() {
             quantity: formData.quantity,
             guineaPigFood: formData.guineaPigFood,
             rabbitFood: formData.rabbitFood,
-            comments: formData.comments
+            comments: formData.comments,
+            website: formData.website,
+            formStartedAt,
           }),
         })
 
@@ -330,6 +336,17 @@ export function HayOrderForm() {
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleSubmit} className="space-y-6">
+                  <input
+                    type="text"
+                    name="website"
+                    value={formData.website}
+                    onChange={(e) => handleInputChange('website', e.target.value)}
+                    tabIndex={-1}
+                    autoComplete="off"
+                    aria-hidden="true"
+                    style={{ display: 'none' }}
+                  />
+                  <input type="hidden" name="formStartedAt" value={formStartedAt} />
                   <div className="grid md:grid-cols-2 gap-6">
                     <div className="space-y-2">
                       <Label htmlFor="name" className="text-green-900 font-semibold flex items-center">
