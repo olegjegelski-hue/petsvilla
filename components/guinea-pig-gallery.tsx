@@ -102,7 +102,12 @@ export function GuineaPigGallery() {
           transition={{ duration: 0.45 }}
           className="text-center mb-10"
         >
-          <h1 className="text-4xl md:text-5xl font-bold text-green-900 mb-4">Merisead</h1>
+          <h1 className="text-4xl md:text-5xl font-bold text-green-900 mb-4">
+            Meriseabeebid
+          </h1>
+          <p className="text-sm md:text-base font-semibold text-gray-600 max-w-3xl mx-auto mb-2">
+            Merisead müügiks ainult beebidena — dokumenteeritud päritoluga (pedigree).
+          </p>
           <p className="text-sm md:text-base font-semibold text-gray-600 max-w-3xl mx-auto mb-8">
             Tegeleme lühikarvaliste tõumerisigade professionaalse aretamisega. Aretuse vanemad on hoolikalt valitud, et tagada tervete, rõõmsate ja ilusate beebide sünd. Iga meie meriseal on kaasas ametlik päritolukaart (pedigree), mis kinnitab looma puhast geneetikat ja tervist. Pakume alati nõu ja tuge uutele omanikele – meie hoolitsus ei lõpe looma loovutamisega.
           </p>

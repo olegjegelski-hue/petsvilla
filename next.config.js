@@ -13,6 +13,15 @@ const nextConfig = {
     ignoreBuildErrors: false,
   },
   images: { unoptimized: true },
+  async redirects() {
+    return [
+      {
+        source: '/merisead',
+        destination: '/meriseabeebid',
+        permanent: true, // 301
+      },
+    ]
+  },
 };
 
 module.exports = nextConfig;

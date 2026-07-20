@@ -38,7 +38,7 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/merisead" className="text-[#4F5A52] hover:text-green-800 transition-colors">
+                <Link href="/meriseabeebid" className="text-[#4F5A52] hover:text-green-800 transition-colors">
                   Merisead
                 </Link>
               </li>

@@ -15,7 +15,7 @@ import {
 
 const navigation = [
   { name: 'Avaleht', href: '/', icon: Home },
-  { name: 'Merisead', href: '/merisead', icon: Heart },
+  { name: 'Merisead', href: '/meriseabeebid', icon: Heart },
   { name: 'Papagoid', href: '/papagoid', icon: Bird },
   { name: 'Hein', href: '/hein', icon: Wheat },
   { name: 'E-pood', href: '/pood', icon: ShoppingBag },

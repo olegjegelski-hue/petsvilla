@@ -235,7 +235,7 @@ export default function TarneinfoPage() {
                   <strong>Kontakteeru meiega:</strong>
                   <ul className="list-disc list-inside ml-6 mt-2 space-y-1">
                     <li>E-post: <a href="mailto:service@petsvilla.ee" className="text-purple-600 hover:underline">service@petsvilla.ee</a></li>
-                    <li>Või läbi <Link href="/merisead" className="text-purple-600 hover:underline">merisigade galerii</Link> kontaktivormi</li>
+                    <li>Või läbi <Link href="/meriseabeebid" className="text-purple-600 hover:underline">merisigade galerii</Link> kontaktivormi</li>
                   </ul>
                 </li>
                 <li>

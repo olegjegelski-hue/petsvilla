@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { ChevronLeft, ShoppingCart, Loader2, Info } from 'lucide-react'
+import { ChevronLeft, MessageSquare, Loader2, Info } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Navigation } from '@/components/navigation'
 import { Footer } from '@/components/footer'
@@ -225,8 +225,8 @@ export function ProductDetailPage({
                     className="w-full bg-gradient-to-r from-[#1F6A4C] to-[#C8A93E] hover:from-[#19563d] hover:to-[#B39133] text-white border border-[#C8A93E]/80 text-lg py-6 shadow-lg hover:shadow-xl transition-all"
                     disabled={!isInStock}
                   >
-                    <ShoppingCart className="mr-2 h-5 w-5" />
-                    {isInStock ? 'Telli kohe' : 'Küsi saabumist'}
+                    <MessageSquare className="mr-2 h-5 w-5" />
+                    {isInStock ? 'Saada päring' : 'Küsi saabumist'}
                   </Button>
                 </Link>
 
