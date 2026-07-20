@@ -57,11 +57,9 @@ Eesmärk: müük ja päringud (loomad, hein, tooted), usaldus, SEO, operatiivsed
 ## 4. Teadaolevad GAP-id / prioriteedid
 
 **Kõrge:**
-- Sentry / error tracking
-- Montonio shipping aadress → kanooniline Soinaste (mitte „Jüri“) — kontrolli Montonio seadeid
+- *(kõik suletud ✅ — Sentry, Montonio aadress)*
 
 **Keskmine:**
-- Papagoid kategooria kaart `/pood` landingul
 - Laoseisu sync & saadavuse UX
 
 **Madalam / tulevik:**
@@ -136,4 +134,8 @@ Eesmärk: müük ja päringud (loomad, hein, tooted), usaldus, SEO, operatiivsed
 - **2026-07-20:** Strateegia lukustatud — 3 võrdset fookust (Hein/Merisead/Viirpapagoid), avaleht 3-teeline hero, e-pood madal prioriteet, portaal (petsvilla.eu) eraldi projekt (Nutike + Oleg)
 - **2026-07-20:** K2 (cookie-nõusolek enne Pixel/GA4) märgitud tehtuks — eemaldatud §4 aegunud „live rikkumine“ GAP-kirje
 - **2026-07-20:** Notionis ümber nimetatud → **Master System Prompt (PetsVilla Koduleht)** (et eristada Portaal/Papagoi Masteritest)
-- **2026-07-20:** Täissünk Cursorisse → `.cursor/rules/petsvilla-master.mdc` (sh K2 GAP eemaldamine §4-st)
+- **2026-07-20:** Täissünk Cursorisse → `.cursor/rules/petsvilla-master.mdc`
+- **2026-07-20:** Uuesti sünk (K2 GAP eemaldamine §4 peegeldub Cursoris)
+- **2026-07-21:** §4 korrastus — eemaldatud „Sentry / error tracking“ (verifitseeritud tehtuks, K20a) ja „Papagoid kaart /pood“ (live'is olemas). Montonio aadress jääb (Töös). LCP optimeeritud (avaleht 94/2.9 s, /meriseabeebid 97/2.7 s) — §7 CWV juba kaetud.
+- **2026-07-21:** Montonio tarneaadress parandatud (Tartu mnt 80, Soinaste) — viimane Kõrge GAP suletud. API rate-limit & abuse protection (kontakt + tellimus API) valmis.
+- **2026-07-21:** Sünk Cursorisse → `.cursor/rules/petsvilla-master.mdc` (GAP §4 + 21. juuli logi)
