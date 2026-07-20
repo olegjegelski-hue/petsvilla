@@ -2,10 +2,12 @@
 import { Navigation } from '@/components/navigation'
 import { BudgieGallery } from '@/components/budgie-gallery'
 import { TestimonialsSection } from '@/components/testimonials-section'
+import { FaqSection } from '@/components/faq-section'
 import { Footer } from '@/components/footer'
 import { Metadata } from 'next'
 import Script from 'next/script'
 import { getBudgies } from '@/lib/budgies'
+import { buildFaqPageSchema, viirpapagoidFaq } from '@/lib/faq'
 
 /** ISR — peab olema literaal (Next.js ei luba importitud konstanti). */
 export const revalidate = 120
@@ -96,6 +98,8 @@ export default async function ViirpapagoidPage() {
     ],
   }
 
+  const faqSchema = buildFaqPageSchema(viirpapagoidFaq)
+
   return (
     <>
       <Script
@@ -107,6 +111,11 @@ export default async function ViirpapagoidPage() {
         id="breadcrumb-budgies"
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <Script
+        id="json-ld-faq-viirpapagoid"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
       <div className="min-h-screen bg-background">
         <Navigation />
@@ -130,6 +139,10 @@ export default async function ViirpapagoidPage() {
               text: 'Kokkulepped olid lihtsad ning suhtlus kiire ja sõbralik.',
             },
           ]}
+        />
+        <FaqSection
+          title="Viirpapagoid — korduma kippuvad küsimused"
+          items={viirpapagoidFaq}
         />
         <Footer />
       </div>

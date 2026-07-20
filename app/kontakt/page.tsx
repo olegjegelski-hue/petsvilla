@@ -1,14 +1,16 @@
-
 import { Suspense } from 'react'
 import { Navigation } from '@/components/navigation'
 import { ContactForm } from '@/components/contact-form'
+import { FaqSection } from '@/components/faq-section'
 import { Footer } from '@/components/footer'
 import { Metadata } from 'next'
 import Script from 'next/script'
+import { buildFaqPageSchema, kontaktFaq } from '@/lib/faq'
 
 export const metadata: Metadata = {
   title: 'Kontakt — PetsVilla OÜ | Soinaste, Tartu mnt 80',
-  description: 'Võta ühendust PetsVillaga: Tartu mnt 80, Soinaste. Telefon +372 512 7938. Kirjuta: service@petsvilla.ee',
+  description:
+    'Võta ühendust PetsVillaga: Tartu mnt 80, Soinaste. Telefon +372 512 7938. Kirjuta: service@petsvilla.ee',
   keywords: ['kontakt', 'ühendust', 'PetsVilla kontakt', 'lemmikloomad', 'küsimused'],
   alternates: {
     canonical: 'https://petsvilla.ee/kontakt',
@@ -75,6 +77,8 @@ export default function KontaktPage() {
     ],
   }
 
+  const faqSchema = buildFaqPageSchema(kontaktFaq)
+
   return (
     <>
       <Script
@@ -87,11 +91,21 @@ export default function KontaktPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
+      <Script
+        id="json-ld-faq-kontakt"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
       <div className="min-h-screen bg-background">
         <Navigation />
         <Suspense fallback={<div className="min-h-[40vh]" aria-hidden />}>
           <ContactForm />
         </Suspense>
+        <FaqSection
+          title="Kontakt — korduma kippuvad küsimused"
+          description="Maksed, tagastus ja kuidas meiega ühendust võtta."
+          items={kontaktFaq}
+        />
         <Footer />
       </div>
     </>

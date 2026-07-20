@@ -1,9 +1,11 @@
 import { Navigation } from '@/components/navigation'
 import { GuineaPigGallery } from '@/components/guinea-pig-gallery'
+import { FaqSection } from '@/components/faq-section'
 import { Footer } from '@/components/footer'
 import { Metadata } from 'next'
 import Script from 'next/script'
 import { getGuineaPigs } from '@/lib/guinea-pigs'
+import { buildFaqPageSchema, meriseabeebidFaq } from '@/lib/faq'
 
 /** ISR — peab olema literaal (Next.js ei luba importitud konstanti). */
 export const revalidate = 120
@@ -144,60 +146,7 @@ export default async function MeriseabeebidPage() {
     ],
   }
 
-  const faqSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: 'Kas müüte täiskasvanud merisead?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'Ei. PetsVilla müüb ainult meriseabeebisid (vanus 5–8 nädalat). Aretuse vanemad ei ole müügiks.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: 'Mis on meriseabeebi dokumenteeritud päritolu?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'Dokumenteeritud päritolu (pedigree) tähendab, et meie meriseabeebid on tõuloomad, kelle vanemate ja vanavanemete informatsioon on täpselt dokumenteeritud. See kinnitab nende tõuomadusi ja tervise tausta.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: 'Kui vanad on meriseabeebid müümisel?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'Meie meriseabeebid on müümisel vanuses 5–8 nädalat. Selles vanuses on nad juba iseseisvad, söövad ise ja on valmis liikuma uude koju.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: 'Kas meriseabeebid on tervisekontrolliga?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'Jah, kõik meie beebid saavad enne uude koju minekut parasiiditõrje ja tervisekontrolli. Me paneme suurt rõhku vanemapopulatsiooni tervisele ja iseloomule.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: 'Millised värvid on saadaval?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'Meil on üle 50 tõumeriseaga erinevate värvide ja karvastruktuuriga: pruun, hõbedane, must, kreemikas, rosette, valge, must-valge, valge-hall ja tume-pruun.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: 'Kas pakute nõustamist?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'Jah, pakume professionaalset nõustamist merisiigade hooldamisel, toitmisel ja pidamisel. Meie üle 4 aasta kogemus tagab, et iga beebi leiab armastava kodu, kus teda osatakse õigesti hoida.',
-        },
-      },
-    ],
-  }
+  const faqSchema = buildFaqPageSchema(meriseabeebidFaq)
 
   const breadcrumbSchema = {
     '@context': 'https://schema.org',
@@ -238,6 +187,10 @@ export default async function MeriseabeebidPage() {
       <div className="min-h-screen bg-background">
         <Navigation />
         <GuineaPigGallery initialGuineaPigs={guineaPigs} />
+        <FaqSection
+          title="Meriseabeebid — korduma kippuvad küsimused"
+          items={meriseabeebidFaq}
+        />
         <Footer />
       </div>
     </>
