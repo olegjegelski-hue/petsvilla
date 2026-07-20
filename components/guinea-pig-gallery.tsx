@@ -30,17 +30,39 @@ export function GuineaPigGallery({ initialGuineaPigs }: GuineaPigGalleryProps) {
   return (
     <section className="pt-20 pb-0">
       <div className="container mx-auto max-w-6xl px-4">
-        {/* Header — ilma opacity:0 animatsioonita (LCP = pealkiri) */}
-        <div className="text-center mb-10">
+        {/* Header — ilma opacity:0 animatsioonita (LCP = pealkiri / staatiline banner) */}
+        <div className="text-center mb-8">
           <h1 className="page-title mb-4">
             Meriseabeebid
           </h1>
           <p className="page-lead mb-2">
             Merisead müügiks ainult beebidena — dokumenteeritud päritoluga (pedigree).
           </p>
-          <p className="text-sm md:text-base font-medium text-gray-600 max-w-3xl mx-auto mb-8">
+          <p className="text-sm md:text-base font-medium text-gray-600 max-w-3xl mx-auto mb-6">
             Lühikarvalised tõumerisead ametliku päritolukaardiga. Nõu ja tugi ka pärast loovutamist.
           </p>
+          <div className="relative mx-auto mb-8 h-44 max-w-3xl overflow-hidden rounded-2xl border border-[#D7CBBE] shadow-md">
+            <link
+              rel="preload"
+              as="image"
+              href="/hero-lcp.webp"
+              type="image/webp"
+              // @ts-expect-error React 18 link attr
+              fetchPriority="high"
+            />
+            <picture>
+              <source srcSet="/hero-lcp.webp" type="image/webp" />
+              <img
+                src="/hero-lcp.jpg"
+                alt="PetsVilla meriseabeebid dokumenteeritud päritoluga"
+                width={960}
+                height={720}
+                fetchPriority="high"
+                decoding="async"
+                className="h-full w-full object-cover"
+              />
+            </picture>
+          </div>
           <div className="flex flex-wrap items-center justify-center gap-3">
             <Link href="#ostuprotsess">
               <Button
@@ -190,8 +212,6 @@ export function GuineaPigGallery({ initialGuineaPigs }: GuineaPigGalleryProps) {
                       fill
                       sizes="(max-width: 768px) 100vw, 50vw"
                       className="object-cover hover:scale-110 transition-transform duration-700"
-                      priority={index === 0}
-                      fetchPriority={index === 0 ? 'high' : 'auto'}
                     />
                   {/* Müügistaatus */}
                   <div className="absolute top-3 left-3 z-10">
