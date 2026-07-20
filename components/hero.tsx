@@ -45,7 +45,7 @@ export function Hero() {
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background" />
 
       <div className="relative z-10 container mx-auto max-w-6xl px-4">
-        <div className="flex min-h-[85svh] flex-col items-center justify-center pt-16 pb-8 text-center md:min-h-[50vh] md:pt-20">
+        <div className="flex min-h-[100svh] flex-col items-center justify-center pt-16 pb-10 text-center md:min-h-[65vh] md:pt-20">
           <h1 className="page-title mb-4">
             <span className="font-semibold tracking-[0.04rem] text-[#1F6A4C]">
               PetsVilla

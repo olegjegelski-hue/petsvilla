@@ -41,7 +41,7 @@ export function GuineaPigGallery({ initialGuineaPigs }: GuineaPigGalleryProps) {
           <p className="text-sm md:text-base font-medium text-gray-600 max-w-3xl mx-auto mb-6">
             Lühikarvalised tõumerisead ametliku päritolukaardiga. Nõu ja tugi ka pärast loovutamist.
           </p>
-          <div className="flex flex-wrap items-center justify-center gap-3 mb-8">
+          <div className="flex flex-wrap items-center justify-center gap-3">
             <Link href="#ostuprotsess">
               <Button
                 size="lg"
@@ -61,18 +61,6 @@ export function GuineaPigGallery({ initialGuineaPigs }: GuineaPigGalleryProps) {
               </Button>
             </Link>
           </div>
-        </div>
-
-        <div className="relative mx-auto mb-10 h-44 max-w-3xl overflow-hidden rounded-2xl border border-[#D7CBBE] shadow-md">
-          <img
-            src="/hero-lcp.webp"
-            alt="PetsVilla meriseabeebid dokumenteeritud päritoluga"
-            width={960}
-            height={720}
-            loading="lazy"
-            decoding="async"
-            className="h-full w-full object-cover"
-          />
         </div>
 
         <details className="max-w-3xl mx-auto mb-8 text-sm text-gray-600 leading-relaxed">
