@@ -47,7 +47,6 @@ export function GuineaPigGallery({ initialGuineaPigs }: GuineaPigGalleryProps) {
               as="image"
               href="/hero-lcp.webp"
               type="image/webp"
-              // @ts-expect-error React 18 link attr
               fetchPriority="high"
             />
             <picture>

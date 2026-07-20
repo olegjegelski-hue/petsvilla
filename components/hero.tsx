@@ -45,7 +45,6 @@ export function Hero() {
         as="image"
         href="/hero-hay.webp"
         type="image/webp"
-        // @ts-expect-error React 18 link attr
         fetchPriority="high"
       />
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background" />
