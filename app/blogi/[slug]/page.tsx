@@ -281,7 +281,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
 
-      <div className="min-h-screen bg-gradient-to-b from-purple-50 to-pink-50">
+      <div className="min-h-screen bg-background">
         <Navigation />
         
         <article className="py-20">
@@ -306,7 +306,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                 />
                 {post.category && (
                   <div className="absolute top-6 left-6">
-                    <Badge className="bg-purple-500 hover:bg-purple-600">
+                    <Badge className="bg-green-700 hover:bg-green-800">
                       <Tag className="w-3 h-3 mr-1" />
                       {post.category}
                     </Badge>
@@ -350,7 +350,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
                 {/* Author Box */}
                 <div className="mt-12 pt-8 border-t">
-                  <div className="bg-purple-50 rounded-lg p-6">
+                  <div className="bg-green-50 rounded-lg p-6">
                     <p className="font-semibold text-gray-900 mb-1">Autor</p>
                     <p className="text-gray-600">{post.author}</p>
                   </div>
@@ -359,7 +359,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                 {/* Back Button */}
                 <div className="mt-8 text-center">
                   <Link href="/blogi">
-                    <Button size="lg" className="bg-purple-500 hover:bg-purple-600">
+                    <Button size="lg" className="bg-green-700 hover:bg-green-800">
                       Vaata teisi postitusi
                     </Button>
                   </Link>

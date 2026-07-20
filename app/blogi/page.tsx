@@ -76,7 +76,7 @@ export default function BlogPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
-      <div className="min-h-screen bg-gradient-to-b from-purple-50 to-pink-50">
+      <div className="min-h-screen bg-background">
         <Navigation />
         <Suspense fallback={<div className="min-h-[40vh]" aria-hidden />}>
           <BlogList />

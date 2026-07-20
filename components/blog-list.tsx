@@ -95,7 +95,7 @@ export function BlogList() {
         <div className="container mx-auto max-w-6xl px-4">
           <div className="flex items-center justify-center min-h-[400px]">
             <div className="text-center">
-              <Loader2 className="w-12 h-12 text-purple-500 animate-spin mx-auto mb-4" />
+              <Loader2 className="w-12 h-12 text-green-600 animate-spin mx-auto mb-4" />
               <p className="text-gray-600">Laadin blogipostitusi...</p>
             </div>
           </div>
@@ -134,11 +134,11 @@ export function BlogList() {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-4">
-            <BookOpen className="inline-block w-12 h-12 text-purple-500 mr-4" />
+          <h1 className="page-title mb-4">
+            <BookOpen className="inline-block w-10 h-10 text-green-600 mr-3 align-middle" />
             Blogi
           </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+          <p className="page-lead mb-8">
             Avasta huvitavaid artikleid lemmikloomade hoolduse, toitmise ja tervise kohta.
           </p>
           
@@ -146,21 +146,21 @@ export function BlogList() {
           <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
             <Card className="border-0 shadow-lg">
               <CardContent className="p-4 text-center">
-                <BookOpen className="w-8 h-8 text-purple-500 mx-auto mb-2" />
+                <BookOpen className="w-8 h-8 text-green-600 mx-auto mb-2" />
                 <p className="font-semibold">Huvitavad artiklid</p>
                 <p className="text-sm text-gray-600">Ekspertide nõuanded</p>
               </CardContent>
             </Card>
             <Card className="border-0 shadow-lg">
               <CardContent className="p-4 text-center">
-                <Tag className="w-8 h-8 text-purple-500 mx-auto mb-2" />
+                <Tag className="w-8 h-8 text-green-600 mx-auto mb-2" />
                 <p className="font-semibold">Erinevad teemad</p>
                 <p className="text-sm text-gray-600">Hooldus, toitmine, tervis</p>
               </CardContent>
             </Card>
             <Card className="border-0 shadow-lg">
               <CardContent className="p-4 text-center">
-                <Calendar className="w-8 h-8 text-purple-500 mx-auto mb-2" />
+                <Calendar className="w-8 h-8 text-green-600 mx-auto mb-2" />
                 <p className="font-semibold">Regulaarsed uuendused</p>
                 <p className="text-sm text-gray-600">Uued postitused</p>
               </CardContent>
@@ -183,7 +183,7 @@ export function BlogList() {
                 <span className="text-sm font-semibold text-gray-700">Loom:</span>
                 <Button
                   variant={selectedAnimal === 'all' ? 'default' : 'outline'}
-                  className={selectedAnimal === 'all' ? 'bg-purple-600 hover:bg-purple-700' : ''}
+                  className={selectedAnimal === 'all' ? 'bg-green-700 hover:bg-green-800' : ''}
                   size="sm"
                   onClick={() => setSelectedAnimal('all')}
                 >
@@ -193,7 +193,7 @@ export function BlogList() {
                   <Button
                     key={animal}
                     variant={selectedAnimal === animal ? 'default' : 'outline'}
-                    className={selectedAnimal === animal ? 'bg-purple-600 hover:bg-purple-700' : ''}
+                    className={selectedAnimal === animal ? 'bg-green-700 hover:bg-green-800' : ''}
                     size="sm"
                     onClick={() => setSelectedAnimal(animal)}
                   >
@@ -206,7 +206,7 @@ export function BlogList() {
                 <span className="text-sm font-semibold text-gray-700">Kategooria:</span>
                 <Button
                   variant={selectedCategory === 'all' ? 'default' : 'outline'}
-                  className={selectedCategory === 'all' ? 'bg-purple-600 hover:bg-purple-700' : ''}
+                  className={selectedCategory === 'all' ? 'bg-green-700 hover:bg-green-800' : ''}
                   size="sm"
                   onClick={() => setSelectedCategory('all')}
                 >
@@ -216,7 +216,7 @@ export function BlogList() {
                   <Button
                     key={category}
                     variant={selectedCategory === category ? 'default' : 'outline'}
-                    className={selectedCategory === category ? 'bg-purple-600 hover:bg-purple-700' : ''}
+                    className={selectedCategory === category ? 'bg-green-700 hover:bg-green-800' : ''}
                     size="sm"
                     onClick={() => setSelectedCategory(category)}
                   >
@@ -264,7 +264,7 @@ export function BlogList() {
                             <Badge
                               key={category}
                               variant="default"
-                              className="bg-purple-500 hover:bg-purple-600"
+                              className="bg-green-700 hover:bg-green-800"
                             >
                               <Tag className="w-3 h-3 mr-1" />
                               {category}
@@ -279,7 +279,7 @@ export function BlogList() {
                     </div>
                     
                     <CardContent className="p-6">
-                      <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-purple-600 transition-colors line-clamp-2">
+                      <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-green-800 transition-colors line-clamp-2">
                         {post.title}
                       </h3>
                       
@@ -306,7 +306,7 @@ export function BlogList() {
                       </div>
 
                       <div className="mt-4">
-                        <Button variant="ghost" className="w-full text-gray-900 font-semibold group-hover:bg-purple-50 group-hover:text-purple-600">
+                        <Button variant="ghost" className="w-full text-gray-900 font-semibold group-hover:bg-green-50 group-hover:text-green-800">
                           Loe edasi
                           <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                         </Button>
@@ -327,15 +327,15 @@ export function BlogList() {
             transition={{ duration: 0.8, delay: 0.5 }}
             className="text-center"
           >
-            <Card className="border-0 shadow-lg bg-gradient-to-br from-purple-50 to-pink-50">
+            <Card className="border-0 shadow-lg bg-gradient-to-br from-green-50 to-amber-50">
               <CardContent className="p-8">
-                <h2 className="text-2xl font-bold mb-4">Soovid rohkem teada?</h2>
+                <h2 className="text-2xl font-bold mb-4 text-green-900">Soovid rohkem teada?</h2>
                 <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
                   Kui sul on küsimusi lemmikloomade hoolduse kohta, võta meiega julgelt ühendust!
                 </p>
                 <div className="flex gap-4 justify-center flex-wrap">
                   <Link href="/kontakt">
-                    <Button size="lg" className="bg-purple-500 hover:bg-purple-600">
+                    <Button size="lg" className="bg-green-700 hover:bg-green-800">
                       Võta ühendust
                     </Button>
                   </Link>
