@@ -1,4 +1,6 @@
 
+import Link from 'next/link'
+import { ArrowLeft } from 'lucide-react'
 import { Navigation } from '@/components/navigation'
 import { Footer } from '@/components/footer'
 import { Metadata } from 'next'
@@ -34,12 +36,21 @@ export default function PrivaatsuspoliitikаPage() {
   return (
     <>
       <Navigation />
-      <main className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-green-50 pt-24 pb-16">
+      <main className="min-h-screen bg-gradient-to-b from-[#E3D8CB] via-[#E8DFD3] to-background pt-24 pb-16">
         <div className="container mx-auto px-4 max-w-4xl">
+          <nav aria-label="Leivapuru" className="mb-6">
+            <Link
+              href="/"
+              className="inline-flex items-center text-[#1F6A4C] hover:text-green-900 font-medium transition-colors"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" aria-hidden />
+              Tagasi avalehele
+            </Link>
+          </nav>
           {/* Header */}
           <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4 flex items-center justify-center gap-3">
-              <Shield className="w-12 h-12 text-orange-500" />
+            <h1 className="text-4xl md:text-5xl font-bold text-green-900 mb-4 flex items-center justify-center gap-3">
+              <Shield className="w-12 h-12 text-[#C8A93E]" />
               Privaatsuspoliitika
             </h1>
             <p className="text-lg text-gray-600">
@@ -50,10 +61,10 @@ export default function PrivaatsuspoliitikаPage() {
           {/* Content */}
           <div className="space-y-8">
             {/* Section 1 */}
-            <Card>
+            <Card className="border border-[#D7CBBE] bg-[#E3D8CB]/90 shadow-md">
               <CardContent className="p-6">
-                <h2 className="text-2xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                  <FileText className="w-6 h-6 text-orange-500" />
+                <h2 className="text-2xl font-semibold text-green-900 mb-4 flex items-center gap-2">
+                  <FileText className="w-6 h-6 text-[#C8A93E]" />
                   1. Üldsätted
                 </h2>
                 <div className="space-y-4 text-gray-700">
@@ -75,10 +86,10 @@ export default function PrivaatsuspoliitikаPage() {
             </Card>
 
             {/* Section 2 */}
-            <Card>
+            <Card className="border border-[#D7CBBE] bg-[#E3D8CB]/90 shadow-md">
               <CardContent className="p-6">
-                <h2 className="text-2xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                  <Eye className="w-6 h-6 text-orange-500" />
+                <h2 className="text-2xl font-semibold text-green-900 mb-4 flex items-center gap-2">
+                  <Eye className="w-6 h-6 text-[#C8A93E]" />
                   2. Milliseid andmeid me kogume?
                 </h2>
                 <div className="space-y-4 text-gray-700">
@@ -93,10 +104,10 @@ export default function PrivaatsuspoliitikаPage() {
             </Card>
 
             {/* Section 3 */}
-            <Card>
+            <Card className="border border-[#D7CBBE] bg-[#E3D8CB]/90 shadow-md">
               <CardContent className="p-6">
-                <h2 className="text-2xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                  <Lock className="w-6 h-6 text-orange-500" />
+                <h2 className="text-2xl font-semibold text-green-900 mb-4 flex items-center gap-2">
+                  <Lock className="w-6 h-6 text-[#C8A93E]" />
                   3. Kuidas me kasutame teie andmeid?
                 </h2>
                 <div className="space-y-4 text-gray-700">
@@ -113,10 +124,10 @@ export default function PrivaatsuspoliitikаPage() {
             </Card>
 
             {/* Section 4 */}
-            <Card>
+            <Card className="border border-[#D7CBBE] bg-[#E3D8CB]/90 shadow-md">
               <CardContent className="p-6">
-                <h2 className="text-2xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                  <Mail className="w-6 h-6 text-orange-500" />
+                <h2 className="text-2xl font-semibold text-green-900 mb-4 flex items-center gap-2">
+                  <Mail className="w-6 h-6 text-[#C8A93E]" />
                   4. Andmete jagamine kolmandate osapooltega
                 </h2>
                 <div className="space-y-4 text-gray-700">
@@ -135,10 +146,10 @@ export default function PrivaatsuspoliitikаPage() {
             </Card>
 
             {/* Section 5 */}
-            <Card>
+            <Card className="border border-[#D7CBBE] bg-[#E3D8CB]/90 shadow-md">
               <CardContent className="p-6">
-                <h2 className="text-2xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                  <Shield className="w-6 h-6 text-orange-500" />
+                <h2 className="text-2xl font-semibold text-green-900 mb-4 flex items-center gap-2">
+                  <Shield className="w-6 h-6 text-[#C8A93E]" />
                   5. Kuidas me kaitseme teie andmeid?
                 </h2>
                 <div className="space-y-4 text-gray-700">
@@ -154,10 +165,10 @@ export default function PrivaatsuspoliitikаPage() {
             </Card>
 
             {/* Section 6 */}
-            <Card>
+            <Card className="border border-[#D7CBBE] bg-[#E3D8CB]/90 shadow-md">
               <CardContent className="p-6">
-                <h2 className="text-2xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                  <AlertCircle className="w-6 h-6 text-orange-500" />
+                <h2 className="text-2xl font-semibold text-green-900 mb-4 flex items-center gap-2">
+                  <AlertCircle className="w-6 h-6 text-[#C8A93E]" />
                   6. Teie õigused
                 </h2>
                 <div className="space-y-4 text-gray-700">
@@ -178,7 +189,7 @@ export default function PrivaatsuspoliitikаPage() {
             </Card>
 
             {/* Section 7 */}
-            <Card>
+            <Card className="border border-[#D7CBBE] bg-[#E3D8CB]/90 shadow-md">
               <CardContent className="p-6">
                 <h2 className="text-2xl font-semibold text-gray-900 mb-4">
                   7. Küpsised (Cookies)
@@ -192,7 +203,7 @@ export default function PrivaatsuspoliitikаPage() {
             </Card>
 
             {/* Section 8 */}
-            <Card>
+            <Card className="border border-[#D7CBBE] bg-[#E3D8CB]/90 shadow-md">
               <CardContent className="p-6">
                 <h2 className="text-2xl font-semibold text-gray-900 mb-4">
                   8. Muudatused privaatsuspoliitikas
@@ -206,7 +217,7 @@ export default function PrivaatsuspoliitikаPage() {
             </Card>
 
             {/* Section 9 */}
-            <Card>
+            <Card className="border border-[#D7CBBE] bg-[#E3D8CB]/90 shadow-md">
               <CardContent className="p-6">
                 <h2 className="text-2xl font-semibold text-gray-900 mb-4">
                   9. Kontakt
@@ -215,7 +226,7 @@ export default function PrivaatsuspoliitikаPage() {
                   <p>
                     Kui teil on küsimusi privaatsuspoliitika kohta, võtke meiega ühendust:
                   </p>
-                  <div className="bg-orange-50 p-4 rounded-lg mt-4">
+                  <div className="bg-[#E8DFD3]/80 p-4 rounded-lg mt-4">
                     <p><strong>PetsVilla OÜ</strong></p>
                     <p>Tartu mnt 80, Soinaste, 61709, Tartumaa</p>
                     <p>E-post: <a href="mailto:service@petsvilla.ee" className="text-orange-600 hover:underline">service@petsvilla.ee</a></p>

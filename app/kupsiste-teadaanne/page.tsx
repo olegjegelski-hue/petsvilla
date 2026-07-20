@@ -1,4 +1,6 @@
 
+import Link from 'next/link'
+import { ArrowLeft } from 'lucide-react'
 import { Navigation } from '@/components/navigation'
 import { Footer } from '@/components/footer'
 import { Metadata } from 'next'
@@ -34,12 +36,21 @@ export default function KupsistePage() {
   return (
     <>
       <Navigation />
-      <main className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-green-50 pt-24 pb-16">
+      <main className="min-h-screen bg-gradient-to-b from-[#E3D8CB] via-[#E8DFD3] to-background pt-24 pb-16">
         <div className="container mx-auto px-4 max-w-4xl">
+          <nav aria-label="Leivapuru" className="mb-6">
+            <Link
+              href="/"
+              className="inline-flex items-center text-[#1F6A4C] hover:text-green-900 font-medium transition-colors"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" aria-hidden />
+              Tagasi avalehele
+            </Link>
+          </nav>
           {/* Header */}
           <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4 flex items-center justify-center gap-3">
-              <Cookie className="w-12 h-12 text-orange-500" />
+            <h1 className="text-4xl md:text-5xl font-bold text-green-900 mb-4 flex items-center justify-center gap-3">
+              <Cookie className="w-12 h-12 text-[#C8A93E]" />
               Küpsiste teadaanne
             </h1>
             <p className="text-lg text-gray-600">
@@ -50,7 +61,7 @@ export default function KupsistePage() {
           {/* Content */}
           <div className="space-y-8">
             {/* Section 1 */}
-            <Card>
+            <Card className="border border-[#D7CBBE] bg-[#E3D8CB]/90 shadow-md">
               <CardContent className="p-6">
                 <h2 className="text-2xl font-semibold text-gray-900 mb-4">
                   1. Mis on küpsised?
@@ -70,10 +81,10 @@ export default function KupsistePage() {
             </Card>
 
             {/* Section 2 */}
-            <Card>
+            <Card className="border border-[#D7CBBE] bg-[#E3D8CB]/90 shadow-md">
               <CardContent className="p-6">
-                <h2 className="text-2xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                  <Settings className="w-6 h-6 text-orange-500" />
+                <h2 className="text-2xl font-semibold text-green-900 mb-4 flex items-center gap-2">
+                  <Settings className="w-6 h-6 text-[#C8A93E]" />
                   2. Milliseid küpsiseid me kasutame?
                 </h2>
                 <div className="space-y-6 text-gray-700">
@@ -126,10 +137,10 @@ export default function KupsistePage() {
             </Card>
 
             {/* Section 3 */}
-            <Card>
+            <Card className="border border-[#D7CBBE] bg-[#E3D8CB]/90 shadow-md">
               <CardContent className="p-6">
-                <h2 className="text-2xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                  <AlertCircle className="w-6 h-6 text-orange-500" />
+                <h2 className="text-2xl font-semibold text-green-900 mb-4 flex items-center gap-2">
+                  <AlertCircle className="w-6 h-6 text-[#C8A93E]" />
                   3. Kuidas hallata küpsiseid?
                 </h2>
                 <div className="space-y-4 text-gray-700">
@@ -171,7 +182,7 @@ export default function KupsistePage() {
                     </ul>
                   </div>
 
-                  <div className="bg-orange-50 p-4 rounded-lg mt-6">
+                  <div className="bg-[#E8DFD3]/80 p-4 rounded-lg mt-6">
                     <p className="font-semibold mb-2">Google Analytics'i keelamine:</p>
                     <p>
                       Saate Google Analytics'i jälgimise keelata, installides Google Analytics Opt-out Browser Add-on:
@@ -185,7 +196,7 @@ export default function KupsistePage() {
             </Card>
 
             {/* Section 4 */}
-            <Card>
+            <Card className="border border-[#D7CBBE] bg-[#E3D8CB]/90 shadow-md">
               <CardContent className="p-6">
                 <h2 className="text-2xl font-semibold text-gray-900 mb-4">
                   4. Kolmandate osapoolte küpsised
@@ -204,7 +215,7 @@ export default function KupsistePage() {
             </Card>
 
             {/* Section 5 */}
-            <Card>
+            <Card className="border border-[#D7CBBE] bg-[#E3D8CB]/90 shadow-md">
               <CardContent className="p-6">
                 <h2 className="text-2xl font-semibold text-gray-900 mb-4">
                   5. Muudatused küpsiste teadaandes
@@ -218,7 +229,7 @@ export default function KupsistePage() {
             </Card>
 
             {/* Section 6 */}
-            <Card>
+            <Card className="border border-[#D7CBBE] bg-[#E3D8CB]/90 shadow-md">
               <CardContent className="p-6">
                 <h2 className="text-2xl font-semibold text-gray-900 mb-4">
                   6. Kontakt
@@ -227,7 +238,7 @@ export default function KupsistePage() {
                   <p>
                     Kui teil on küsimusi küpsiste kohta, võtke meiega ühendust:
                   </p>
-                  <div className="bg-orange-50 p-4 rounded-lg mt-4">
+                  <div className="bg-[#E8DFD3]/80 p-4 rounded-lg mt-4">
                     <p><strong>PetsVilla OÜ</strong></p>
                     <p>Tartu mnt 80, Soinaste, 61709, Tartumaa</p>
                     <p>E-post: <a href="mailto:service@petsvilla.ee" className="text-orange-600 hover:underline">service@petsvilla.ee</a></p>
