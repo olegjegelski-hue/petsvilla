@@ -72,22 +72,6 @@ export function GuineaPigGallery({ initialGuineaPigs }: GuineaPigGalleryProps) {
           </p>
         </details>
 
-        <div className="max-w-4xl mx-auto mb-8 text-center">
-          <p className="text-xs md:text-sm italic font-semibold text-[#2E3A32] leading-relaxed">
-            Tutvu enne merisea valikut nende vajadustega, et pakkuda oma tulevasele lemmikule parimat.
-            <br />
-            Meie blogist leiad praktilisi nõuandeid ja hooldusjuhiseid nii uuele kui ka kogenud omanikule.
-          </p>
-          <Link href="/blogi?loom=Merisead">
-            <Button
-              variant="ghost"
-              className="mt-4 inline-flex h-7 w-[4.5rem] items-center justify-center rounded-full border text-[11px] font-semibold leading-[1] tracking-wide border-muted-foreground/60 text-muted-foreground hover:border-green-800 hover:text-green-800 transition-colors"
-            >
-              BLOGI
-            </Button>
-          </Link>
-        </div>
-
         {/* Filters - keskele ja kitsamaks */}
         {guineaPigs.length > 0 && (
           <div className="max-w-3xl mx-auto mb-8">
@@ -336,6 +320,22 @@ export function GuineaPigGallery({ initialGuineaPigs }: GuineaPigGalleryProps) {
             </div>
           )
         })}
+        </div>
+
+        <div className="max-w-4xl mx-auto mb-12 text-center">
+          <p className="text-xs md:text-sm italic font-semibold text-[#2E3A32] leading-relaxed">
+            Tutvu enne merisea valikut nende vajadustega, et pakkuda oma tulevasele lemmikule parimat.
+            <br />
+            Meie blogist leiad praktilisi nõuandeid ja hooldusjuhiseid nii uuele kui ka kogenud omanikule.
+          </p>
+          <Link href="/blogi?loom=Merisead">
+            <Button
+              variant="ghost"
+              className="mt-4 inline-flex h-7 w-[4.5rem] items-center justify-center rounded-full border text-[11px] font-semibold leading-[1] tracking-wide border-muted-foreground/60 text-muted-foreground hover:border-green-800 hover:text-green-800 transition-colors"
+            >
+              BLOGI
+            </Button>
+          </Link>
         </div>
 
         {/* Purchase Process */}
