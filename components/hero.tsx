@@ -37,16 +37,15 @@ const paths = [
 
 /**
  * Server Component.
- * LCP-strateegia: pealkiri on LCP-element (kiire tekst); kaardipildid loading=lazy,
- * et mobiilil ei ootaks LCP suurt pilti (simulatsioonil ~3–4s).
+ * Esimene viewport = bränd + tekst (LCP); kaardipildid allpool foldi → kiirem LCP.
  */
 export function Hero() {
   return (
     <section className="relative overflow-hidden bg-gradient-to-br from-[#E3D8CB] via-[#E8DFD3] to-[#D7CBBE]">
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background" />
 
-      <div className="relative z-10 container mx-auto max-w-6xl px-4 pt-16 pb-14 md:pt-20 md:pb-16">
-        <div className="text-center mb-10 md:mb-12">
+      <div className="relative z-10 container mx-auto max-w-6xl px-4">
+        <div className="flex min-h-[72vh] flex-col items-center justify-center pt-16 pb-10 text-center md:min-h-[58vh] md:pt-20">
           <h1 className="page-title mb-4 font-[family-name:var(--font-poppins)]">
             <span className="font-semibold tracking-[0.04rem] text-[#1F6A4C]">
               PetsVilla
@@ -56,9 +55,12 @@ export function Hero() {
             Hein · Merisead · Viirpapagoid — aretus, nõu ja tarne ühest kohast.
           </p>
           <h2 className="section-title">Mida otsid?</h2>
+          <p className="mt-3 text-sm font-medium text-[#4F5A52]">
+            Vali allpool üks kolmest suunast
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6">
+        <div className="grid grid-cols-1 gap-5 pb-14 md:grid-cols-3 md:gap-6 md:pb-16">
           {paths.map((path) => {
             const Icon = path.icon
             return (
@@ -67,7 +69,7 @@ export function Hero() {
                 href={path.href}
                 className="group flex h-full flex-col overflow-hidden rounded-2xl border border-[#D7CBBE] bg-[#E3D8CB]/95 shadow-lg transition-all duration-300 hover:shadow-xl hover:border-[#C8A93E]/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1F6A4C]"
               >
-                <div className="relative h-40 md:h-44 overflow-hidden bg-[#D7CBBE]">
+                <div className="relative h-40 overflow-hidden bg-[#D7CBBE] md:h-44">
                   <Image
                     src={path.image}
                     alt={path.alt}
@@ -81,14 +83,14 @@ export function Hero() {
                     <Icon className="h-5 w-5 text-white" aria-hidden />
                   </div>
                 </div>
-                <div className="flex flex-1 flex-col p-5 md:p-6 text-left">
-                  <h3 className="text-xl md:text-2xl font-bold text-green-900 mb-2">
+                <div className="flex flex-1 flex-col p-5 text-left md:p-6">
+                  <h3 className="mb-2 text-xl font-bold text-green-900 md:text-2xl">
                     {path.title}
                   </h3>
-                  <p className="text-sm md:text-base text-[#4F5A52] mb-5 flex-1 leading-relaxed">
+                  <p className="mb-5 flex-1 text-sm leading-relaxed text-[#4F5A52] md:text-base">
                     {path.description}
                   </p>
-                  <span className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-[#1F6A4C] to-[#C8A93E] px-5 py-2.5 text-sm font-semibold text-white border border-[#C8A93E]/80 shadow-md transition-all group-hover:from-[#19563d] group-hover:to-[#B39133]">
+                  <span className="inline-flex items-center justify-center rounded-full border border-[#C8A93E]/80 bg-gradient-to-r from-[#1F6A4C] to-[#C8A93E] px-5 py-2.5 text-sm font-semibold text-white shadow-md transition-all group-hover:from-[#19563d] group-hover:to-[#B39133]">
                     {path.cta}
                     <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-0.5" />
                   </span>

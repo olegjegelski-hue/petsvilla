@@ -42,25 +42,15 @@ export function GuineaPigGallery({ initialGuineaPigs }: GuineaPigGalleryProps) {
             Lühikarvalised tõumerisead ametliku päritolukaardiga. Nõu ja tugi ka pärast loovutamist.
           </p>
           <div className="relative mx-auto mb-8 h-44 max-w-3xl overflow-hidden rounded-2xl border border-[#D7CBBE] shadow-md">
-            <link
-              rel="preload"
-              as="image"
-              href="/hero-lcp.webp"
-              type="image/webp"
+            <img
+              src="/hero-lcp.webp"
+              alt="PetsVilla meriseabeebid dokumenteeritud päritoluga"
+              width={960}
+              height={720}
               fetchPriority="high"
+              decoding="async"
+              className="h-full w-full object-cover"
             />
-            <picture>
-              <source srcSet="/hero-lcp.webp" type="image/webp" />
-              <img
-                src="/hero-lcp.jpg"
-                alt="PetsVilla meriseabeebid dokumenteeritud päritoluga"
-                width={960}
-                height={720}
-                fetchPriority="high"
-                decoding="async"
-                className="h-full w-full object-cover"
-              />
-            </picture>
           </div>
           <div className="flex flex-wrap items-center justify-center gap-3">
             <Link href="#ostuprotsess">
