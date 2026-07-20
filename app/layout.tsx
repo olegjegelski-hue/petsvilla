@@ -11,7 +11,7 @@ import { getSiteUrl } from '@/lib/site-url'
 
 const inter = Inter({
   subsets: ['latin'],
-  display: 'swap',
+  display: 'optional',
   preload: true,
   adjustFontFallback: true,
 })
@@ -19,7 +19,7 @@ const poppins = Poppins({
   weight: ['600'],
   subsets: ['latin'],
   variable: '--font-poppins',
-  display: 'swap',
+  display: 'optional',
   preload: true,
   adjustFontFallback: true,
 })

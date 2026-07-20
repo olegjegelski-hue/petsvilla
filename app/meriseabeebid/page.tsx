@@ -169,7 +169,6 @@ export default async function MeriseabeebidPage() {
 
   return (
     <>
-      <link rel="preload" as="image" href="/hero-lcp.webp" type="image/webp" fetchPriority="high" />
       <Script
         id="json-ld-product"
         type="application/ld+json"

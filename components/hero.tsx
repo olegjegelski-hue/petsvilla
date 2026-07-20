@@ -45,13 +45,13 @@ export function Hero() {
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background" />
 
       <div className="relative z-10 container mx-auto max-w-6xl px-4">
-        <div className="flex min-h-[100svh] flex-col items-center justify-center pt-16 pb-10 text-center md:min-h-[70vh] md:pt-20">
-          <h1 className="page-title mb-4 font-[family-name:var(--font-poppins)]">
+        <div className="flex min-h-[85svh] flex-col items-center justify-center pt-16 pb-8 text-center md:min-h-[50vh] md:pt-20">
+          <h1 className="page-title mb-4">
             <span className="font-semibold tracking-[0.04rem] text-[#1F6A4C]">
               PetsVilla
             </span>
           </h1>
-          <p className="page-lead mb-8 !font-medium text-[#2E3A32] sm:text-lg">
+          <p className="page-lead mb-6 !font-medium text-[#2E3A32] sm:text-lg">
             Hein · Merisead · Viirpapagoid — aretus, nõu ja tarne ühest kohast.
           </p>
           <h2 className="section-title">Mida otsid?</h2>
