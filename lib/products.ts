@@ -31,6 +31,44 @@ export const SHOP_CATEGORIES: Record<
   },
 }
 
+/** Landing-/avalehe kaardid (järjestus: Birds + tarbekaubad). */
+export const SHOP_CATEGORY_CARDS: Array<{
+  id: string
+  title: string
+  slug: string
+  description: string
+  icon: string
+}> = [
+  {
+    id: 'birds',
+    title: SHOP_CATEGORIES.birds.title,
+    slug: 'birds',
+    description: SHOP_CATEGORIES.birds.description,
+    icon: SHOP_CATEGORIES.birds.icon,
+  },
+  {
+    id: 'feed-for-reptiles',
+    title: SHOP_CATEGORIES['feed-for-reptiles'].title,
+    slug: 'feed-for-reptiles',
+    description: SHOP_CATEGORIES['feed-for-reptiles'].description,
+    icon: SHOP_CATEGORIES['feed-for-reptiles'].icon,
+  },
+  {
+    id: 'reptiles-amphibians',
+    title: SHOP_CATEGORIES['reptiles-amphibians'].title,
+    slug: 'reptiles-amphibians',
+    description: SHOP_CATEGORIES['reptiles-amphibians'].description,
+    icon: SHOP_CATEGORIES['reptiles-amphibians'].icon,
+  },
+  {
+    id: 'plants',
+    title: SHOP_CATEGORIES.plants.title,
+    slug: 'plants',
+    description: SHOP_CATEGORIES.plants.description,
+    icon: SHOP_CATEGORIES.plants.icon,
+  },
+]
+
 export function slugifyProductName(commonName: string): string {
   return commonName
     .toLowerCase()

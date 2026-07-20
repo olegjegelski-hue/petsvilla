@@ -1,6 +1,7 @@
 
 import { Navigation } from '@/components/navigation'
 import { Hero } from '@/components/hero'
+import { ShopCategoriesSection } from '@/components/shop-categories-section'
 import { Footer } from '@/components/footer'
 import Script from 'next/script'
 import type { Metadata } from 'next'
@@ -86,6 +87,7 @@ export default function Home() {
       <div className="min-h-screen bg-background">
         <Navigation />
         <Hero />
+        <ShopCategoriesSection />
         <Footer />
       </div>
     </>

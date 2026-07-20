@@ -11,8 +11,9 @@ interface CategoryCardProps {
   description: string
   slug: string
   icon: string
-  productCount: number
   index: number
+  /** Valikuline — kui puudub, näita lihtsalt „Vaata“ */
+  productCount?: number
 }
 
 export function CategoryCard({
@@ -20,8 +21,8 @@ export function CategoryCard({
   description,
   slug,
   icon,
-  productCount,
   index,
+  productCount,
 }: CategoryCardProps) {
   return (
     <motion.div
@@ -33,15 +34,25 @@ export function CategoryCard({
         <Card className="group h-full overflow-hidden transition-all hover:shadow-xl hover:-translate-y-2 cursor-pointer border border-[#D7CBBE] bg-[#E3D8CB]/90">
           <CardContent className="p-6 h-full">
             <div className="flex flex-col h-full">
-              <div className="text-6xl mb-4">{icon}</div>
-              <h3 className="text-2xl font-bold text-green-900 mb-2 group-hover:text-green-800 transition-colors">
+              <div className="text-5xl md:text-6xl mb-4" aria-hidden>
+                {icon}
+              </div>
+              <h3 className="text-xl md:text-2xl font-bold text-green-900 mb-2 group-hover:text-[#1F6A4C] transition-colors">
                 {title}
               </h3>
-              <p className="text-gray-600 mb-4 flex-grow">{description}</p>
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium text-green-900">
-                  {productCount}+ toodet
-                </span>
+              <p className="text-gray-600 mb-4 flex-grow text-sm md:text-base leading-relaxed">
+                {description}
+              </p>
+              <div className="flex items-center justify-between gap-2">
+                {typeof productCount === 'number' ? (
+                  <span className="text-sm font-medium text-green-900">
+                    {productCount}+ toodet
+                  </span>
+                ) : (
+                  <span className="text-sm font-medium text-green-900/80">
+                    Petra Aqua kataloog
+                  </span>
+                )}
                 <Button
                   variant="default"
                   size="sm"
