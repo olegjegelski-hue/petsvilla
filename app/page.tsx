@@ -1,32 +1,31 @@
 
 import { Navigation } from '@/components/navigation'
 import { Hero } from '@/components/hero'
-import { ProductShowcase } from '@/components/product-showcase'
 import { Footer } from '@/components/footer'
 import Script from 'next/script'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: {
-    absolute: 'PetsVilla - Tõumerisead, Papagoid ja Kvaliteetne Hein',
+    absolute: 'PetsVilla — Merisead, Viirpapagoid ja Kvaliteetne Hein',
   },
   description:
-    'PetsVilla on usaldusväärne lemmikloomade aretaja Tartumaal. Pakume dokumenteeritud päritoluga merisigu, papagoisid ja naturaalset heina. Tule Papagoi Keskusesse!',
+    'PetsVilla OÜ Soinastes: dokumenteeritud päritoluga meriseabeebid, näitusekvaliteediga viirpapagoid ja looduslikult kuivatatud hein. Aretus, nõu ja tarne ühest kohast.',
   alternates: {
     canonical: 'https://petsvilla.ee',
   },
   openGraph: {
-    title: 'PetsVilla - Tõumerisead, Papagoid ja Kvaliteetne Hein',
+    title: 'PetsVilla — Merisead, Viirpapagoid ja Kvaliteetne Hein',
     description:
-      'PetsVilla on usaldusväärne lemmikloomade aretaja Tartumaal. Pakume dokumenteeritud päritoluga merisigu, papagoisid ja naturaalset heina. Tule Papagoi Keskusesse!',
+      'PetsVilla OÜ Soinastes: dokumenteeritud päritoluga meriseabeebid, näitusekvaliteediga viirpapagoid ja looduslikult kuivatatud hein.',
     url: 'https://petsvilla.ee',
     images: ['/og-image.png'],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'PetsVilla - Tõumerisead, Papagoid ja Kvaliteetne Hein',
+    title: 'PetsVilla — Merisead, Viirpapagoid ja Kvaliteetne Hein',
     description:
-      'PetsVilla on usaldusväärne lemmikloomade aretaja Tartumaal. Pakume dokumenteeritud päritoluga merisigu, papagoisid ja naturaalset heina. Tule Papagoi Keskusesse!',
+      'PetsVilla OÜ Soinastes: dokumenteeritud päritoluga meriseabeebid, näitusekvaliteediga viirpapagoid ja looduslikult kuivatatud hein.',
     images: ['/og-image.png'],
   },
 }
@@ -55,7 +54,7 @@ export default function Home() {
       longitude: 26.699,
     },
     description:
-      'Professionaalne lemmikloomade aretaja Tartumaal. Pakume lühikarvalisi tõumerisigu, papagoisid ja kvaliteetset heina.',
+      'Professionaalne lemmikloomade aretaja Tartumaal. Kolm fookust: meriseabeebid, viirpapagoid ja kvaliteetne hein.',
   }
 
   // Breadcrumb Schema for navigation
@@ -87,7 +86,6 @@ export default function Home() {
       <div className="min-h-screen bg-background">
         <Navigation />
         <Hero />
-        <ProductShowcase />
         <Footer />
       </div>
     </>

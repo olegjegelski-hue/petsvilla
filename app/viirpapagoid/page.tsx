@@ -5,34 +5,39 @@ import { TestimonialsSection } from '@/components/testimonials-section'
 import { Footer } from '@/components/footer'
 import { Metadata } from 'next'
 import Script from 'next/script'
+import { getBudgies } from '@/lib/budgies'
+import { NOTION_REVALIDATE_SECONDS } from '@/lib/notion'
+
+export const revalidate = NOTION_REVALIDATE_SECONDS
 
 export const metadata: Metadata = {
   title: {
-    absolute: 'Sotsiaalsed viirpapagoid otse aretajalt | Papagoi Keskus',
+    absolute: 'Sotsiaalsed viirpapagoid otse aretajalt | PetsVilla',
   },
   description:
-    'Kirjud, terved ja inimestega harjunud viirpapagoid. Valikus ka kogukamad Inglise viirpapagoid. Pakume eluaegset tuge ja nõustamist.',
+    'Kirjud, terved ja inimestega harjunud viirpapagoid PetsVilla aretusest. Valikus ka kogukamad Inglise viirpapagoid. Eluaegne tugi ja nõustamine. Soinaste, Tartumaa.',
   keywords: ['viirpapagoid', 'budgies', 'budgie breeder', 'näituse kvaliteet', 'show quality budgies', 'viirpapagoide aretaja', 'Eesti', 'linnud', 'lemmiklinnud'],
   alternates: {
     canonical: 'https://petsvilla.ee/viirpapagoid',
   },
   openGraph: {
-    title: 'Sotsiaalsed viirpapagoid otse aretajalt | Papagoi Keskus',
+    title: 'Sotsiaalsed viirpapagoid otse aretajalt | PetsVilla',
     description:
-      'Kirjud, terved ja inimestega harjunud viirpapagoid. Valikus ka kogukamad Inglise viirpapagoid. Pakume eluaegset tuge ja nõustamist.',
+      'Kirjud, terved ja inimestega harjunud viirpapagoid PetsVilla aretusest. Valikus ka kogukamad Inglise viirpapagoid.',
     url: 'https://petsvilla.ee/viirpapagoid',
     images: ['/og-image.png'],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Sotsiaalsed viirpapagoid otse aretajalt | Papagoi Keskus',
+    title: 'Sotsiaalsed viirpapagoid otse aretajalt | PetsVilla',
     description:
-      'Kirjud, terved ja inimestega harjunud viirpapagoid. Valikus ka kogukamad Inglise viirpapagoid. Pakume eluaegset tuge ja nõustamist.',
+      'Kirjud, terved ja inimestega harjunud viirpapagoid PetsVilla aretusest.',
     images: ['/og-image.png'],
   },
 }
 
-export default function ViirpapagoidPage() {
+export default async function ViirpapagoidPage() {
+  const budgies = await getBudgies()
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Product',
@@ -105,7 +110,7 @@ export default function ViirpapagoidPage() {
       />
       <div className="min-h-screen bg-background">
         <Navigation />
-        <BudgieGallery />
+        <BudgieGallery initialBudgies={budgies} />
         <TestimonialsSection
           title="Mida meie kliendid ütlevad"
           toneClassName="from-[#EAE0D5] via-[#EAE0D5] to-[#EAE0D5] border-[#D7CBBE]"

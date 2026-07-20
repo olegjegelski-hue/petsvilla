@@ -34,30 +34,48 @@ export function ContactForm() {
     website: ''
   })
 
-  // Load guinea pig or product info from URL params
+  // Load guinea pig / bird / product info from URL params
   useEffect(() => {
     const pigName = searchParams.get('pig')
-    const pigId = searchParams.get('id')
     const pigCode = searchParams.get('code')
     const productName = searchParams.get('product')
-    const productId = searchParams.get('id')
+    const animalName = searchParams.get('name')
     const productCode = searchParams.get('code')
-    
+    const intent = searchParams.get('intent')
+    const isBooking = intent === 'broneering'
+
     if (pigName) {
       const codeInfo = pigCode ? ` (${pigCode})` : ''
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
         product: 'merisead',
-        subject: `Päring merisea ${pigName}${codeInfo} kohta`,
-        message: `Tere! Olen huvitatud meriseast nimega "${pigName}"${codeInfo}. Palun saatke mulle rohkem infot.`
+        subject: isBooking
+          ? `Broneering: merisiga ${pigName}${codeInfo}`
+          : `Päring merisea ${pigName}${codeInfo} kohta`,
+        message: isBooking
+          ? `Tere! Soovin broneerida merisea nimega "${pigName}"${codeInfo}. Palun võtke minuga ühendust broneeringu kinnitamiseks.`
+          : `Tere! Olen huvitatud meriseast nimega "${pigName}"${codeInfo}. Palun saatke mulle rohkem infot.`,
+      }))
+    } else if (productName === 'viirpapagoi') {
+      const label = animalName || 'viirpapagoi'
+      const codeInfo = productCode ? ` (${productCode})` : ''
+      setFormData((prev) => ({
+        ...prev,
+        product: 'viirpapagoid',
+        subject: isBooking
+          ? `Broneering: viirpapagoi ${label}${codeInfo}`
+          : `Päring viirpapagoi ${label}${codeInfo} kohta`,
+        message: isBooking
+          ? `Tere! Soovin broneerida viirpapagoi nimega "${label}"${codeInfo}. Palun võtke minuga ühendust broneeringu kinnitamiseks.`
+          : `Tere! Olen huvitatud viirpapagoist "${label}"${codeInfo}. Palun saatke mulle rohkem infot.`,
       }))
     } else if (productName) {
       const codeInfo = productCode ? ` (Kood: ${productCode})` : ''
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
         product: 'pood',
         subject: `Päring toote ${productName} kohta${codeInfo}`,
-        message: `Tere! Olen huvitatud tootest "${productName}". Palun saatke mulle rohkem infot.`
+        message: `Tere! Olen huvitatud tootest "${productName}". Palun saatke mulle rohkem infot.`,
       }))
     }
   }, [searchParams])

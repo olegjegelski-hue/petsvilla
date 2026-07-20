@@ -8,26 +8,26 @@ import Script from 'next/script'
 
 export const metadata: Metadata = {
   title: {
-    absolute: 'Meist - PetsVilla Papagoi Keskus ja professionaalne aretus',
+    absolute: 'Meist — PetsVilla OÜ | Merisead, Viirpapagoid ja Hein',
   },
   description:
-    'Loe PetsVilla lugu. Oleme tegutsenud üle 4 aasta, meie keskuses elab 50+ papagoid ja merisiga. Pakume peredele läbipaistvat ja hoolivat lemmikloomakogemust.',
+    'PetsVilla OÜ Soinastes: tõumeriseade ja viirpapagoide aretus ning kvaliteetne hein. Üle 4 aasta kogemust, dokumenteeritud päritolu ja eluaegne nõustamine.',
   keywords: ['PetsVilla', 'meist', 'aretaja', 'lemmikloomade aretaja', 'guinea pig breeder', 'budgie breeder', 'Eesti', 'tõuloomad'],
   alternates: {
     canonical: 'https://petsvilla.ee/meist',
   },
   openGraph: {
-    title: 'Meist - PetsVilla Papagoi Keskus ja professionaalne aretus',
+    title: 'Meist — PetsVilla OÜ | Merisead, Viirpapagoid ja Hein',
     description:
-      'Loe PetsVilla lugu. Oleme tegutsenud üle 4 aasta, meie keskuses elab 50+ papagoid ja merisiga. Pakume peredele läbipaistvat ja hoolivat lemmikloomakogemust.',
+      'PetsVilla OÜ Soinastes: tõumeriseade ja viirpapagoide aretus ning kvaliteetne hein. Üle 4 aasta kogemust ja dokumenteeritud päritolu.',
     url: 'https://petsvilla.ee/meist',
     images: ['/og-image.png'],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Meist - PetsVilla Papagoi Keskus ja professionaalne aretus',
+    title: 'Meist — PetsVilla OÜ | Merisead, Viirpapagoid ja Hein',
     description:
-      'Loe PetsVilla lugu. Oleme tegutsenud üle 4 aasta, meie keskuses elab 50+ papagoid ja merisiga. Pakume peredele läbipaistvat ja hoolivat lemmikloomakogemust.',
+      'PetsVilla OÜ Soinastes: tõumeriseade ja viirpapagoide aretus ning kvaliteetne hein.',
     images: ['/og-image.png'],
   },
 }
@@ -39,17 +39,21 @@ export default function MeistPage() {
     mainEntity: {
       '@type': 'Organization',
       name: 'PetsVilla OÜ',
-      description: 'Professionaalne tõumerisiigade ja näituse kvaliteediga viirpapagoidega aretaja Eestis.',
+      description: 'Tõumeriseade ja näitusekvaliteediga viirpapagoide aretaja ning heina müüja Eestis.',
       url: 'https://petsvilla.ee',
       telephone: '+372 512 7938',
-      email: 'info@petsvilla.ee',
+      email: 'service@petsvilla.ee',
       address: {
         '@type': 'PostalAddress',
+        streetAddress: 'Tartu mnt 80',
+        addressLocality: 'Soinaste',
+        addressRegion: 'Tartumaa',
+        postalCode: '61709',
         addressCountry: 'EE',
       },
       foundingDate: '2010',
       numberOfEmployees: '5',
-      knowsAbout: ['Merisiigade aretamine', 'Viirpapagoide aretamine', 'Lemmikloomade hooldus'],
+      knowsAbout: ['Merisiigade aretamine', 'Viirpapagoide aretamine', 'Lemmiklooma hein', 'Lemmikloomade hooldus'],
     },
   }
 

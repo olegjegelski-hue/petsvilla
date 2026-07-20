@@ -3,7 +3,6 @@ import { Navigation } from '@/components/navigation'
 import { Footer } from '@/components/footer'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { CheckCircle } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
 
@@ -70,7 +69,7 @@ export default function PapagoidPage() {
                 <div className="relative h-48 md:h-56 mb-6 rounded-xl overflow-hidden">
                   <Image
                     src="/papagoid-viirpapagoid.png"
-                    alt="Sotsiaalsed viirpapagoid Papagoi Keskuses Tartumaal"
+                    alt="Sotsiaalsed viirpapagoid PetsVilla aretusest"
                     fill
                     sizes="(max-width: 768px) 100vw, 50vw"
                     className="object-cover"
@@ -78,7 +77,7 @@ export default function PapagoidPage() {
                 </div>
                 <h2 className="text-2xl font-bold text-green-900 mb-3">Viirpapagoid</h2>
                 <p className="text-gray-600 mb-6">
-                  Meie Papagoi Keskuses sirgunud, näitusekvaliteediga ja inimestega harjunud viirpapagoid. Sotsiaalsed ja terved sulelised, kes toovad perre palju rõõmu.
+                  PetsVilla aretusest: näitusekvaliteediga, inimestega harjunud viirpapagoid. Sotsiaalsed ja terved sulelised, kes toovad perre palju rõõmu.
                 </p>
                 <Link href="/viirpapagoid">
                   <Button className="bg-gradient-to-r from-[#1F6A4C] to-[#C8A93E] hover:from-[#19563d] hover:to-[#B39133] text-white border border-[#C8A93E]/80">
@@ -110,45 +109,6 @@ export default function PapagoidPage() {
                     Vaata eksootilisi papagoisid
                   </Button>
                 </Link>
-              </CardContent>
-            </Card>
-          </div>
-
-          <div className="my-12 animate-fade-in-up">
-            <Card className="border border-[#D7CBBE] shadow-2xl bg-[#E3D8CB]/90">
-              <CardContent className="p-8 md:p-10">
-                <div className="text-center mb-6">
-                  <h3 className="text-3xl md:text-4xl font-bold text-green-900 mb-3">
-                    🦜 Tule Papagoi Keskusesse!
-                  </h3>
-                  <p className="text-gray-700 text-lg leading-relaxed">
-                    Tahad näha, kuidas meie loomad päriselt elavad? Otsid perele meeldejäävat ja hariduslikku elamust?
-                    <br />
-                    Külasta meie Papagoi Keskust, kus saad:
-                  </p>
-                </div>
-
-                <div className="grid md:grid-cols-2 gap-4 max-w-3xl mx-auto">
-                  {[
-                    'Vahetu kontakt: Toida ja suhtle meie sotsiaalsete papagoidega.',
-                    'Teadlik valik: Tutvu merisigade ja lindudega isiklikult enne ostuotsuse tegemist.',
-                    'Privaatkülastused: Broneeri rahulik aeg oma perele ja saa personaalset nõustamist.',
-                    'Täielik läbipaistvus: Näe oma silmaga meie professionaalset aretuskeskkonda.',
-                  ].map((item) => (
-                    <div key={item} className="flex items-start gap-3 bg-white/90 rounded-xl p-4 shadow-md">
-                      <CheckCircle className="w-5 h-5 text-green-600 mt-0.5" />
-                      <p className="text-gray-700">{item}</p>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="flex justify-center mt-8">
-                  <Link href="https://papagoi.ee" target="_blank" rel="noreferrer">
-                    <Button className="bg-gradient-to-r from-[#1F6A4C] to-[#C8A93E] hover:from-[#19563d] hover:to-[#B39133] text-white border border-[#C8A93E]/80 px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300">
-                      Broneeri külastus →
-                    </Button>
-                  </Link>
-                </div>
               </CardContent>
             </Card>
           </div>

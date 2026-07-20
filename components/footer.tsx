@@ -23,8 +23,7 @@ export function Footer() {
               </div>
             </div>
             <p className="text-[#4F5A52] leading-relaxed mb-4">
-              Oleme pühendunud lemmikloomade heaolule ja teie rahulolule. 
-              Meie eesmärk on tuua teie koju armastust ja rõõmu.
+              PetsVilla OÜ — hein, meriseabeebid ja viirpapagoid. Aretus, nõu ja tarne Soinastest.
             </p>
           </div>
 
@@ -33,18 +32,13 @@ export function Footer() {
             <h3 className="font-bold text-lg mb-2 text-green-900">Kiired lingid</h3>
             <ul className="space-y-1.5">
               <li>
-                <Link href="/" className="text-[#4F5A52] hover:text-green-800 transition-colors">
-                  Avaleht
-                </Link>
-              </li>
-              <li>
                 <Link href="/meriseabeebid" className="text-[#4F5A52] hover:text-green-800 transition-colors">
                   Merisead
                 </Link>
               </li>
               <li>
-                <Link href="/papagoid" className="text-[#4F5A52] hover:text-green-800 transition-colors">
-                  Papagoid
+                <Link href="/viirpapagoid" className="text-[#4F5A52] hover:text-green-800 transition-colors">
+                  Viirpapagoid
                 </Link>
               </li>
               <li>
@@ -53,8 +47,13 @@ export function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/blogi" className="text-[#4F5A52] hover:text-green-800 transition-colors">
+                  Blogi
+                </Link>
+              </li>
+              <li>
                 <Link href="/pood" className="text-[#4F5A52] hover:text-green-800 transition-colors">
-                  Pood
+                  E-pood
                 </Link>
               </li>
               <li>
@@ -67,12 +66,22 @@ export function Footer() {
                   Kontakt
                 </Link>
               </li>
+              <li>
+                <a
+                  href="https://papagoi.ee"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[#4F5A52] hover:text-green-800 transition-colors"
+                >
+                  Külastus · papagoi.ee
+                </a>
+              </li>
             </ul>
           </div>
 
-          {/* E-poe tingimused */}
+          {/* Õigusinfo */}
           <div>
-            <h3 className="font-bold text-lg mb-2 text-green-900">E-pood</h3>
+            <h3 className="font-bold text-lg mb-2 text-green-900">Õigusinfo</h3>
             <ul className="space-y-1.5">
               <li>
                 <Link href="/muugitingimused" className="text-[#4F5A52] hover:text-green-800 transition-colors">
@@ -80,8 +89,8 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/tagastuspoliitika" className="text-[#4F5A52] hover:text-green-800 transition-colors">
-                  Tagastuspoliitika
+                <Link href="/privaatsuspoliitika" className="text-[#4F5A52] hover:text-green-800 transition-colors">
+                  Privaatsuspoliitika
                 </Link>
               </li>
               <li>
@@ -90,8 +99,8 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/privaatsuspoliitika" className="text-[#4F5A52] hover:text-green-800 transition-colors">
-                  Privaatsuspoliitika
+                <Link href="/tagastuspoliitika" className="text-[#4F5A52] hover:text-green-800 transition-colors">
+                  Tagastuspoliitika
                 </Link>
               </li>
               <li>
@@ -126,11 +135,15 @@ export function Footer() {
               </div>
               <div className="flex items-center space-x-3">
                 <Phone className="w-5 h-5 text-green-800 flex-shrink-0" />
-                <p className="text-[#4F5A52]">+372 512 7938</p>
+                <a href="tel:+3725127938" className="text-[#4F5A52] hover:text-green-800 transition-colors">
+                  +372 512 7938
+                </a>
               </div>
               <div className="flex items-center space-x-3">
                 <Mail className="w-5 h-5 text-green-800 flex-shrink-0" />
-                <p className="text-[#4F5A52]">service@petsvilla.ee</p>
+                <a href="mailto:service@petsvilla.ee" className="text-[#4F5A52] hover:text-green-800 transition-colors">
+                  service@petsvilla.ee
+                </a>
               </div>
               <div className="flex items-center gap-6 pt-1">
                 <a
@@ -166,7 +179,9 @@ export function Footer() {
         </div>
 
         <div className="border-t border-[#C9BCAA] mt-3 pt-2 text-center">
-          <p className="text-green-900">© 2025 PetsVilla OÜ Reg. nr. 14980686 Kõik õigused kaitstud.</p>
+          <p className="text-green-900">
+            © 2026 PetsVilla OÜ · Reg. nr. 14980686 · Tartu mnt 80, Soinaste · Kõik õigused kaitstud.
+          </p>
         </div>
       </div>
     </footer>

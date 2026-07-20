@@ -3,10 +3,11 @@ description: PetsVilla.ee Master System Prompt — stäkk, arhitektuur, GAP-id, 
 alwaysApply: true
 ---
 
-# 🧭 Master System Prompt (petsvilla.ee)
+# 🧭 Master System Prompt (PetsVilla Koduleht)
 
-Allikas Notionis: Kodulehed – plaan & ehitus (Petsvila.ee) → „Master System Prompt (Cursor)“.
-Kui Notionis muudad, ütle Cursorile: **sünki Master Prompt projekti**.
+Allikas Notionis: **Kodulehed – plaan & ehitus (Petsvila.ee)** → **„Master System Prompt (PetsVilla Koduleht)“**.
+Ära aja segi Portaali / papagoi.ee Masteritega (sama baasnimi, teine sulgudes täiendus).
+Kui Notionis muudad, ütle Cursorile: **sünki Master Prompt (PetsVilla Koduleht) projekti**.
 
 ## 1. Projekt & kontekst
 
@@ -20,6 +21,13 @@ Eesmärk: müük ja päringud (loomad, hein, tooted), usaldus, SEO, operatiivsed
 - **Repo:** `olegjegelski-hue/petsvilla` · **Hosting:** Vercel (auto-deploy `main` peale)
 - **Seotud sait:** papagoi.ee (külastuselamus, eraldi repo `olegjegelski-hue/papagoi`) — ära segi brände ega URL-e
 - Sait on **juba valmis ja live** — uued tööd on täiendused, GAP-ide sulgemine ja hooldus
+
+## 1.1 Strateegia & fookus (lukus 2026-07-20)
+
+- **Fookus:** 3 võrdset suunda — **Hein · Merisead · Viirpapagoid**. E-pood = madal prioriteet, ei arenda aktiivselt.
+- **Avaleht:** 3-teeline hero (Hein / Merisead / Viirpapagoid), igal oma alamleht + **1 CTA**. Mitte 3 konkureerivat CTA-d.
+- **Viirpapagoid ≠ Papagoi Keskus:** viirpapagoid müük = petsvilla.ee; papagoi külastuselamus = papagoi.ee. Väldi ristikeksitust.
+- **Portaal (petsvilla.eu) = eraldi, mitteseotud projekt** — ära sega koduleht-reeglitega.
 
 ## 2. Tehniline stäkk (LUKUS — ära muuda ilma loata)
 
@@ -49,8 +57,6 @@ Eesmärk: müük ja päringud (loomad, hein, tooted), usaldus, SEO, operatiivsed
 ## 4. Teadaolevad GAP-id / prioriteedid
 
 **Kõrge:**
-- **P0 · Cookie nõusolek ↔ Meta Pixel/GA4 (GDPR): turundusskriptid ainult pärast nõusolekut** — praegu live rikkumine
-- Ostukorv & Montonio e-poe toodetele (praegu kataloog + päring)
 - Sentry / error tracking
 - Montonio shipping aadress → kanooniline Soinaste (mitte „Jüri“) — kontrolli Montonio seadeid
 
@@ -59,6 +65,7 @@ Eesmärk: müük ja päringud (loomad, hein, tooted), usaldus, SEO, operatiivsed
 - Laoseisu sync & saadavuse UX
 
 **Madalam / tulevik:**
+- **E-pood madal prioriteet** — ostukorv & Montonio e-poe toodetele (praegu kataloog + päring); ei arenda aktiivselt
 - i18n (EN/RU)
 - Täiendav e-poe UX (filtreerimine, soovitused)
 - Ära loo paralleelseid ajutisi lahendusi — sulge GAP või dokumenteeri Ootel
@@ -116,7 +123,7 @@ Eesmärk: müük ja päringud (loomad, hein, tooted), usaldus, SEO, operatiivsed
 - Ära installi uusi suuri sõltuvusi ilma põhjenduseta
 - Kui midagi on ebaselge, küsi — ära oleta
 - Eelista inventuuri / olemasoleva koodi lugemist spekuleerimisele
-- Kui muudad seda Master Prompti Notionis, ütle: **„sünki Master Prompt projekti“**
+- Kui muudad seda Master Prompti Notionis, ütle: **„sünki Master Prompt (PetsVilla Koduleht) projekti“**
 
 ---
 
@@ -124,5 +131,9 @@ Eesmärk: müük ja päringud (loomad, hein, tooted), usaldus, SEO, operatiivsed
 
 - **2026-07-20:** Loodud Master System Prompt petsvilla.ee jaoks (Cursor), peegeldades olemasolevat koodibaasi + inventuuri (juuli 2026)
 - **2026-07-20:** Sünkitud Cursori projekti faili `.cursor/rules/petsvilla-master.mdc` (`alwaysApply`)
-- **2026-07-20:** Paigutatud õigesse kohta: **Kodulehed – plaan & ehitus (Petsvila.ee)** (varem ekslikult Portaali lehe all)
+- **2026-07-20:** Loodud Notion hub „PetsVilla.ee Koduleht“ (peegeldab Papagoi.ee Koduleht struktuuri)
 - **2026-07-20:** Lisatud kanoonilised faktid (aadress, e-post), compliance & ausus (ptk 8.1), rendering-reegel, makse-domeeni piirang; „Cookie ↔ Pixel“ tõstetud Kõrge/P0 (Nutike ülevaatus)
+- **2026-07-20:** Strateegia lukustatud — 3 võrdset fookust (Hein/Merisead/Viirpapagoid), avaleht 3-teeline hero, e-pood madal prioriteet, portaal (petsvilla.eu) eraldi projekt (Nutike + Oleg)
+- **2026-07-20:** K2 (cookie-nõusolek enne Pixel/GA4) märgitud tehtuks — eemaldatud §4 aegunud „live rikkumine“ GAP-kirje
+- **2026-07-20:** Notionis ümber nimetatud → **Master System Prompt (PetsVilla Koduleht)** (et eristada Portaal/Papagoi Masteritest)
+- **2026-07-20:** Täissünk Cursorisse → `.cursor/rules/petsvilla-master.mdc` (sh K2 GAP eemaldamine §4-st)

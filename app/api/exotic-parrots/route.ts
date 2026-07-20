@@ -47,7 +47,7 @@ export async function GET() {
 
     if (!databaseId) {
       return NextResponse.json(
-        { error: 'Papagoide database ID puudub' },
+        { error: 'Papagoide müük database ID puudub (NOTION_PAPAGOI_DATABASE_ID)' },
         { status: 500 }
       )
     }
@@ -57,16 +57,16 @@ export async function GET() {
       filter: {
         and: [
           {
-            property: 'Staatus',
-            status: {
-              equals: 'Müügis',
-            },
-          },
-          {
             property: 'Liik',
             select: {
               does_not_equal: 'Viirpapagoi',
             },
+          },
+          {
+            or: [
+              { property: 'Staatus', status: { equals: 'Müügis' } },
+              { property: 'Staatus', status: { equals: 'Broneeritud' } },
+            ],
           },
         ],
       },

@@ -50,7 +50,7 @@ export default function MuugitingimusedPage() {
               <h2 className="text-2xl font-bold text-gray-900 mb-4">1. Üldised tingimused</h2>
               <p className="text-gray-700 mb-4">
                 Käesolevad müügitingimused kehtivad <strong>PetsVilla OÜ</strong> (registrikood: <strong>14980686</strong>, 
-                aadress: Kambja vald, Tartumaa 61709) veebilehel <strong>petsvilla.ee</strong> (edaspidi "e-pood") 
+                aadress: Tartu mnt 80, Soinaste, Kambja vald, Tartumaa 61709) veebilehel <strong>petsvilla.ee</strong> (edaspidi "e-pood")
                 toodete ja teenuste müügil.
               </p>
               <p className="text-gray-700 mb-4">
@@ -271,7 +271,7 @@ export default function MuugitingimusedPage() {
               <h2 className="text-2xl font-bold text-gray-900 mb-4">Kontaktandmed</h2>
               <p className="text-gray-700 mb-2"><strong>Ettevõte:</strong> PetsVilla OÜ</p>
               <p className="text-gray-700 mb-2"><strong>Registrikood:</strong> 14980686</p>
-              <p className="text-gray-700 mb-2"><strong>Aadress:</strong> Kambja vald, Tartumaa 61709</p>
+              <p className="text-gray-700 mb-2"><strong>Aadress:</strong> Tartu mnt 80, Soinaste, Kambja vald, Tartumaa 61709</p>
               <p className="text-gray-700 mb-2"><strong>E-post:</strong> <a href="mailto:service@petsvilla.ee" className="text-purple-600 hover:underline">service@petsvilla.ee</a></p>
               <p className="text-gray-700"><strong>Veebileht:</strong> <a href="https://petsvilla.ee" className="text-purple-600 hover:underline">petsvilla.ee</a></p>
             </section>

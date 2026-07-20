@@ -4,80 +4,25 @@
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Bird, Calendar, Palette, Users, Mail, Phone, ArrowRight, CheckCircle, Loader2 } from 'lucide-react'
+import { Bird, Calendar, Palette, Users, Mail, Phone, ArrowRight } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
+import type { Budgie } from '@/lib/types'
 
-interface Budgie {
-  id: string
-  name: string
-  code: string
-  age: string
-  color: string
-  gender: string
-  price: number
-  personality: string[]
-  description: string
-  image: string
+interface BudgieGalleryProps {
+  /** Serverist (ISR) eelrenderdatud Notion andmed — crawl + LCP. */
+  initialBudgies: Budgie[]
 }
 
-export function BudgieGallery() {
+export function BudgieGallery({ initialBudgies }: BudgieGalleryProps) {
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1
   })
 
-  const [mounted, setMounted] = useState(false)
-  const [budgies, setBudgies] = useState<Budgie[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-
-  useEffect(() => {
-    setMounted(true)
-
-    async function fetchBudgies() {
-      try {
-        setLoading(true)
-        const response = await fetch('/api/budgies')
-        if (!response.ok) {
-          throw new Error('Andmete laadimine ebaõnnestus')
-        }
-        const data = await response.json()
-        if (data.budgies) {
-          setBudgies(data.budgies)
-        }
-      } catch (err) {
-        console.error('Viga andmete laadimisel:', err)
-        setError('Ei õnnestunud viirpapagoisid laadida.')
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchBudgies()
-  }, [])
-
-  if (!mounted) {
-    return <div className="py-20" />
-  }
-
-  if (loading) {
-    return (
-      <section className="py-20">
-        <div className="container mx-auto max-w-6xl px-4">
-          <div className="flex items-center justify-center min-h-[400px]">
-            <div className="text-center">
-              <Loader2 className="w-12 h-12 text-blue-500 animate-spin mx-auto mb-4" />
-              <p className="text-gray-600">Laadin viirpapagoisid...</p>
-            </div>
-          </div>
-        </div>
-      </section>
-    )
-  }
+  const budgies = initialBudgies
 
   return (
     <section className="pt-20 pb-0">
@@ -93,7 +38,7 @@ export function BudgieGallery() {
             Viirpapagoid
           </h1>
           <p className="text-sm md:text-base font-semibold text-gray-600 max-w-3xl mx-auto mb-4">
-            Kirjud ja elurõõmsad viirpapagoid otse meie Papagoi Keskusest! Aretame näitusekvaliteediga linde, pöörates erilist tähelepanu nende tervisele, värvidele ja iseloomule. Kuna linnud kasvavad meie Keskuses sotsiaalses keskkonnas ja on harjunud inimestega, toovad nad teie perre palju rõõmu. Nõustame uusi omanikke igal sammul.
+            Kirjud ja elurõõmsad viirpapagoid otse PetsVilla aretusest. Kasvatame näitusekvaliteediga linde, pöörates erilist tähelepanu tervisele, värvidele ja iseloomule. Linnud on harjunud inimestega ning toovad perre palju rõõmu. Nõustame uusi omanikke igal sammul.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3 mb-8">
             <Link href="#ostuprotsess-viirpapagoid">
@@ -158,15 +103,8 @@ export function BudgieGallery() {
           </div>
         </motion.div>
 
-        {/* Error Message */}
-        {error && (
-          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-8">
-            <p className="text-yellow-800 text-center">{error}</p>
-          </div>
-        )}
-
         {/* No Results */}
-        {!error && budgies.length === 0 && (
+        {budgies.length === 0 && (
           <div className="text-center py-12">
             <p className="text-gray-600 text-lg">Hetkel ei ole viirpapagoisid müügis.</p>
           </div>
@@ -201,6 +139,19 @@ export function BudgieGallery() {
                       />
                     )
                   })()}
+                  {budgie.saleDisplay === 'Broneeritud' || budgie.status === 'Broneeritud' ? (
+                    <div className="absolute top-4 left-4">
+                      <Badge className="bg-amber-100 text-amber-900 border border-amber-300 font-semibold">
+                        Broneeritud
+                      </Badge>
+                    </div>
+                  ) : (
+                    <div className="absolute top-4 left-4">
+                      <Badge className="bg-emerald-100 text-emerald-900 border border-emerald-300 font-semibold">
+                        Saadaval
+                      </Badge>
+                    </div>
+                  )}
                   {budgie.gender && (
                     <div className="absolute top-4 right-4">
                       <Badge
@@ -255,15 +206,26 @@ export function BudgieGallery() {
                     ))}
                   </div>
 
-                  <Link
-                    href={`/kontakt?product=viirpapagoi&id=${budgie.id}${budgie.code ? `&code=${encodeURIComponent(budgie.code)}` : ''}`}
-                  >
-                    <Button className="w-full bg-gradient-to-r from-[#1F6A4C] to-[#C8A93E] hover:from-[#19563d] hover:to-[#B39133] text-white border border-[#C8A93E]/80">
-                      <Bird className="w-4 h-4 mr-2" />
-                      Küsi infot
-                      <ArrowRight className="w-4 h-4 ml-2" />
+                  {budgie.canBook !== false &&
+                  budgie.saleDisplay !== 'Broneeritud' &&
+                  budgie.status !== 'Broneeritud' ? (
+                    <Link
+                      href={`/kontakt?product=viirpapagoi&name=${encodeURIComponent(budgie.name)}&id=${budgie.id}${budgie.code ? `&code=${encodeURIComponent(budgie.code)}` : ''}&intent=broneering`}
+                    >
+                      <Button className="w-full bg-gradient-to-r from-[#1F6A4C] to-[#C8A93E] hover:from-[#19563d] hover:to-[#B39133] text-white border border-[#C8A93E]/80">
+                        <Bird className="w-4 h-4 mr-2" />
+                        Broneeri
+                        <ArrowRight className="w-4 h-4 ml-2" />
+                      </Button>
+                    </Link>
+                  ) : (
+                    <Button
+                      disabled
+                      className="w-full bg-gray-300 text-gray-600 border border-gray-400 cursor-not-allowed"
+                    >
+                      Broneeritud — ei saa broneerida
                     </Button>
-                  </Link>
+                  )}
                 </CardContent>
               </Card>
             </motion.div>
@@ -347,42 +309,25 @@ export function BudgieGallery() {
           </Card>
         </div>
 
-        {/* Papagoi Center CTA */}
-        <div className="mb-0">
-          <Card className="border border-[#D7CBBE] shadow-2xl bg-[#E3D8CB]/90">
-            <CardContent className="p-8 md:p-10">
-              <div className="text-center mb-6">
-                <h3 className="text-3xl md:text-4xl font-bold text-green-900 mb-3">
-                  🦜 Tule Papagoi Keskusesse!
-                </h3>
-                <p className="text-gray-700 text-lg leading-relaxed">
-                  Tahad näha, kuidas meie loomad päriselt elavad? Otsid perele meeldejäävat ja hariduslikku elamust?
-                  <br />
-                  Külasta meie Papagoi Keskust, kus saad:
-                </p>
-              </div>
-
-              <div className="grid md:grid-cols-2 gap-4 max-w-3xl mx-auto">
-                {[
-                  'Vahetu kontakt: Toida ja suhtle meie sotsiaalsete papagoidega.',
-                  'Teadlik valik: Tutvu merisigade ja lindudega isiklikult enne ostuotsuse tegemist.',
-                  'Privaatkülastused: Broneeri rahulik aeg oma perele ja saa personaalset nõustamist.',
-                  'Täielik läbipaistvus: Näe oma silmaga meie professionaalset aretuskeskkonda.',
-                ].map((item) => (
-                  <div key={item} className="flex items-start gap-3 bg-white/90 rounded-xl p-4 shadow-md">
-                    <CheckCircle className="w-5 h-5 text-green-600 mt-0.5" />
-                    <p className="text-gray-700">{item}</p>
-                  </div>
-                ))}
-              </div>
-
-              <div className="flex justify-center mt-8">
-                <Link href="https://papagoi.ee" target="_blank" rel="noreferrer">
-                  <Button className="bg-gradient-to-r from-[#1F6A4C] to-[#C8A93E] hover:from-[#19563d] hover:to-[#B39133] text-white border border-[#C8A93E]/80 px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300">
-                    Broneeri külastus →
-                  </Button>
-                </Link>
-              </div>
+        {/* Üks selge ristlink külastuselamusele (papagoi.ee ≠ PetsVilla müük) */}
+        <div className="mb-0 mt-8">
+          <Card className="border border-[#D7CBBE] shadow-lg bg-[#E3D8CB]/90">
+            <CardContent className="p-6 md:p-8 text-center">
+              <h3 className="text-xl md:text-2xl font-bold text-green-900 mb-2">
+                Otsid külastuselamust?
+              </h3>
+              <p className="text-gray-700 mb-4 max-w-2xl mx-auto">
+                Viirpapagoide <strong>müük</strong> on petsvilla.ee peal. Papagoide toitmine, grupikülastused ja elamus — eraldi brändil{' '}
+                <a href="https://papagoi.ee" target="_blank" rel="noreferrer" className="text-green-800 font-semibold underline">
+                  papagoi.ee
+                </a>
+                .
+              </p>
+              <Link href="https://papagoi.ee" target="_blank" rel="noreferrer">
+                <Button className="bg-gradient-to-r from-[#1F6A4C] to-[#C8A93E] hover:from-[#19563d] hover:to-[#B39133] text-white border border-[#C8A93E]/80 px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300">
+                  Ava papagoi.ee →
+                </Button>
+              </Link>
             </CardContent>
           </Card>
         </div>

@@ -3,7 +3,7 @@
 
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Heart, Bird, Wheat, ArrowRight, CheckCircle } from 'lucide-react'
+import { Heart, Bird, Wheat, ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
@@ -43,7 +43,7 @@ const featuredSections: Array<{
   },
   {
     id: 'papagoid',
-    title: 'Papagoid',
+    title: 'Viirpapagoid',
     image: '/papagoid-koos.png',
     icon: Bird,
     gradient: 'from-blue-400 to-green-500',
@@ -125,7 +125,7 @@ export function ProductShowcase() {
               src={section.image}
               alt={
                 section.id === 'papagoid'
-                  ? 'Laps suhtleb sotsiaalse papagoiga Papagoi Keskuses Tartumaal'
+                  ? 'PetsVilla viirpapagoid aretusest Soinastes'
                   : section.id === 'merisead'
                     ? 'Dokumenteeritud päritoluga tõumerisead PetsVilla aretusest'
                     : section.title
@@ -146,7 +146,7 @@ export function ProductShowcase() {
               {section.id === 'merisead'
                 ? 'Vastutustundlik aretus, kus esikohal on loomade tervis, puhas geneetika ja suurepärane iseloom. Iga meriseaga on kaasas ametlik päritolukaart ja meiepoolne eluaegne nõustamine.'
                 : section.id === 'papagoid'
-                  ? 'Pakume ametliku päritoluga ja legaalseid eksootilisi papagoisid (Hollandi import) ning meie enda Keskuses kasvanud sotsiaalseid viirpapagoisid. Kõikidele lindudele kehtib PetsVilla kvaliteedigarantii ja eluaegne nõustamine.'
+                  ? 'Näitusekvaliteediga viirpapagoid PetsVilla aretusest ning ametliku päritoluga eksootilised papagoid partneritelt. Kõigile lindudele kehtib PetsVilla kvaliteedigarantii ja eluaegne nõustamine.'
                   : 'Tutvu meie hoitud lemmikutega, kellele on tagatud hooldus, tervisekontroll ja rahulik keskkond.'}
             </p>
             {section.buttons ? (
@@ -188,7 +188,7 @@ export function ProductShowcase() {
           className="text-center mb-8"
         >
           <p className="text-xl md:text-2xl text-[#1F6A4C] mb-4 max-w-3xl mx-auto leading-relaxed font-semibold">
-            Karvased ja sulelised sõbrad, kvaliteetne hein
+            Hein · Merisead · Viirpapagoid
           </p>
         </motion.div>
 
@@ -197,50 +197,6 @@ export function ProductShowcase() {
           {renderFeaturedCard(featuredSections[1], 1)}
           {renderProductCard(products[0], 2)}
         </div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-          transition={{ duration: 0.8, delay: 0.5 }}
-          className="my-12"
-        >
-          <Card className="border border-[#D7CBBE] shadow-2xl bg-[#E3D8CB]/90">
-            <CardContent className="p-8 md:p-10">
-              <div className="text-center mb-6">
-                <h3 className="text-3xl md:text-4xl font-bold text-green-900 mb-3">
-                  🦜 Tule Papagoi Keskusesse!
-                </h3>
-                <p className="text-gray-700 text-lg leading-relaxed">
-                  Tahad näha, kuidas meie loomad päriselt elavad? Otsid perele meeldejäävat ja hariduslikku elamust?
-                  <br />
-                  Külasta meie Papagoi Keskust, kus saad:
-                </p>
-              </div>
-
-              <div className="grid md:grid-cols-2 gap-4 max-w-3xl mx-auto">
-                {[
-                  'Vahetu kontakt: Toida ja suhtle meie sotsiaalsete papagoidega.',
-                  'Teadlik valik: Tutvu merisigade ja lindudega isiklikult enne ostuotsuse tegemist.',
-                  'Privaatkülastused: Broneeri rahulik aeg oma perele ja saa personaalset nõustamist.',
-                  'Täielik läbipaistvus: Näe oma silmaga meie professionaalset aretuskeskkonda.',
-                ].map((item) => (
-                  <div key={item} className="flex items-start gap-3 bg-white/90 rounded-xl p-4 shadow-md">
-                    <CheckCircle className="w-5 h-5 text-green-600 mt-0.5" />
-                    <p className="text-gray-700">{item}</p>
-                  </div>
-                ))}
-              </div>
-
-              <div className="flex justify-center mt-8">
-                <Link href="https://papagoi.ee" target="_blank" rel="noreferrer">
-                  <Button className="bg-gradient-to-r from-[#1F6A4C] to-[#C8A93E] hover:from-[#19563d] hover:to-[#B39133] text-white border border-[#C8A93E]/80 px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300">
-                    Broneeri külastus →
-                  </Button>
-                </Link>
-              </div>
-            </CardContent>
-          </Card>
-        </motion.div>
 
       </div>
     </section>

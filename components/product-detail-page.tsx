@@ -1,124 +1,39 @@
 'use client'
 
-import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { ChevronLeft, MessageSquare, Loader2, Info } from 'lucide-react'
+import { ChevronLeft, MessageSquare, Info } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Navigation } from '@/components/navigation'
 import { Footer } from '@/components/footer'
 import Script from 'next/script'
-
-interface Product {
-  id: string
-  code: string
-  genus: string
-  species: string
-  commonName: string
-  scientificName: string
-  category: string
-  status: string
-  price: number
-  availability: string
-  image: string
-  slug: string
-}
+import type { ShopProduct } from '@/lib/types'
 
 interface ProductDetailPageProps {
   categorySlug: string
   productSlug: string
   categoryTitle: string
   categoryIcon: string
-  notionCategory: string
+  product: ShopProduct
 }
 
 export function ProductDetailPage({
   categorySlug,
   productSlug,
   categoryTitle,
-  categoryIcon,
-  notionCategory,
+  product,
 }: ProductDetailPageProps) {
-  const [product, setProduct] = useState<Product | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-
-  useEffect(() => {
-    async function fetchProduct() {
-      try {
-        const response = await fetch(`/api/products?category=${encodeURIComponent(notionCategory)}`)
-        const data = await response.json()
-
-        if (data.error) {
-          setError(data.message || 'Toote laadimine ebaõnnestus')
-          return
-        }
-
-        const foundProduct = data.products?.find((p: Product) => p.slug === productSlug)
-        if (foundProduct) {
-          setProduct(foundProduct)
-        } else {
-          setError('Toodet ei leitud')
-        }
-      } catch (err) {
-        console.error('Viga toote laadimisel:', err)
-        setError('Toote laadimine ebaõnnestus')
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchProduct()
-  }, [notionCategory, productSlug])
-
-  if (loading) {
-    return (
-      <>
-        <Navigation />
-        <div className="min-h-screen bg-background flex items-center justify-center">
-          <Loader2 className="h-12 w-12 animate-spin text-green-900" />
-        </div>
-        <Footer />
-      </>
-    )
-  }
-
-  if (error || !product) {
-    return (
-      <>
-        <Navigation />
-        <div className="min-h-screen bg-background">
-          <div className="container mx-auto px-4 py-16">
-            <Link
-              href={`/pood/${categorySlug}`}
-              className="inline-flex items-center text-green-900 hover:text-green-800 mb-8 font-medium"
-            >
-              <ChevronLeft className="h-5 w-5 mr-1" />
-              Tagasi kategooriasse
-            </Link>
-            <div className="text-center py-16">
-              <div className="text-6xl mb-4">⚠️</div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">
-                {error || 'Toodet ei leitud'}
-              </h2>
-              <p className="text-gray-600 mb-8">
-                Palun kontrolli URL-i või mine tagasi kategooriasse.
-              </p>
-            </div>
-          </div>
-        </div>
-        <Footer />
-      </>
-    )
-  }
-
   const isInStock = product.status === 'Aktiivne'
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || (typeof window !== 'undefined' ? window.location.origin : 'https://petsvilla.ee')
+  const baseUrl =
+    process.env.NEXT_PUBLIC_BASE_URL ||
+    (typeof window !== 'undefined' ? window.location.origin : 'https://petsvilla.ee')
   const productJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Product',
     name: product.commonName,
-    description: product.scientificName ? `${product.commonName} (${product.scientificName})` : product.commonName,
+    description: product.scientificName
+      ? `${product.commonName} (${product.scientificName})`
+      : product.commonName,
     sku: product.code || undefined,
     category: categoryTitle,
     image: `${baseUrl}/api/product-image/${product.id}`,
@@ -126,7 +41,9 @@ export function ProductDetailPage({
       '@type': 'Offer',
       priceCurrency: 'EUR',
       price: product.price > 0 ? product.price.toFixed(2) : '0.00',
-      availability: isInStock ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+      availability: isInStock
+        ? 'https://schema.org/InStock'
+        : 'https://schema.org/OutOfStock',
       url: `${baseUrl}/pood/${categorySlug}/${productSlug}`,
     },
     brand: {
@@ -145,13 +62,15 @@ export function ProductDetailPage({
       <Navigation />
       <div className="min-h-screen bg-background">
         <div className="container mx-auto px-4 py-8 md:py-16">
-          {/* Breadcrumbs */}
           <div className="mb-8 flex items-center gap-2 text-sm text-gray-600">
             <Link href="/pood" className="hover:text-green-800 transition-colors">
               Pood
             </Link>
             <span>/</span>
-            <Link href={`/pood/${categorySlug}`} className="hover:text-green-800 transition-colors">
+            <Link
+              href={`/pood/${categorySlug}`}
+              className="hover:text-green-800 transition-colors"
+            >
               {categoryTitle}
             </Link>
             <span>/</span>
@@ -159,7 +78,6 @@ export function ProductDetailPage({
           </div>
 
           <div className="grid md:grid-cols-2 gap-8 md:gap-12">
-            {/* Toote pilt */}
             <div className="space-y-4">
               <div className="relative aspect-square bg-[#E1D6C8] rounded-xl overflow-hidden border border-[#D0C3B4]">
                 <Image
@@ -172,7 +90,6 @@ export function ProductDetailPage({
                 />
               </div>
 
-              {/* Info ühel real */}
               <div className="flex flex-wrap gap-4 text-sm text-gray-700">
                 {product.code && (
                   <div>
@@ -187,7 +104,6 @@ export function ProductDetailPage({
               </div>
             </div>
 
-            {/* Toote info */}
             <div className="space-y-6">
               <div>
                 <h1 className="text-3xl md:text-4xl font-bold text-green-900 mb-2">
@@ -201,20 +117,16 @@ export function ProductDetailPage({
                 )}
               </div>
 
-              {/* Hind */}
               <div className="bg-[#E3D8CB]/90 border border-[#D7CBBE] rounded-xl p-6 text-center">
                 {product.price > 0 ? (
                   <span className="text-4xl font-bold text-green-900">
                     {product.price.toFixed(2)} €
                   </span>
                 ) : (
-                  <span className="text-2xl font-semibold text-gray-700">
-                    Hind küsida
-                  </span>
+                  <span className="text-2xl font-semibold text-gray-700">Hind küsida</span>
                 )}
               </div>
 
-              {/* Tegevusnupud */}
               <div className="space-y-3">
                 <Link
                   href={`/kontakt?product=${encodeURIComponent(product.commonName)}&id=${product.id}&code=${encodeURIComponent(product.code || '')}`}
@@ -247,7 +159,6 @@ export function ProductDetailPage({
             </div>
           </div>
 
-          {/* Tagasi link */}
           <div className="mt-12">
             <Link
               href={`/pood/${categorySlug}`}

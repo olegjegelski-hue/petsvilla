@@ -245,7 +245,7 @@ export default function TarneinfoPage() {
                 <li>
                   <strong>Lepime kokku kohtumise aja ja koha</strong>
                   <ul className="list-disc list-inside ml-6 mt-2 space-y-1">
-                    <li><strong>Meie asukoht:</strong> Kambja vald, Tartumaa 61709</li>
+                    <li><strong>Meie asukoht:</strong> Tartu mnt 80, Soinaste, Kambja vald, Tartumaa 61709</li>
                     <li><strong>Võimalus tulla vaatama:</strong> Jah, enne ostu otsust</li>
                   </ul>
                 </li>
@@ -363,7 +363,7 @@ export default function TarneinfoPage() {
               </p>
               <div className="text-gray-700 space-y-2">
                 <p><strong>E-post:</strong> <a href="mailto:service@petsvilla.ee" className="text-purple-600 hover:underline">service@petsvilla.ee</a></p>
-                <p><strong>Aadress:</strong> PetsVilla OÜ, Kambja vald, Tartumaa 61709</p>
+                <p><strong>Aadress:</strong> PetsVilla OÜ, Tartu mnt 80, Soinaste, Kambja vald, Tartumaa 61709</p>
                 <p><strong>Registrikood:</strong> 14980686</p>
               </div>
               <p className="text-gray-600 text-sm mt-4">

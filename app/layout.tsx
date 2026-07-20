@@ -95,7 +95,7 @@ export const metadata: Metadata = {
       },
     ],
     countryName: 'Estonia',
-    emails: ['service@petsvilla.ee', 'info@petsvilla.ee'],
+    emails: ['service@petsvilla.ee'],
     phoneNumbers: ['+372 512 7938'],
   },
   twitter: {

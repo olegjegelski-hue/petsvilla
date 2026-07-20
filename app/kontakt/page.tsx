@@ -49,7 +49,7 @@ export default function KontaktPage() {
         '@type': 'ContactPoint',
         telephone: '+3725127938',
         contactType: 'customer service',
-        email: 'info@petsvilla.ee',
+        email: 'service@petsvilla.ee',
         availableLanguage: ['Estonian', 'English'],
         areaServed: 'EE',
       },

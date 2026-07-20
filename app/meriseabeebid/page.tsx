@@ -3,6 +3,10 @@ import { GuineaPigGallery } from '@/components/guinea-pig-gallery'
 import { Footer } from '@/components/footer'
 import { Metadata } from 'next'
 import Script from 'next/script'
+import { getGuineaPigs } from '@/lib/guinea-pigs'
+import { NOTION_REVALIDATE_SECONDS } from '@/lib/notion'
+
+export const revalidate = NOTION_REVALIDATE_SECONDS
 
 export const metadata: Metadata = {
   title: {
@@ -58,7 +62,8 @@ export const metadata: Metadata = {
   },
 }
 
-export default function MeriseabeebidPage() {
+export default async function MeriseabeebidPage() {
+  const guineaPigs = await getGuineaPigs()
   const productSchema = {
     '@context': 'https://schema.org',
     '@type': 'Product',
@@ -232,7 +237,7 @@ export default function MeriseabeebidPage() {
       />
       <div className="min-h-screen bg-background">
         <Navigation />
-        <GuineaPigGallery />
+        <GuineaPigGallery initialGuineaPigs={guineaPigs} />
         <Footer />
       </div>
     </>

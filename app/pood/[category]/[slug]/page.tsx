@@ -1,45 +1,54 @@
 import { notFound } from 'next/navigation'
 import { Metadata } from 'next'
 import { ProductDetailPage } from '@/components/product-detail-page'
+import {
+  getProductBySlug,
+  getAllShopStaticParams,
+  SHOP_CATEGORIES,
+} from '@/lib/products'
+import { NOTION_REVALIDATE_SECONDS } from '@/lib/notion'
 
-const categoryData: Record<string, { title: string; icon: string; notionCategory: string }> = {
-  birds: {
-    title: 'Papagoid',
-    icon: '🦜',
-    notionCategory: 'BIRDS',
-  },
-  'feed-for-reptiles': {
-    title: 'Elustoit',
-    icon: '🦗',
-    notionCategory: 'FEED FOR REPTILES',
-  },
-  'reptiles-amphibians': {
-    title: 'Roomajad ja Kahepaiksed',
-    icon: '🦎',
-    notionCategory: 'REPTILES & AMPHIBIANS',
-  },
-  plants: {
-    title: 'Akvaariumi Taimed',
-    icon: '🌿',
-    notionCategory: 'PLANTS',
-  },
+export const revalidate = NOTION_REVALIDATE_SECONDS
+
+export async function generateStaticParams() {
+  try {
+    return await getAllShopStaticParams()
+  } catch {
+    return []
+  }
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ category: string; slug: string }> }): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ category: string; slug: string }>
+}): Promise<Metadata> {
   const resolved = await params
   const decodedCat = decodeURIComponent(resolved.category)
   const decodedSlug = decodeURIComponent(resolved.slug)
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || process.env.NEXTAUTH_URL || 'https://petsvilla.ee'
-  const productTitle = decodedSlug.replace(/-/g, ' ')
+  const category = SHOP_CATEGORIES[decodedCat]
+  const baseUrl =
+    process.env.NEXT_PUBLIC_BASE_URL ||
+    process.env.NEXTAUTH_URL ||
+    'https://petsvilla.ee'
   const canonical = `${baseUrl}/pood/${decodedCat}/${decodedSlug}`
-  const description = `Tutvu tootega "${productTitle}" PetsVilla E-poes.`
+
+  if (!category) {
+    return { title: decodedSlug.replace(/-/g, ' ') }
+  }
+
+  const product = await getProductBySlug(category.notionCategory, decodedSlug)
+  const productTitle = product?.commonName || decodedSlug.replace(/-/g, ' ')
+  const description = product
+    ? `Tutvu tootega "${product.commonName}" PetsVilla E-poes.${
+        product.scientificName ? ` ${product.scientificName}.` : ''
+      }`
+    : `Tutvu tootega "${productTitle}" PetsVilla E-poes.`
 
   return {
     title: productTitle,
     description,
-    alternates: {
-      canonical,
-    },
+    alternates: { canonical },
     openGraph: {
       title: productTitle,
       description,
@@ -55,13 +64,22 @@ export async function generateMetadata({ params }: { params: Promise<{ category:
   }
 }
 
-export default async function ProductPage({ params }: { params: Promise<{ category: string; slug: string }> }) {
+export default async function ProductPage({
+  params,
+}: {
+  params: Promise<{ category: string; slug: string }>
+}) {
   const resolved = await params
   const decodedCat = decodeURIComponent(resolved.category)
   const decodedSlug = decodeURIComponent(resolved.slug)
-  const category = categoryData[decodedCat]
+  const category = SHOP_CATEGORIES[decodedCat]
 
   if (!category) {
+    notFound()
+  }
+
+  const product = await getProductBySlug(category.notionCategory, decodedSlug)
+  if (!product) {
     notFound()
   }
 
@@ -71,7 +89,7 @@ export default async function ProductPage({ params }: { params: Promise<{ catego
       productSlug={decodedSlug}
       categoryTitle={category.title}
       categoryIcon={category.icon}
-      notionCategory={category.notionCategory}
+      product={product}
     />
   )
 }

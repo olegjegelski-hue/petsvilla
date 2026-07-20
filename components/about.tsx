@@ -24,8 +24,8 @@ export function About() {
     },
     {
       icon: Bird,
-      value: '50+',
-      label: 'Papagoi keskuses',
+      value: '20+',
+      label: 'Viirpapagoi paari',
       color: 'text-green-800'
     },
     {
@@ -159,13 +159,17 @@ export function About() {
                   PetsVilla sündis sügavast armastusest loomade vastu ja soovist pakkuda peredele tervet, turvalist ning teadlikku alternatiivi tavalistele loomapoodidele.
                 </p>
                 <p>
-                  Praeguseks oleme kasvanud väikesest papagoi perest mitmekülgseks ja professionaalseks Papagoi Keskuseks. Meie tegevus ühendab kolm põhivaldkonda: Papagoi Keskus (üle 50 papagoi) - külastused gruppidele, lühikarvaliste tõumerisigade ja viirpapagoide aretus ning kvaliteetse, looduslikult kuivatatud heina müük väikeste ja suurte lemmikloomapidajate jaoks. Lisaks kohapeal aretatud näitusekvaliteediga viirpapagoidele pakume ka ametliku päritoluga eksootilisi papagoisid usaldusväärsetelt partneritelt Hollandist.
+                  Täna oleme <strong>PetsVilla OÜ</strong> — aretus, hein ja nõustamine Soinastes. Kolm võrdset fookust: <strong>hein</strong>, <strong>meriseabeebid</strong> ja <strong>viirpapagoid</strong>. Iga meriseabeebi saab dokumenteeritud päritolu (pedigree); viirpapagoisid kasvatame näitusekvaliteediga ja inimestega harjunult. Lisaks kohapealsele aretusele vahendame usaldusväärsete Hollandi partnerite kaudu ametliku päritoluga eksootilisi papagoisid.
                 </p>
                 <p>
-                  Merisigade pesakonnad sotsialiseeritud ning terved; iga merisea beebi saab dokumenteeritud päritolu (pedigree). Heina kasvatame puhastes kohtades eemal teedest ja saasteallikatest ning kuivatame looduslikult päikese ja tuulega — sama heina sööb ja hindab ka meie üle 50 tõumerisiga.
+                  Heina kasvatame puhastes kohtades eemal teedest ja saasteallikatest ning kuivatame looduslikult päikese ja tuulega — sama heina sööb ja hindab ka meie üle 50 tõumerisiga.
                 </p>
                 <p>
-                  PetsVilla pakub kvaliteeti, läbipaistvust ja pidevat tuge lemmikute omanikele. Pakume nõu toitumisest, hooldusest ja varustusest. Kutsume huvilisi külastama Papagoi Keskust, tutvuma meie lindude ja merisigadega ning veenduma meie töö eetikas ja elukeskkonna kvaliteedis.
+                  PetsVilla pakub kvaliteeti, läbipaistvust ja pidevat tuge omanikele. Külastuselamust (toidmine, grupid, elamus) leiab eraldi brändilt{' '}
+                  <a href="https://papagoi.ee" target="_blank" rel="noreferrer" className="text-green-800 hover:text-green-900 font-semibold underline">
+                    papagoi.ee
+                  </a>
+                  ; petsvilla.ee keskendub müügile, aretusele ja heinale.
                 </p>
               </div>
               <div className="relative h-64 md:h-96 rounded-lg overflow-hidden shadow-lg">
@@ -208,9 +212,11 @@ export function About() {
                     Me paneme suurt rõhku vanemapopulatsiooni tervisele ja iseloomule — iga ema ja isa on hoolikalt valitud, et tagada terved, sõbralikud ja kaunid järglased. Iga beebi kasvab armastuses ning saab vajaliku hoolduse ja sotsialiseerimise.
                   </p>
                   <p>
-                    Enne uude koju minekut saab iga beebi ka parasiiditõrje. Beebid on julged ja harjunud inimestega, kuna meie keskust külastavad pidevalt grupid. <Link href="/kontakt" 
-                    className="text-green-800 hover:text-green-900 font-semibold underline transition-colors">(Võta 
-                    meiega ühendus külastuseks)</Link>
+                    Enne uude koju minekut saab iga beebi ka parasiiditõrje. Beebid on julged ja harjunud inimestega. Ostuks lepime kokku kohtumise Soinastes —{' '}
+                    <Link href="/kontakt" className="text-green-800 hover:text-green-900 font-semibold underline transition-colors">
+                      võta ühendust
+                    </Link>
+                    .
                   </p>
                 </div>
                 <div className="relative h-64 md:h-96 rounded-lg overflow-hidden shadow-lg">
@@ -307,16 +313,20 @@ export function About() {
               <div className="grid md:grid-cols-2 gap-8 items-center">
                 <div className="space-y-4 text-gray-600 leading-relaxed text-lg">
                   <p>
-                    Üks meie tegevusteks on Papagoi Keskus - oleme uhked, et meie juures elab üle 50 papagoi! Tegeleme ka väikeste papagoidega professionaalse aretamisega, keskendudes eelkõige viirpapagoidele (budgerigars).
+                    PetsVilla aretab näitusekvaliteediga viirpapagoisid (budgerigars). Meil on üle 20 viirpapagoi paari, kes on valitud tervise, värvi, suuruse ja iseloomu järgi.
                   </p>
                   <p>
-                    Meie keskuses on üle 20 viirpapagoi paari, kes vastavad näituste standardile. Iga paar on hoolikalt valitud nende tervislike omaduste, värvi, suuruse ja iseloomu järgi. Meie eesmärk on kasvatada standardile vastavaid, terveid ja elujõulisi viirpapagoisid.
+                    Viirpapagoid on suurepärased lemmiklinnud — sõbralikud, õppimisvõimelised ja rõõmsameelsed. Meie aretuse linnud kasvavad sotsialiseeritud keskkonnas, kus nad saavad inimkontakte ja õiget hooldust.
                   </p>
                   <p>
-                    Viirpapagoid on suurepärased lemmiklinnud - nad on sõbralikud, õppimisvõimelised ja rõõmsameelsed. Meie aretuse viirpapagoid kasvavad sotsialiseeritud keskkonnas, kus nad saavad pidevalt inimkontakte ja õiget hooldust.
+                    Pakume nõu ja tuge viirpapagoi pidamisel, toitmisel ja hooldamisel. Kui otsid külastuselamust (toidmine, grupid), vaata{' '}
+                    <a href="https://papagoi.ee" target="_blank" rel="noreferrer" className="text-green-800 hover:text-green-900 font-semibold underline">
+                      papagoi.ee
+                    </a>
+                    ; viirpapagoide müük toimub siin, petsvilla.ee peal.
                   </p>
                   <p>
-                    Pakume nõu ja tuge viirpapagoi pidamisel, õigel toitmisel ja hooldamisel. Meie kogemus ja teadmised tagavad, et iga linnuke leiab armastava kodu, kus teda osatakse õigesti hoida.
+                    Meie kogemus tagab, et iga linnuke leiab armastava kodu, kus teda osatakse õigesti hoida.
                   </p>
                 </div>
                 <div className="relative h-64 md:h-96 rounded-lg overflow-hidden shadow-lg">
