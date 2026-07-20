@@ -9,11 +9,17 @@ import { CookieConsent } from '@/components/cookie-consent'
 import { Metadata } from 'next'
 import { getSiteUrl } from '@/lib/site-url'
 
-const inter = Inter({ subsets: ['latin'] })
-const poppins = Poppins({ 
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+  preload: true,
+})
+const poppins = Poppins({
   weight: ['400', '600'],
   subsets: ['latin'],
-  variable: '--font-poppins'
+  variable: '--font-poppins',
+  display: 'swap',
+  preload: true,
 })
 
 export const metadata: Metadata = {

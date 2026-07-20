@@ -5,7 +5,6 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Heart, Calendar, Palette, Users, Mail, Phone, Cake, PawPrint, Filter } from 'lucide-react'
-import { motion } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
@@ -31,13 +30,8 @@ export function GuineaPigGallery({ initialGuineaPigs }: GuineaPigGalleryProps) {
   return (
     <section className="pt-20 pb-0">
       <div className="container mx-auto max-w-6xl px-4">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 14 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.45 }}
-          className="text-center mb-10"
-        >
+        {/* Header — ilma opacity:0 animatsioonita (LCP = pealkiri) */}
+        <div className="text-center mb-10">
           <h1 className="page-title mb-4">
             Meriseabeebid
           </h1>
@@ -67,7 +61,7 @@ export function GuineaPigGallery({ initialGuineaPigs }: GuineaPigGalleryProps) {
               </Button>
             </Link>
           </div>
-        </motion.div>
+        </div>
 
         <div className="max-w-4xl mx-auto mb-8 text-center">
           <p className="text-xs md:text-sm italic font-semibold text-[#2E3A32] leading-relaxed">
@@ -88,12 +82,7 @@ export function GuineaPigGallery({ initialGuineaPigs }: GuineaPigGalleryProps) {
         {/* Filters - keskele ja kitsamaks */}
         {guineaPigs.length > 0 && (
           <div className="max-w-3xl mx-auto mb-8">
-            <motion.div
-              className="bg-[#E3D8CB] rounded-lg shadow-md p-4 border border-[#D7CBBE]"
-              initial={{ opacity: 0, y: 14 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.45, delay: 0.08 }}
-            >
+            <div className="bg-[#E3D8CB] rounded-lg shadow-md p-4 border border-[#D7CBBE]">
               <div className="flex flex-wrap items-center gap-3 justify-center">
                 <div className="flex items-center gap-2">
                   <Filter className="w-5 h-5 text-pink-500" />
@@ -160,7 +149,7 @@ export function GuineaPigGallery({ initialGuineaPigs }: GuineaPigGalleryProps) {
                   </Button>
                 </div>
               )}
-            </motion.div>
+            </div>
           </div>
         )}
 
@@ -195,12 +184,7 @@ export function GuineaPigGallery({ initialGuineaPigs }: GuineaPigGalleryProps) {
               : '/placeholder-guinea-pig.jpg'
             
             return (
-              <motion.div
-                key={pig.id}
-                initial={{ opacity: 0, y: 14 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.45, delay: index * 0.05 }}
-              >
+              <div key={pig.id}>
                 <Card className="h-full hover:shadow-2xl transition-all duration-500 border border-[#D7CBBE] bg-[#E3D8CB]/90 shadow-lg overflow-hidden">
                   <div className="relative h-80 overflow-hidden group">
                     <Image
@@ -213,6 +197,8 @@ export function GuineaPigGallery({ initialGuineaPigs }: GuineaPigGalleryProps) {
                       fill
                       sizes="(max-width: 768px) 100vw, 50vw"
                       className="object-cover hover:scale-110 transition-transform duration-700"
+                      priority={index === 0}
+                      fetchPriority={index === 0 ? 'high' : 'auto'}
                     />
                   {/* Müügistaatus */}
                   <div className="absolute top-3 left-3 z-10">
@@ -338,7 +324,7 @@ export function GuineaPigGallery({ initialGuineaPigs }: GuineaPigGalleryProps) {
                   )}
                 </CardContent>
               </Card>
-            </motion.div>
+            </div>
           )
         })}
         </div>
