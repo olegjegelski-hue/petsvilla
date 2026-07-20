@@ -38,7 +38,7 @@ export default function PapagoidPage() {
       <div className="min-h-screen bg-background">
         <div className="container mx-auto max-w-6xl px-4 pt-20 pb-16">
           <div className="text-center mb-12 animate-fade-in-up">
-            <h1 className="text-4xl md:text-5xl font-bold text-green-900 mb-4">Papagoid</h1>
+            <h1 className="page-title mb-4">Papagoid</h1>
             <p className="text-sm md:text-base font-semibold text-gray-600 max-w-3xl mx-auto">
               Otsid seltsiliseks sotsiaalset viirpapagoid või unistad suurest eksootilisest
               lemmikust, leiad PetsVillast usaldusväärse partneri. Kõik meie linnud - nii

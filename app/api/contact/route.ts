@@ -1,9 +1,10 @@
-
 import { NextRequest, NextResponse } from 'next/server'
 import { sendContactEmail } from '@/lib/email'
+import { reportError } from '@/lib/report-error'
+import { validateContactForm } from '@/lib/contact-validation'
 
 // Force dynamic rendering - no caching
-export const dynamic = 'force-dynamic';
+export const dynamic = 'force-dynamic'
 
 const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000
 const RATE_LIMIT_MAX = 5
@@ -50,99 +51,45 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
-    const { name, email, phone, subject, message, product, website, formStartedAt } = body
+    const result = validateContactForm(body)
 
-    // Honeypot check (bots fill hidden fields)
-    if (website && String(website).trim().length > 0) {
+    if (!result.ok) {
+      return NextResponse.json({ error: result.error }, { status: result.status })
+    }
+
+    // Honeypot — vasta edukalt, ära saada meili
+    if (result.honeypot) {
       return NextResponse.json(
         { message: 'Sõnum edukalt saadetud!' },
         { status: 200 }
       )
     }
 
-    // Minimum time-to-submit check (simple bot protection)
-    if (formStartedAt && Date.now() - Number(formStartedAt) < 3000) {
-      return NextResponse.json(
-        { error: 'Palun proovi uuesti.' },
-        { status: 400 }
-      )
-    }
-
-    // Validate required fields
-    if (!name || !email || !message) {
-      return NextResponse.json(
-        { error: 'Nimi, e-post ja sõnum on kohustuslikud' },
-        { status: 400 }
-      )
-    }
-
-    const trimmedName = String(name).trim()
-    const trimmedEmail = String(email).trim().toLowerCase()
-    const trimmedMessage = String(message).trim()
-    const trimmedSubject = subject ? String(subject).trim() : ''
-    const trimmedPhone = phone ? String(phone).trim() : ''
-
-    if (trimmedName.length < 2 || trimmedName.length > 120) {
-      return NextResponse.json(
-        { error: 'Nimi peab olema 2–120 tähemärki.' },
-        { status: 400 }
-      )
-    }
-
-    if (trimmedEmail.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
-      return NextResponse.json(
-        { error: 'Palun sisesta korrektne e-posti aadress.' },
-        { status: 400 }
-      )
-    }
-
-    if (trimmedMessage.length < 10 || trimmedMessage.length > 2000) {
-      return NextResponse.json(
-        { error: 'Sõnum peab olema 10–2000 tähemärki.' },
-        { status: 400 }
-      )
-    }
-
-    if (trimmedSubject && trimmedSubject.length > 120) {
-      return NextResponse.json(
-        { error: 'Teema on liiga pikk.' },
-        { status: 400 }
-      )
-    }
-
-    if (trimmedPhone && !/^[+\d\s\-()]{5,20}$/.test(trimmedPhone)) {
-      return NextResponse.json(
-        { error: 'Telefoninumber on vigase formaadiga.' },
-        { status: 400 }
-      )
-    }
-
     const contactData = {
-      name: trimmedName,
-      email: trimmedEmail,
-      phone: trimmedPhone || undefined,
-      subject: trimmedSubject || undefined,
-      message: trimmedMessage,
-      product: product || undefined,
+      name: result.data.name,
+      email: result.data.email,
+      phone: result.data.phone || undefined,
+      subject: result.data.subject || undefined,
+      message: result.data.message,
+      product: result.data.product,
     }
 
-    // Log the contact form submission
     console.log('Contact form submission:', {
       ...contactData,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     })
 
-    // Send email notification
     await sendContactEmail(contactData)
 
     return NextResponse.json(
-      { 
+      {
         message: 'Sõnum edukalt saadetud!',
-        id: 'temp-' + Date.now()
+        id: 'temp-' + Date.now(),
       },
       { status: 201 }
     )
   } catch (error) {
+    reportError(error, { tags: { area: 'email', route: 'contact' } })
     console.error('Error processing contact form:', error)
     return NextResponse.json(
       { error: 'Serveriviga. Palun proovige hiljem uuesti.' },

@@ -1,6 +1,7 @@
 
 'use client'
 
+import { Suspense, useState, useEffect } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -10,11 +11,38 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Phone, Mail, MapPin, Clock, MessageSquare, Send, Heart, Bird, Wheat, AlertCircle } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
-import { useState, useEffect } from 'react'
 import { toast } from 'sonner'
 import { useSearchParams, useRouter } from 'next/navigation'
 
+function ContactFormSkeleton() {
+  return (
+    <section className="py-16 md:py-20" aria-busy="true" aria-label="Kontaktivorm laadib">
+      <div className="container mx-auto max-w-6xl px-4">
+        <div className="text-center mb-12 md:mb-16 space-y-3">
+          <div className="mx-auto h-9 w-40 rounded-md bg-[#D7CBBE]/80 animate-pulse" />
+          <div className="mx-auto h-4 w-full max-w-md rounded bg-[#D7CBBE]/60 animate-pulse" />
+          <div className="mx-auto h-4 w-3/4 max-w-sm rounded bg-[#D7CBBE]/50 animate-pulse" />
+        </div>
+        <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto mb-8">
+          <div className="h-36 rounded-xl border border-[#D7CBBE] bg-[#E3D8CB]/70 animate-pulse" />
+          <div className="h-36 rounded-xl border border-[#D7CBBE] bg-[#E3D8CB]/70 animate-pulse" />
+        </div>
+        <div className="max-w-2xl mx-auto h-72 rounded-xl border border-[#D7CBBE] bg-[#E3D8CB]/70 animate-pulse" />
+      </div>
+    </section>
+  )
+}
+
+/** Avalik API — Suspense ümber useSearchParams (väldi CSR bailout). */
 export function ContactForm() {
+  return (
+    <Suspense fallback={<ContactFormSkeleton />}>
+      <ContactFormContent />
+    </Suspense>
+  )
+}
+
+function ContactFormContent() {
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1
@@ -130,10 +158,10 @@ export function ContactForm() {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <h1 className="text-4xl md:text-5xl font-bold text-green-900 mb-4">
+          <h1 className="page-title mb-4">
             Kontakt
           </h1>
-          <p className="text-sm md:text-base font-semibold text-gray-600 max-w-3xl mx-auto">
+          <p className="page-lead">
             Võtke meiega julgelt ühendust! Oleme siin, et aidata leida teie perele sobiv lemmikloom, nõustada hoolduse osas või vastata küsimustele meie toodete kohta.
           </p>
         </motion.div>

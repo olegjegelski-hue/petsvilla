@@ -5,6 +5,7 @@ import {
 } from '@/lib/montonio';
 import { Client } from '@notionhq/client';
 import { sendHayOrderEmail } from '@/lib/email';
+import { reportError } from '@/lib/report-error';
 
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
 
@@ -238,6 +239,7 @@ export async function POST(request: NextRequest) {
       uuid,
     });
   } catch (error) {
+    reportError(error, { tags: { area: 'montonio', route: 'create-order' } });
     console.error('=== ERROR IN ORDER CREATION ===');
     console.error('Error creating Montonio order:', error);
     console.error('Error type:', typeof error);

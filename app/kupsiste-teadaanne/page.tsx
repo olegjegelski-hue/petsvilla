@@ -49,7 +49,7 @@ export default function KupsistePage() {
           </nav>
           {/* Header */}
           <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-5xl font-bold text-green-900 mb-4 flex items-center justify-center gap-3">
+            <h1 className="page-title mb-4 flex items-center justify-center gap-3">
               <Cookie className="w-12 h-12 text-[#C8A93E]" />
               Küpsiste teadaanne
             </h1>

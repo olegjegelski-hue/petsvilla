@@ -32,7 +32,7 @@ export function FaqSection({
         <div className="text-center mb-8">
           <h2
             id="faq-heading"
-            className="text-3xl md:text-4xl font-bold text-green-900 mb-3"
+            className="section-title mb-3"
           >
             {title}
           </h2>

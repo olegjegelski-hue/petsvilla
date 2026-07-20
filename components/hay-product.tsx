@@ -68,7 +68,7 @@ export function HayProduct() {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <h1 className="text-4xl md:text-5xl font-bold text-green-900 mb-4">
+          <h1 className="page-title mb-4">
             Kvaliteetne hein
           </h1>
           <p className="text-sm md:text-base font-semibold text-gray-600 max-w-3xl mx-auto">

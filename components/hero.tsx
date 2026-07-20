@@ -75,15 +75,15 @@ export function Hero() {
           transition={{ duration: 0.5 }}
           className="text-center mb-10 md:mb-12"
         >
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl mb-4 leading-tight">
-            <span className="font-[family-name:var(--font-poppins)] font-semibold tracking-[0.04rem] text-[#1F6A4C]">
+          <h1 className="page-title mb-4 font-[family-name:var(--font-poppins)]">
+            <span className="font-semibold tracking-[0.04rem] text-[#1F6A4C]">
               PetsVilla
             </span>
           </h1>
-          <p className="text-lg md:text-xl text-[#2E3A32] max-w-2xl mx-auto font-medium mb-8">
+          <p className="page-lead mb-8 !font-medium text-[#2E3A32] sm:text-lg">
             Hein · Merisead · Viirpapagoid — aretus, nõu ja tarne ühest kohast.
           </p>
-          <h2 className="text-2xl md:text-3xl font-bold text-green-900">
+          <h2 className="section-title">
             Mida otsid?
           </h2>
         </motion.div>

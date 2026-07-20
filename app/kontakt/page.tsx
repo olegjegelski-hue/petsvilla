@@ -1,4 +1,3 @@
-import { Suspense } from 'react'
 import { Navigation } from '@/components/navigation'
 import { ContactForm } from '@/components/contact-form'
 import { FaqSection } from '@/components/faq-section'
@@ -98,9 +97,7 @@ export default function KontaktPage() {
       />
       <div className="min-h-screen bg-background">
         <Navigation />
-        <Suspense fallback={<div className="min-h-[40vh]" aria-hidden />}>
-          <ContactForm />
-        </Suspense>
+        <ContactForm />
         <FaqSection
           title="Kontakt — korduma kippuvad küsimused"
           description="Maksed, tagastus ja kuidas meiega ühendust võtta."

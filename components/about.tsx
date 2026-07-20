@@ -112,7 +112,7 @@ export function About() {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-green-900 mb-4">
+          <h2 className="section-title mb-4">
             PetsVilla - hoitud lemmikud teie perele
           </h2>
           <div className="w-24 h-1 bg-[#C9BCAA] mx-auto mb-6"></div>

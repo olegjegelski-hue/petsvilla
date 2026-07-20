@@ -66,7 +66,7 @@ export default async function CategoryPage({
             <div className="flex items-center gap-4 mb-4">
               <span className="text-6xl">{category.icon}</span>
               <div>
-                <h1 className="text-4xl md:text-5xl font-bold text-green-900">
+                <h1 className="page-title">
                   {category.title}
                 </h1>
                 <p className="text-sm md:text-base font-semibold text-gray-600 mt-2">

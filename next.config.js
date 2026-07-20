@@ -1,4 +1,5 @@
 const path = require('path');
+const { withSentryConfig } = require('@sentry/nextjs');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -66,4 +67,18 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+const sentryAuthToken = process.env.SENTRY_AUTH_TOKEN;
+
+module.exports = withSentryConfig(nextConfig, {
+  org: process.env.SENTRY_ORG,
+  project: process.env.SENTRY_PROJECT,
+  authToken: sentryAuthToken,
+  // Ilma auth tokenita ära murra buildi (lokaalne / CI ilma Sentry uploadita)
+  silent: !sentryAuthToken,
+  widenClientFileUpload: true,
+  disableLogger: true,
+  automaticVercelMonitors: true,
+  sourcemaps: {
+    disable: !sentryAuthToken,
+  },
+});

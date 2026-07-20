@@ -2,6 +2,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { Client } from '@notionhq/client'
 import { sendHayOrderEmail } from '@/lib/email'
+import { reportError } from '@/lib/report-error'
+import { formatPhoneNumber } from '@/lib/phone'
 
 // Force dynamic rendering - no caching
 export const dynamic = 'force-dynamic';
@@ -9,24 +11,6 @@ export const dynamic = 'force-dynamic';
 const notion = new Client({
   auth: process.env.NOTION_API_KEY,
 })
-
-// Format phone number to ensure +372 prefix for SmartPost (without spaces)
-function formatPhoneNumber(phone: string): string {
-  // Remove ALL spaces and non-digit characters except +
-  let cleaned = phone.replace(/\s+/g, '').replace(/[^\d+]/g, '')
-  
-  // If starts with 372 (without +), add the +
-  if (cleaned.startsWith('372')) {
-    cleaned = '+' + cleaned
-  }
-  // If starts with a digit (like 5...), add +372
-  else if (cleaned.length > 0 && /^\d/.test(cleaned)) {
-    cleaned = '+372' + cleaned
-  }
-  // If already has + but not +372, keep as is
-  
-  return cleaned
-}
 
 export async function POST(request: NextRequest) {
   try {
@@ -139,6 +123,7 @@ export async function POST(request: NextRequest) {
       { status: 200 }
     )
   } catch (error) {
+    reportError(error, { tags: { area: 'notion', route: 'hay-order' } })
     console.error('Error processing hay order:', error)
     return NextResponse.json(
       { error: 'Viga tellimuse töötlemisel' },

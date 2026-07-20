@@ -38,7 +38,7 @@ export function GuineaPigGallery({ initialGuineaPigs }: GuineaPigGalleryProps) {
           transition={{ duration: 0.45 }}
           className="text-center mb-10"
         >
-          <h1 className="text-4xl md:text-5xl font-bold text-green-900 mb-4">
+          <h1 className="page-title mb-4">
             Meriseabeebid
           </h1>
           <p className="text-sm md:text-base font-semibold text-gray-600 max-w-3xl mx-auto mb-2">

@@ -78,6 +78,23 @@
   display: none;
 }
 
+@layer components {
+  /* Mobiili-sõbralik pealkirjade skaala (clamp — ei voola üle kitsal ekraanil) */
+  .page-title {
+    @apply font-bold text-green-900 leading-tight tracking-tight break-words text-balance;
+    font-size: clamp(1.5rem, 1.15rem + 2vw, 3rem);
+  }
+
+  .section-title {
+    @apply font-bold text-green-900 leading-snug tracking-tight break-words text-balance;
+    font-size: clamp(1.25rem, 1.05rem + 1.4vw, 2.25rem);
+  }
+
+  .page-lead {
+    @apply mx-auto max-w-3xl text-sm font-semibold leading-relaxed text-gray-600 sm:text-base;
+  }
+}
+
 /* Smooth scrolling */
 html {
   scroll-behavior: smooth;

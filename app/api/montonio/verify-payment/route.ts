@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { Client } from '@notionhq/client';
 import { createMontonioShipment } from '@/lib/montonio-shipping';
 import { calculateHayOrderNumItems } from '@/lib/meta-capi-server';
+import { reportError } from '@/lib/report-error';
 
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
 
@@ -178,6 +179,7 @@ export async function POST(request: NextRequest) {
       shipmentsCreated: shipmentResults.filter(r => r.success).length,
     });
   } catch (error) {
+    reportError(error, { tags: { area: 'montonio', route: 'verify-payment' } });
     console.error('=== ERROR IN PAYMENT VERIFICATION ===');
     console.error('Error verifying payment:', error);
     console.error('Error type:', typeof error);

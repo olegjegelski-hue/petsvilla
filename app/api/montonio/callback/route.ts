@@ -9,6 +9,7 @@ import {
   sendMetaPurchaseEvent,
 } from '@/lib/meta-capi-server';
 import { getSiteUrl } from '@/lib/site-url';
+import { reportError } from '@/lib/report-error';
 
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
 
@@ -195,6 +196,7 @@ export async function POST(request: NextRequest) {
     // Return success response to Montonio
     return NextResponse.json({ success: true });
   } catch (error) {
+    reportError(error, { tags: { area: 'montonio', route: 'callback' } });
     console.error('Error processing Montonio callback:', error);
     return NextResponse.json(
       {

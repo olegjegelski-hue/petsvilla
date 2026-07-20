@@ -240,10 +240,10 @@ export function HayOrderForm() {
           transition={{ duration: 0.8 }}
           className="text-center mb-10"
         >
-          <h1 className="text-4xl md:text-5xl font-bold text-green-900 mb-4">
+          <h1 className="page-title mb-4">
             Telli hein
           </h1>
-          <p className="text-sm md:text-base font-semibold text-gray-600 max-w-3xl mx-auto">
+          <p className="page-lead">
             Täida tellimuse vorm ja maksa turvaliselt läbi Montonio. Hind: 9€/kott (tarne hinna sees)
           </p>
         </motion.div>
