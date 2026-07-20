@@ -1,8 +1,5 @@
 import { Client } from '@notionhq/client'
 
-/** ISR intervall sisulehtedele (Notion staatus jõuab ~2 min jooksul). */
-export const NOTION_REVALIDATE_SECONDS = 120
-
 let notionClient: Client | null = null
 
 export function getNotionClient(): Client {

@@ -6,9 +6,9 @@ import { ProductCard } from '@/components/product-card'
 import { Navigation } from '@/components/navigation'
 import { Footer } from '@/components/footer'
 import { getProducts, SHOP_CATEGORIES } from '@/lib/products'
-import { NOTION_REVALIDATE_SECONDS } from '@/lib/notion'
 
-export const revalidate = NOTION_REVALIDATE_SECONDS
+/** ISR — peab olema literaal (Next.js ei luba importitud konstanti). */
+export const revalidate = 120
 
 export function generateStaticParams() {
   return Object.keys(SHOP_CATEGORIES).map((category) => ({ category }))

@@ -6,9 +6,9 @@ import { Footer } from '@/components/footer'
 import { Metadata } from 'next'
 import Script from 'next/script'
 import { getBudgies } from '@/lib/budgies'
-import { NOTION_REVALIDATE_SECONDS } from '@/lib/notion'
 
-export const revalidate = NOTION_REVALIDATE_SECONDS
+/** ISR — peab olema literaal (Next.js ei luba importitud konstanti). */
+export const revalidate = 120
 
 export const metadata: Metadata = {
   title: {

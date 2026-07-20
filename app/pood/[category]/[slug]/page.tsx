@@ -6,9 +6,9 @@ import {
   getAllShopStaticParams,
   SHOP_CATEGORIES,
 } from '@/lib/products'
-import { NOTION_REVALIDATE_SECONDS } from '@/lib/notion'
 
-export const revalidate = NOTION_REVALIDATE_SECONDS
+/** ISR — peab olema literaal (Next.js ei luba importitud konstanti). */
+export const revalidate = 120
 
 export async function generateStaticParams() {
   try {
