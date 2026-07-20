@@ -35,24 +35,11 @@ const paths = [
   },
 ] as const
 
-/** Server Component — LCP: pildid SSR-is kohe, ilma client mounted-gate’ita. */
+/** Server Component — LCP: sisu SSR-is kohe; ilma raske taustapildita (LCP oli peidetud bg-img). */
 export function Hero() {
   return (
     <section className="relative overflow-hidden bg-gradient-to-br from-[#E3D8CB] via-[#E8DFD3] to-[#D7CBBE]">
-      <div className="absolute inset-0 opacity-25">
-        <Image
-          src="/hero-lcp.jpg"
-          alt=""
-          fill
-          priority
-          fetchPriority="high"
-          quality={70}
-          sizes="100vw"
-          className="object-cover"
-          aria-hidden
-        />
-      </div>
-      <div className="absolute inset-0 bg-gradient-to-b from-[#E3D8CB]/80 via-[#E3D8CB]/70 to-background" />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background" />
 
       <div className="relative z-10 container mx-auto max-w-6xl px-4 pt-16 pb-14 md:pt-20 md:pb-16">
         <div className="text-center mb-10 md:mb-12">
@@ -82,7 +69,7 @@ export function Hero() {
                     alt={path.alt}
                     fill
                     sizes="(max-width: 768px) 100vw, 33vw"
-                    quality={index === 0 ? 70 : 65}
+                    quality={65}
                     className="object-cover transition-transform duration-500 group-hover:scale-105"
                     priority={index === 0}
                     fetchPriority={index === 0 ? 'high' : 'auto'}

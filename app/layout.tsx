@@ -13,13 +13,15 @@ const inter = Inter({
   subsets: ['latin'],
   display: 'swap',
   preload: true,
+  adjustFontFallback: true,
 })
 const poppins = Poppins({
-  weight: ['400', '600'],
+  weight: ['600'],
   subsets: ['latin'],
   variable: '--font-poppins',
   display: 'swap',
   preload: true,
+  adjustFontFallback: true,
 })
 
 export const metadata: Metadata = {

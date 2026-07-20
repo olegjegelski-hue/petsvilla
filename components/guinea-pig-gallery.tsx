@@ -35,11 +35,11 @@ export function GuineaPigGallery({ initialGuineaPigs }: GuineaPigGalleryProps) {
           <h1 className="page-title mb-4">
             Meriseabeebid
           </h1>
-          <p className="text-sm md:text-base font-semibold text-gray-600 max-w-3xl mx-auto mb-2">
+          <p className="page-lead mb-2">
             Merisead müügiks ainult beebidena — dokumenteeritud päritoluga (pedigree).
           </p>
-          <p className="text-sm md:text-base font-semibold text-gray-600 max-w-3xl mx-auto mb-8">
-            Tegeleme lühikarvaliste tõumerisigade professionaalse aretamisega. Aretuse vanemad on hoolikalt valitud, et tagada tervete, rõõmsate ja ilusate beebide sünd. Iga meie meriseal on kaasas ametlik päritolukaart (pedigree), mis kinnitab looma puhast geneetikat ja tervist. Pakume alati nõu ja tuge uutele omanikele – meie hoolitsus ei lõpe looma loovutamisega.
+          <p className="text-sm md:text-base font-medium text-gray-600 max-w-3xl mx-auto mb-8">
+            Lühikarvalised tõumerisead ametliku päritolukaardiga. Nõu ja tugi ka pärast loovutamist.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3">
             <Link href="#ostuprotsess">
@@ -62,6 +62,15 @@ export function GuineaPigGallery({ initialGuineaPigs }: GuineaPigGalleryProps) {
             </Link>
           </div>
         </div>
+
+        <details className="max-w-3xl mx-auto mb-8 text-sm text-gray-600 leading-relaxed">
+          <summary className="cursor-pointer font-semibold text-green-900 text-center list-none [&::-webkit-details-marker]:hidden">
+            Loe aretuse kohta rohkem
+          </summary>
+          <p className="mt-3 text-center font-medium">
+            Tegeleme lühikarvaliste tõumerisigade professionaalse aretamisega. Aretuse vanemad on hoolikalt valitud, et tagada tervete, rõõmsate ja ilusate beebide sünd. Iga meie meriseal on kaasas ametlik päritolukaart (pedigree), mis kinnitab looma puhast geneetikat ja tervist. Pakume alati nõu ja tuge uutele omanikele – meie hoolitsus ei lõpe looma loovutamisega.
+          </p>
+        </details>
 
         <div className="max-w-4xl mx-auto mb-8 text-center">
           <p className="text-xs md:text-sm italic font-semibold text-[#2E3A32] leading-relaxed">
