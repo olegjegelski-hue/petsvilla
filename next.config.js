@@ -12,7 +12,49 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: false,
   },
-  images: { unoptimized: true },
+  images: {
+    // next/image optimeerimine sisse (LCP). Dünaamilised Notion/S3 hostid allpool.
+    formats: ['image/avif', 'image/webp'],
+    remotePatterns: [
+      // Notion failid (allkirjastatud S3 URL-id)
+      {
+        protocol: 'https',
+        hostname: 'prod-files-secure.s3.us-west-2.amazonaws.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 's3.us-west-2.amazonaws.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 's3.amazonaws.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'file.notion.so',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'www.notion.so',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'notion.so',
+        pathname: '/**',
+      },
+      // Mõned Notion välised / legacy hostid
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+        pathname: '/**',
+      },
+    ],
+  },
   async redirects() {
     return [
       {

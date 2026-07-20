@@ -54,7 +54,7 @@ export default async function ViirpapagoidPage() {
       availability: 'https://schema.org/InStock',
       url: 'https://petsvilla.ee/viirpapagoid',
     },
-    image: 'https://cdn.abacus.ai/images/55d8bcc3-efe9-42e2-8e63-e17f39ee28f9.png',
+    image: 'https://petsvilla.ee/viirpapagoid-schema.png',
     url: 'https://petsvilla.ee/viirpapagoid',
     category: 'Pet',
     additionalProperty: [

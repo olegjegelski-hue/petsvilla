@@ -36,7 +36,7 @@ const featuredSections: Array<{
     id: 'merisead',
     title: 'Merisead',
     href: '/meriseabeebid',
-    image: 'https://cdn.abacus.ai/images/9981df73-bb04-4c4b-822a-37d612af899f.png',
+    image: '/merisead-featured.png',
     buttonLabel: 'Tutvu merisigadega',
     icon: Heart,
     gradient: 'from-pink-400 to-red-500',

@@ -35,7 +35,7 @@ export default function Home() {
     '@context': 'https://schema.org',
     '@type': 'PetStore',
     name: 'PetsVilla',
-    image: 'https://petsvilla.ee/logo.png',
+    image: 'https://petsvilla.ee/petsvilla-logo.png',
     '@id': 'https://petsvilla.ee',
     url: 'https://petsvilla.ee',
     telephone: '+372 512 7938',

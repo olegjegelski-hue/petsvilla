@@ -122,12 +122,8 @@ async function getBlogPost(slug: string): Promise<BlogPost | null> {
     const imageProperty = properties.Kaanepilt
 
     if (imageProperty?.files?.[0]) {
-      const file = imageProperty.files[0]
-      if (file.type === 'external') {
-        coverImage = file.external.url
-      } else if (file.type === 'file') {
-        coverImage = file.file.url
-      }
+      // Stabiilne proxy (Notion allkirjastatud URL-id aeguvad)
+      coverImage = `/api/blog-image/${page.id}`
     }
 
     return {
@@ -161,6 +157,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   }
 
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || process.env.NEXTAUTH_URL || 'https://petsvilla.ee'
+  const coverImageAbsolute = post.coverImage.startsWith('http')
+    ? post.coverImage
+    : `${baseUrl}${post.coverImage}`
 
   return {
     title: `${post.title} - PetsVilla Blogi`,
@@ -187,7 +186,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       authors: [post.author],
       images: [
         {
-          url: post.coverImage,
+          url: coverImageAbsolute,
           alt: post.title,
         },
       ],
@@ -196,7 +195,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       card: 'summary_large_image',
       title: post.title,
       description: post.description,
-      images: [post.coverImage],
+      images: [coverImageAbsolute],
     },
   }
 }
@@ -210,6 +209,9 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   }
 
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || process.env.NEXTAUTH_URL || 'https://petsvilla.ee'
+  const coverImageAbsolute = post.coverImage.startsWith('http')
+    ? post.coverImage
+    : `${baseUrl}${post.coverImage}`
 
   // Schema.org Article structured data
   const articleJsonLd = {
@@ -217,7 +219,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     '@type': 'BlogPosting',
     headline: post.title,
     description: post.description,
-    image: post.coverImage,
+    image: coverImageAbsolute,
     datePublished: post.publishedDate,
     dateModified: post.publishedDate,
     author: {

@@ -160,7 +160,7 @@ export default function RootLayout({
     name: 'PetsVilla OÜ',
     legalName: 'PetsVilla OÜ',
     url: 'https://petsvilla.ee',
-    logo: 'https://petsvilla.ee/og-image.png',
+    logo: 'https://petsvilla.ee/petsvilla-logo.png',
     description: 'Professionaalne lemmikloomade aretaja Eestis. Spetsialiseerunud tõumerisiigade ja näituse kvaliteediga viirpapagoidide aretamisele.',
     foundingDate: '2020',
     founder: {

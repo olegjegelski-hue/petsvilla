@@ -174,10 +174,10 @@ export function About() {
               </div>
               <div className="relative h-64 md:h-96 rounded-lg overflow-hidden shadow-lg">
                 <Image
-                  src="https://cdn.abacus.ai/images/f5e50a94-2f96-4763-87cf-6f169e387d9a.png"
+                  src="/about-story.png"
                   alt="PetsVilla - meie armastusega kasvatatud lemmikloomad"
                   fill
-                  sizes="100vw"
+                  sizes="(max-width: 768px) 100vw, 50vw"
                   priority
                   className="object-cover"
                 />
