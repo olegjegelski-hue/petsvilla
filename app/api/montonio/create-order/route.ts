@@ -65,9 +65,9 @@ export async function POST(request: NextRequest) {
     // For Montonio, we need a public HTTPS URL, not localhost
     let origin = request.headers.get('origin') || process.env.NEXT_PUBLIC_BASE_URL || '';
     
-    // If using localhost, fallback to deployed URL
-    if (origin.includes('localhost') || origin.includes('127.0.0.1')) {
-      origin = 'https://petsvilla.abacusai.app';
+    // If using localhost, fallback to production only (never non-prod domains)
+    if (origin.includes('localhost') || origin.includes('127.0.0.1') || !origin) {
+      origin = 'https://petsvilla.ee';
     }
 
     // Prepare line items
@@ -98,7 +98,7 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    // Delivery is FREE (tarne hinna sees)
+    // Delivery included in product price (tarne hinna sees) — no separate line item
     // No separate delivery line item needed
 
     // Split name into first and last name

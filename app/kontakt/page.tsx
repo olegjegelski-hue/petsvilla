@@ -1,4 +1,5 @@
 
+import { Suspense } from 'react'
 import { Navigation } from '@/components/navigation'
 import { ContactForm } from '@/components/contact-form'
 import { Footer } from '@/components/footer'
@@ -88,7 +89,9 @@ export default function KontaktPage() {
       />
       <div className="min-h-screen bg-background">
         <Navigation />
-        <ContactForm />
+        <Suspense fallback={<div className="min-h-[40vh]" aria-hidden />}>
+          <ContactForm />
+        </Suspense>
         <Footer />
       </div>
     </>

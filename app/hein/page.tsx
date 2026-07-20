@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     absolute: 'Kvaliteetne looduslik hein merisigadele ja küülikutele | PetsVilla',
   },
   description:
-    'Puhtas looduses kasvanud, päikese ja tuulega kuivatatud hein lemmikloomadele. 80L kott vaid 9€ koos TASUTA Smartpost tarnega üle Eesti!',
+    'Puhtas looduses kasvanud, päikese ja tuulega kuivatatud hein lemmikloomadele. 80L kott vaid 9€ (SmartPost tarne hinna sees) üle Eesti!',
   keywords: ['hein', 'kvaliteetne hein', 'looduslik hein', 'hein merisiigadele', 'hein küülikutele', 'guinea pig hay', 'rabbit hay', 'hay Estonia', '80L kott'],
   alternates: {
     canonical: 'https://petsvilla.ee/hein',
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Kvaliteetne looduslik hein merisigadele ja küülikutele | PetsVilla',
     description:
-      'Puhtas looduses kasvanud, päikese ja tuulega kuivatatud hein lemmikloomadele. 80L kott vaid 9€ koos TASUTA Smartpost tarnega üle Eesti!',
+      'Puhtas looduses kasvanud, päikese ja tuulega kuivatatud hein lemmikloomadele. 80L kott vaid 9€ (SmartPost tarne hinna sees) üle Eesti!',
     url: 'https://petsvilla.ee/hein',
     images: ['/hay-product.jpg'],
   },
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Kvaliteetne looduslik hein merisigadele ja küülikutele | PetsVilla',
     description:
-      'Puhtas looduses kasvanud, päikese ja tuulega kuivatatud hein lemmikloomadele. 80L kott vaid 9€ koos TASUTA Smartpost tarnega üle Eesti!',
+      'Puhtas looduses kasvanud, päikese ja tuulega kuivatatud hein lemmikloomadele. 80L kott vaid 9€ (SmartPost tarne hinna sees) üle Eesti!',
     images: ['/hay-product.jpg'],
   },
 }
@@ -82,14 +82,9 @@ export default function HeinPage() {
         },
       },
     },
-    image: 'https://m.media-amazon.com/images/I/811m7EVaW0L.jpg',
+    image: 'https://petsvilla.ee/hay-product.jpg',
     url: 'https://petsvilla.ee/hein',
     category: 'Pet Supplies',
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: '5.0',
-      reviewCount: '15',
-    },
     additionalProperty: [
       {
         '@type': 'PropertyValue',

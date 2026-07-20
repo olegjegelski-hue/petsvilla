@@ -131,12 +131,8 @@ export default function MeriseabeebidPage() {
         value: 'Üle 4 aasta'
       }
     ],
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: '5',
-      reviewCount: '50'
-    }
   }
+
 
   // FAQ Schema for AI understanding
   const faqSchema = {

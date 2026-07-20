@@ -218,17 +218,16 @@ export function HayOrderForm() {
   }
 
   // Calculate total price:
-  // - Hay: 9€ per bag
+  // - Hay: 9€ per bag (SmartPost tarne hinna sees)
   // - Guinea pig food: 9€ per 1 kg
   // - Rabbit food: 6€ per 2kg package
-  // - Delivery: FREE (tarne hinna sees)
+  // - Delivery: included in product price (no separate line)
   const quantity = parseInt(formData.quantity || '1')
   const hayPrice = quantity * 9
   const guineaPigFoodCount = parseInt(formData.guineaPigFood || '0')
   const rabbitFoodCount = parseInt(formData.rabbitFood || '0')
   const guineaPigFoodPrice = guineaPigFoodCount * 9
   const rabbitFoodPrice = rabbitFoodCount * 6
-  const deliveryPrice = 0 // FREE delivery
   const totalPrice = hayPrice + guineaPigFoodPrice + rabbitFoodPrice
 
   return (
@@ -292,7 +291,7 @@ export function HayOrderForm() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-2xl font-bold text-green-600">TASUTA</p>
+                <p className="text-2xl font-bold text-green-600">Hinna sees</p>
                 <p className="text-sm text-gray-600">SmartPost</p>
               </CardContent>
             </Card>
@@ -501,7 +500,7 @@ export function HayOrderForm() {
                           )}
                           <div className="flex justify-between items-center text-sm">
                             <span className="text-gray-700">SmartPost tarne</span>
-                            <span className="text-green-900 font-semibold">TASUTA</span>
+                            <span className="text-green-900 font-semibold">hinna sees</span>
                           </div>
                         </div>
                         <div className="border-t border-gray-300 pt-3 flex justify-between items-center">

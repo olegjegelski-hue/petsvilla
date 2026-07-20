@@ -1,3 +1,5 @@
+import { hasAnalyticsConsent } from '@/lib/cookie-consent'
+
 export interface TrackPurchaseInput {
   orderId: string
   value: number
@@ -11,7 +13,7 @@ declare global {
   interface Window {
     fbq?: (
       command: string,
-      eventName: string,
+      eventNameOrAction?: string,
       params?: Record<string, unknown>,
       options?: { eventID?: string }
     ) => void
@@ -35,7 +37,8 @@ export async function trackPurchase({
 }: TrackPurchaseInput): Promise<void> {
   if (typeof window === 'undefined') return
 
-  if (window.fbq) {
+  // Browser Pixel ainult turundus-nõusolekul (GDPR)
+  if (hasAnalyticsConsent() && window.fbq) {
     window.fbq(
       'track',
       'Purchase',
@@ -48,6 +51,7 @@ export async function trackPurchase({
     )
   }
 
+  // Server CAPI alati (õiguslik alus = tehing) — sõltumata browser-nõusolekust
   const fbp = getCookie('_fbp')
   const fbc = getCookie('_fbc')
 

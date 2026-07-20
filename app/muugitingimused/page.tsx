@@ -109,7 +109,9 @@ export default function MuugitingimusedPage() {
                 <strong>Tarneviis:</strong> SmartPost pakiautomaat (Eesti piires)
               </p>
               <p className="text-gray-700 mb-4">
-                <strong>Tarnekulu:</strong> Lisandub tellimuse lõppsummale vastavalt SmartPost hinnakirjale.
+                <strong>Tarnekulu:</strong> Heinatellimustel (ja koos heinaga tellitud lisatoitudel) on SmartPost tarne
+                tootehinna sees — 9&nbsp;€/kott. Eraldi tarnetasu ei lisandu. Muude e-poe toodete tarnekulu
+                kuvatakse tellimuse vormil, kui eraldi ostuvoog on saadaval.
               </p>
               <p className="text-gray-700 mb-4">
                 <strong>Tarneaeg:</strong> 1-3 tööpäeva pärast tellimuse kinnitamist ja makse laekumist.

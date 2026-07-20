@@ -139,7 +139,12 @@ export default function TarneinfoPage() {
               </div>
 
               <p className="text-gray-700 mb-4">
-                SmartPost pakiautomaat hinnad sõltuvad paki kaalust:
+                <strong>Heinatellimused:</strong> SmartPost tarne on tootehinna sees (9&nbsp;€/kott).
+                Eraldi tarnetasu ei lisandu.
+              </p>
+
+              <p className="text-gray-700 mb-4">
+                Muude toodete puhul võib SmartPost pakiautomaadi hind sõltuda paki kaalust (orientiir):
               </p>
 
               <div className="overflow-x-auto mb-6">
@@ -155,17 +160,17 @@ export default function TarneinfoPage() {
                     <tr>
                       <td className="px-6 py-4 text-gray-700">Kuni 10 kg</td>
                       <td className="px-6 py-4 text-gray-900 font-semibold">3,50 - 4,50 €</td>
-                      <td className="px-6 py-4 text-gray-600 text-sm">1× heinapakk (8-9 kg)</td>
+                      <td className="px-6 py-4 text-gray-600 text-sm">Väiksemad e-poe saadetised</td>
                     </tr>
                     <tr>
                       <td className="px-6 py-4 text-gray-700">10-20 kg</td>
                       <td className="px-6 py-4 text-gray-900 font-semibold">4,50 - 5,50 €</td>
-                      <td className="px-6 py-4 text-gray-600 text-sm">2× heinapakki (16-18 kg)</td>
+                      <td className="px-6 py-4 text-gray-600 text-sm">Keskmised saadetised</td>
                     </tr>
                     <tr>
                       <td className="px-6 py-4 text-gray-700">20-30 kg</td>
                       <td className="px-6 py-4 text-gray-900 font-semibold">5,50 - 6,50 €</td>
-                      <td className="px-6 py-4 text-gray-600 text-sm">3× heinapakki (24-27 kg)</td>
+                      <td className="px-6 py-4 text-gray-600 text-sm">Suuremad saadetised</td>
                     </tr>
                   </tbody>
                 </table>
@@ -173,7 +178,7 @@ export default function TarneinfoPage() {
 
               <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
                 <p className="text-purple-800 text-sm">
-                  💡 <strong>Täpne hind</strong> arvutatakse automaatselt tellimuse vormil vastavalt valitud kogusele.
+                  💡 <strong>Hein:</strong> kuvatav 9&nbsp;€/kott = Montonios makstav summa (tarne hinna sees).
                 </p>
               </div>
             </section>

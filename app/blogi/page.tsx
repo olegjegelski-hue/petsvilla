@@ -1,4 +1,5 @@
 
+import { Suspense } from 'react'
 import { Navigation } from '@/components/navigation'
 import { BlogList } from '@/components/blog-list'
 import { Footer } from '@/components/footer'
@@ -77,7 +78,9 @@ export default function BlogPage() {
       />
       <div className="min-h-screen bg-gradient-to-b from-purple-50 to-pink-50">
         <Navigation />
-        <BlogList />
+        <Suspense fallback={<div className="min-h-[40vh]" aria-hidden />}>
+          <BlogList />
+        </Suspense>
         <Footer />
       </div>
     </>

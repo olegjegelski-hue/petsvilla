@@ -1,0 +1,128 @@
+---
+description: PetsVilla.ee Master System Prompt — stäkk, arhitektuur, GAP-id, töövoog
+alwaysApply: true
+---
+
+# 🧭 Master System Prompt (petsvilla.ee)
+
+Allikas Notionis: Kodulehed – plaan & ehitus (Petsvila.ee) → „Master System Prompt (Cursor)“.
+Kui Notionis muudad, ütle Cursorile: **sünki Master Prompt projekti**.
+
+## 1. Projekt & kontekst
+
+Ehitad / hooldad **PetsVilla OÜ** kodulehte: https://petsvilla.ee — merisead, viirpapagoid/papagoid, hein, Petra Aqua e-pood.
+
+Eesmärk: müük ja päringud (loomad, hein, tooted), usaldus, SEO, operatiivsed tellimused Notionis.
+
+- **Äriüksus:** PetsVilla OÜ · **Kontakt:** +372 512 7938 · **ainus e-post:** service@petsvilla.ee
+- **Aadress (kanooniline):** Tartu mnt 80, Soinaste, Kambja vald, Tartumaa
+- **NB — kanoonilised faktid:** ülal olev aadress ja e-post on ainsad õiged. Asenda koodis, footeris, õiguslehtedel, JSON-LD schemas ja Montonio seadetes kõik muud variandid (nt „Jüri“, `info@`).
+- **Repo:** `olegjegelski-hue/petsvilla` · **Hosting:** Vercel (auto-deploy `main` peale)
+- **Seotud sait:** papagoi.ee (külastuselamus, eraldi repo `olegjegelski-hue/papagoi`) — ära segi brände ega URL-e
+- Sait on **juba valmis ja live** — uued tööd on täiendused, GAP-ide sulgemine ja hooldus
+
+## 2. Tehniline stäkk (LUKUS — ära muuda ilma loata)
+
+- **Framework:** Next.js 15 (App Router) + React 18 + TypeScript
+- **Stiil:** Tailwind CSS + shadcn/Radix komponendid
+- **Keel:** ainult **eesti keel** (i18n pole veel — tulevikus võimalik)
+- **CMS / operatiivandmed:** **Notion API** (põhiandmekiht)
+  - Heinatellimused, merisead, papagoid, blogi, Petra Aqua tooted
+- **Maksed:** Montonio (hein checkout) + SmartPost tarne
+- **E-post:** Nodemailer / SMTP (`service@petsvilla.ee`, Alfanet)
+- **Analüütika:** GA4 + Meta Pixel + Conversions API (`META_PIXEL_ID`, `META_CAPI_TOKEN`)
+- **Hosting:** Vercel
+- **Prisma:** scaffold olemas (`Contact` mudel), **operatiivne tellimuste voog = Notion**. Ära ehita uut DB-d ilma põhjuseta; Prisma kasutus on minimaalne/jäänuk
+
+## 3. Peamised süsteemid (mis juba töötab)
+
+- **Hein checkout:** `/telli-hein` → Montonio makse → webhook → Notion hein DB → kinnitusmeilid → `/tellimus-kinnitatud` (Meta Purchase CAPI + browser Pixel)
+- **Loomade galeriid:** merisead, meriseabeebid, papagoid, viirpapagoid — Notionist, detaillehed + Product schema
+- **E-pood (Petra Aqua):** `/pood` kategooriad + tootelehed — Notion tootebaas, praegu **kataloog/päring**, mitte täielik ostukorv
+- **Blogi:** `/blogi` + `[slug]` — Notion blogi DB
+- **Kontakt:** vorm → email
+- **SEO:** metadata, sitemap, robots, JSON-LD (LocalBusiness, Product, BlogPosting)
+- **Bränd:** favicon, OG, Facebook domain verification
+- **Cookie nõusolek:** komponent olemas (Meta Pixel integratsioon vajab täiendamist — GAP)
+- Planeerimine: Notion DB **„Kodulehed – plaan & ehitus“**, Bränd = **PetsVilla.ee Koduleht**
+
+## 4. Teadaolevad GAP-id / prioriteedid
+
+**Kõrge:**
+- **P0 · Cookie nõusolek ↔ Meta Pixel/GA4 (GDPR): turundusskriptid ainult pärast nõusolekut** — praegu live rikkumine
+- Ostukorv & Montonio e-poe toodetele (praegu kataloog + päring)
+- Sentry / error tracking
+- Montonio shipping aadress → kanooniline Soinaste (mitte „Jüri“) — kontrolli Montonio seadeid
+
+**Keskmine:**
+- Papagoid kategooria kaart `/pood` landingul
+- Laoseisu sync & saadavuse UX
+
+**Madalam / tulevik:**
+- i18n (EN/RU)
+- Täiendav e-poe UX (filtreerimine, soovitused)
+- Ära loo paralleelseid ajutisi lahendusi — sulge GAP või dokumenteeri Ootel
+
+## 5. Arhitektuuri põhimõtted
+
+- **Mobile-first**; säilita PetsVilla visuaalne keel (soojad rohelised/kuldne, Tailwind tokenid)
+- **Server Components vaikimisi**; Client Components ainult interaktsiooniks
+- **Rendering:** väldi `force-dynamic` root layoutis — dünaamiline ainult seal, kus vaja (API / Notion-fetch); sisulehed SSG/ISR (LCP + crawl'itavus)
+- **Notion = allikas** tellimustele, loomadele, toodetele, blogile
+- **Saladused ainult env-is** (Vercel + `.env`); ära commitita võtmeid
+- **Väikesed diffid:** ära refaktori laialt; ära lisa MD faile / commitita ilma kasutaja palumiseta
+- **Brändi eristus:** PetsVilla = ost/aretus/hein/pood; Papagoi Keskus = külastus — ära korda papagoi.ee sisu petsvilla.ee peal
+
+## 6. Kodeerimisreeglid
+
+- Sobitu olemasoleva koodistiiliga (`lib/`, `app/api/`, `components/`)
+- Valideeri API sisendid; Montonio webhook signatuurid
+- Vigade logimine; kasutajasõbralikud veateated
+- Commit-sõnumid: lühike „miks“ (eesti keeles — järgi projekti ajalugu)
+- Frontend: ära tee generic AI-dashboard look'i; järgi olemasolevat PetsVilla UI-d
+
+## 7. SEO & jõudlus
+
+- **Kanooniline domeen:** `https://petsvilla.ee`
+- Meta, Open Graph, schema.org (LocalBusiness, Product offers with price/availability)
+- `robots` / sitemap — säilita ja täienda uute lehtede puhul
+- Pildid ja Core Web Vitals — ära lõhu LCP asjatult
+
+## 8. Turvalisus
+
+- Montonio webhook: signatuuri kontroll
+- Meta CAPI: server-side token, ära leki env väärtusi
+- Avalikud API-d: rate-limit kus muster olemas
+- Ära logi täielikke saladusi ega Notion tokeneid
+- **Makse/redirect: ainult `https://petsvilla.ee`** — mitte ühtki non-prod fallback-domeeni (nt `petsvilla.abacusai.app`) Montonio/redirect voogudes
+
+## 8.1 Vastavus & ausus (KOHUSTUSLIK)
+
+- **Küpsised enne trackimist:** Meta Pixel, GA4 ja muud turundusskriptid laevad AINULT pärast kasutaja küpsiste-nõusolekut (turunduskategooria)
+- **Structured data ainult päris andmed:** ei kunagi väljamõeldud `aggregateRating`, arvustusi ega laoseisu JSON-LD-s
+- **Kuvatav hind = makstav hind:** ära kasuta „TASUTA“, kui kulu on hinna sees; kuvatav summa = Montonios makstav
+- **Ausad CTA-d (ei dark-pattern'e):** nupp/ikoon teeb täpselt seda, mida lubab (nt „Telli kohe“ ei ava pelgalt päringuvormi)
+
+## 9. Töövoog & Definition of Done
+
+- Ülesanded tulevad Notionist (**Kodulehed – plaan & ehitus**, Bränd PetsVilla.ee Koduleht) või kasutaja chatist
+- **Definition of Done:** töötab productionis, responsiivne, tüübid/lint korras, ei murra hein checkout'i ega Montonio voogu; **vastab compliance-reeglitele (ptk 8.1)**
+- Deploy: `git push` → Vercel Production (commit/push ainult kasutaja palumisel)
+
+## 10. Kuidas sina (Cursor) pead töötama
+
+- Järgi ülal olevat stäkki ja reegleid **eranditult**
+- Enne suuremaid struktuurimuudatusi selgita lühidalt plaani
+- Ära installi uusi suuri sõltuvusi ilma põhjenduseta
+- Kui midagi on ebaselge, küsi — ära oleta
+- Eelista inventuuri / olemasoleva koodi lugemist spekuleerimisele
+- Kui muudad seda Master Prompti Notionis, ütle: **„sünki Master Prompt projekti“**
+
+---
+
+### Muudatuste logi (Notion)
+
+- **2026-07-20:** Loodud Master System Prompt petsvilla.ee jaoks (Cursor), peegeldades olemasolevat koodibaasi + inventuuri (juuli 2026)
+- **2026-07-20:** Sünkitud Cursori projekti faili `.cursor/rules/petsvilla-master.mdc` (`alwaysApply`)
+- **2026-07-20:** Paigutatud õigesse kohta: **Kodulehed – plaan & ehitus (Petsvila.ee)** (varem ekslikult Portaali lehe all)
+- **2026-07-20:** Lisatud kanoonilised faktid (aadress, e-post), compliance & ausus (ptk 8.1), rendering-reegel, makse-domeeni piirang; „Cookie ↔ Pixel“ tõstetud Kõrge/P0 (Nutike ülevaatus)

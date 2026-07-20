@@ -69,12 +69,8 @@ export default function ViirpapagoidPage() {
         value: 'Kuni 20 paari',
       },
     ],
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: '5.0',
-      reviewCount: '12',
-    },
   }
+
 
   const breadcrumbJsonLd = {
     '@context': 'https://schema.org',

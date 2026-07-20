@@ -2,6 +2,7 @@
 import { MapPin, Phone, Mail, Facebook, Instagram, Youtube } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { CookieSettingsButton } from '@/components/cookie-settings-button'
 
 export function Footer() {
   return (
@@ -97,6 +98,9 @@ export function Footer() {
                 <Link href="/kupsiste-teadaanne" className="text-[#4F5A52] hover:text-green-800 transition-colors">
                   Küpsiste teadaanne
                 </Link>
+              </li>
+              <li>
+                <CookieSettingsButton />
               </li>
             </ul>
           </div>
