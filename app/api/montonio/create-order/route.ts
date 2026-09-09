@@ -2,9 +2,9 @@ import { NextRequest, NextResponse } from 'next/server'
 import {
   createMontonioOrder,
   generateMerchantReference,
+  type BillingAddress,
 } from '@/lib/montonio'
 import { Client } from '@notionhq/client'
-import { sendHayOrderEmail } from '@/lib/email'
 import { reportError } from '@/lib/report-error'
 import { validateHayOrderForm } from '@/lib/hay-order-validation'
 import { rateLimitExceededResponse } from '@/lib/rate-limit'
@@ -102,7 +102,18 @@ export async function POST(request: NextRequest) {
 
     const nameParts = name.trim().split(/\s+/)
     const firstName = nameParts[0] || name
-    const lastName = nameParts.slice(1).join(' ') || '-'
+    const lastName = nameParts.slice(1).join(' ') || firstName
+
+    const billingAddress: BillingAddress = {
+      firstName,
+      lastName,
+      email,
+      phoneNumber: phone,
+      country: 'EE',
+      ...(address ? { addressLine1: address } : {}),
+      ...(city ? { locality: city } : {}),
+      ...(postalCode ? { postalCode } : {}),
+    }
 
     const orderData = {
       merchantReference,
@@ -111,16 +122,7 @@ export async function POST(request: NextRequest) {
       currency: 'EUR',
       grandTotal: grandTotal,
       locale: 'et',
-      billingAddress: {
-        firstName,
-        lastName,
-        email,
-        phoneNumber: phone,
-        country: 'EE',
-        addressLine1: address || '',
-        locality: city || '',
-        postalCode: postalCode || '',
-      },
+      billingAddress,
       lineItems,
       payment: {
         method: 'paymentInitiation',
@@ -201,6 +203,15 @@ export async function POST(request: NextRequest) {
         Status: {
           select: { name: 'Töötlemisel' },
         },
+        Makse: {
+          checkbox: false,
+        },
+        'Makse staatus': {
+          select: { name: 'Ootel' },
+        },
+        'Montonio UUID': {
+          rich_text: [{ text: { content: uuid || '' } }],
+        },
       }
 
       await notion.pages.create({
@@ -212,23 +223,6 @@ export async function POST(request: NextRequest) {
       )
     } catch (notionError) {
       console.error('Error saving to Notion:', notionError)
-    }
-
-    try {
-      await sendHayOrderEmail({
-        name,
-        email,
-        phone,
-        terminal: parcelMachine || 'Määramata',
-        quantity: hayAmount,
-        guineaPigFood,
-        rabbitFood,
-        totalPrice: grandTotal,
-        comments: notes || '',
-      })
-      console.log(`Order confirmation email sent for ${merchantReference}`)
-    } catch (emailError) {
-      console.error('Error sending email:', emailError)
     }
 
     return NextResponse.json({

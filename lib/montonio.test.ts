@@ -6,6 +6,12 @@ import {
   validateMontonioToken,
   getMontonioConfig,
 } from '@/lib/montonio'
+import {
+  extractMontonioOrderToken,
+  getMontonioPaymentStatus,
+  mapMontonioStatusToNotion,
+  nextHayOrderStatus,
+} from '@/lib/montonio-payment'
 
 describe('Montonio', () => {
   const prev = { ...process.env }
@@ -55,5 +61,86 @@ describe('Montonio', () => {
   it('validateMontonioToken lükkab vale allkirja tagasi', () => {
     const token = jwt.sign({ a: 1 }, 'wrong-secret', { algorithm: 'HS256' })
     expect(() => validateMontonioToken(token)).toThrow(/Invalid Montonio token/)
+  })
+})
+
+describe('Montonio makse staatused', () => {
+  it('loeb orderToken keha ja order-token päringust', () => {
+    expect(
+      extractMontonioOrderToken({
+        body: { orderToken: 'abc' },
+      })
+    ).toBe('abc')
+    expect(
+      extractMontonioOrderToken({
+        searchParams: new URLSearchParams('order-token=xyz'),
+      })
+    ).toBe('xyz')
+    expect(extractMontonioOrderToken({ body: {} })).toBeNull()
+  })
+
+  it('normaliseerib paymentStatus välja', () => {
+    expect(getMontonioPaymentStatus({ paymentStatus: 'paid' })).toBe('PAID')
+    expect(getMontonioPaymentStatus({ payment_status: 'ABANDONED' })).toBe(
+      'ABANDONED'
+    )
+    expect(getMontonioPaymentStatus({ status: 'finalized' })).toBe('FINALIZED')
+  })
+
+  it('kaardistab Montonio staatused Notionisse', () => {
+    expect(mapMontonioStatusToNotion('PAID')).toEqual({
+      orderStatus: 'Uus',
+      paymentSelect: 'Makstud',
+      paid: true,
+    })
+    expect(mapMontonioStatusToNotion('ABANDONED')).toEqual({
+      orderStatus: 'Vigane',
+      paymentSelect: 'Katkestatud',
+      paid: false,
+    })
+    expect(mapMontonioStatusToNotion('VOIDED')).toEqual({
+      orderStatus: 'Vigane',
+      paymentSelect: 'Tühistatud',
+      paid: false,
+    })
+    expect(mapMontonioStatusToNotion('PENDING')).toEqual({
+      orderStatus: 'Töötlemisel',
+      paymentSelect: 'Ootel',
+      paid: false,
+    })
+  })
+
+  it('ei muuda saadetud tellimuse staatust', () => {
+    expect(
+      nextHayOrderStatus({
+        currentStatus: 'Saadetud',
+        alreadyPaid: true,
+        mapped: mapMontonioStatusToNotion('ABANDONED'),
+      })
+    ).toBeNull()
+  })
+
+  it('märgib maksmata katse Vigane-ks, aga ei tühista juba makstut', () => {
+    expect(
+      nextHayOrderStatus({
+        currentStatus: 'Töötlemisel',
+        alreadyPaid: false,
+        mapped: mapMontonioStatusToNotion('ABANDONED'),
+      })
+    ).toBe('Vigane')
+    expect(
+      nextHayOrderStatus({
+        currentStatus: 'Uus',
+        alreadyPaid: true,
+        mapped: mapMontonioStatusToNotion('ABANDONED'),
+      })
+    ).toBeNull()
+    expect(
+      nextHayOrderStatus({
+        currentStatus: 'Uus',
+        alreadyPaid: true,
+        mapped: mapMontonioStatusToNotion('VOIDED'),
+      })
+    ).toBe('Vigane')
   })
 })

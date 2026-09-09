@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 
-interface BillingAddress {
+export interface BillingAddress {
   firstName: string;
   lastName: string;
   email: string;
