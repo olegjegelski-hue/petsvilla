@@ -50,6 +50,43 @@ function generateShippingToken(): string {
 }
 
 /**
+ * Montonio Shipping v2 returns the carrier tracking number on the parcel,
+ * not as a top-level tracking_code.
+ */
+export function extractMontonioTrackingCode(
+  result: unknown
+): string | undefined {
+  if (!result || typeof result !== 'object') return undefined
+
+  const payload = result as Record<string, unknown>
+  const direct = [
+    payload.tracking_code,
+    payload.trackingCode,
+    payload.carrierParcelId,
+  ]
+  for (const value of direct) {
+    if (typeof value === 'string' && value.trim()) return value.trim()
+  }
+
+  const parcels = payload.parcels
+  if (!Array.isArray(parcels) || !parcels[0] || typeof parcels[0] !== 'object') {
+    return undefined
+  }
+
+  const parcel = parcels[0] as Record<string, unknown>
+  const nested = [
+    parcel.carrierParcelId,
+    parcel.trackingCode,
+    parcel.tracking_code,
+  ]
+  for (const value of nested) {
+    if (typeof value === 'string' && value.trim()) return value.trim()
+  }
+
+  return undefined
+}
+
+/**
  * Create a shipment in Montonio Shipping
  */
 export async function createMontonioShipment(data: ShipmentData): Promise<{
@@ -110,11 +147,11 @@ export async function createMontonioShipment(data: ShipmentData): Promise<{
     }
 
     const result = JSON.parse(responseText);
-    
+
     return {
       success: true,
       shipmentId: result.uuid || result.id,
-      trackingCode: result.tracking_code || result.trackingCode,
+      trackingCode: extractMontonioTrackingCode(result),
       labelUrl: result.label_url || result.labelUrl,
     };
   } catch (error) {

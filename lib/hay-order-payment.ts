@@ -1,3 +1,4 @@
+import { randomUUID } from 'crypto'
 import type { Client } from '@notionhq/client'
 import { createMontonioShipment } from '@/lib/montonio-shipping'
 import { sendHayOrderEmail } from '@/lib/email'
@@ -126,6 +127,22 @@ function commentHasUuid(comments: string, uuid: string | undefined): boolean {
   return comments.includes(uuid)
 }
 
+async function loadHayOrderSnapshot(
+  notion: Client,
+  pageId: string
+): Promise<HayOrderSnapshot> {
+  const page = (await notion.pages.retrieve({ page_id: pageId })) as NotionPage
+  return snapshotHayOrder(page)
+}
+
+function hasShipmentMarker(comments: string): boolean {
+  return TRACKING_MARKER.test(comments) || SHIPMENT_MARKER.test(comments)
+}
+
+function withoutShipmentCreatingLine(comments: string): string {
+  return comments.replace(/\n*Shipment creating: [^\n]*/g, '').trimEnd()
+}
+
 async function replaceComments(
   notion: Client,
   pageId: string,
@@ -139,6 +156,10 @@ async function replaceComments(
       },
     },
   })
+}
+
+async function wait(ms: number) {
+  await new Promise((resolve) => setTimeout(resolve, ms))
 }
 
 async function updatePaymentFields(
@@ -192,9 +213,10 @@ async function sendPaidEmailOnce(
   notion: Client,
   snapshot: HayOrderSnapshot
 ): Promise<string> {
-  if (EMAIL_MARKER.test(snapshot.comments)) return snapshot.comments
+  const latest = await loadHayOrderSnapshot(notion, snapshot.pageId)
+  if (EMAIL_MARKER.test(latest.comments)) return latest.comments
 
-  const marked = `${snapshot.comments}\n\nEmail sent: ${new Date().toISOString()}`
+  const marked = `${latest.comments}\n\nEmail sent: ${new Date().toISOString()}`
   await replaceComments(notion, snapshot.pageId, marked)
 
   const rabbitFoodPacks = snapshot.rabbitFoodKg > 0 ? snapshot.rabbitFoodKg / 2 : 0
@@ -221,27 +243,41 @@ async function sendPaidEmailOnce(
 async function createShipmentsOnce(
   notion: Client,
   snapshot: HayOrderSnapshot,
-  merchantReference: string,
-  comments: string
+  merchantReference: string
 ): Promise<{
   comments: string
   shipments: ProcessHayPaymentResult['shipments']
 }> {
   if (!snapshot.pickupPointUuid) {
-    return { comments, shipments: [] }
+    const latest = await loadHayOrderSnapshot(notion, snapshot.pageId)
+    return { comments: latest.comments, shipments: [] }
   }
 
-  if (TRACKING_MARKER.test(comments) || SHIPMENT_MARKER.test(comments)) {
-    return { comments, shipments: [] }
+  let latest = await loadHayOrderSnapshot(notion, snapshot.pageId)
+  if (hasShipmentMarker(latest.comments)) {
+    return { comments: latest.comments, shipments: [] }
   }
 
-  const preflight = `${comments}\n\nShipment creating: ${new Date().toISOString()}`
-  await replaceComments(notion, snapshot.pageId, preflight)
+  const lockId = randomUUID()
+  latest = await loadHayOrderSnapshot(notion, snapshot.pageId)
+  if (hasShipmentMarker(latest.comments)) {
+    return { comments: latest.comments, shipments: [] }
+  }
+
+  const locked = `${latest.comments}\n\nShipment creating: ${new Date().toISOString()} ${lockId}`
+  await replaceComments(notion, snapshot.pageId, locked)
+  await wait(400)
+
+  latest = await loadHayOrderSnapshot(notion, snapshot.pageId)
+  if (!latest.comments.includes(lockId)) {
+    return { comments: latest.comments, shipments: [] }
+  }
 
   const nameParts = snapshot.name.split(' ')
   const firstName = nameParts[0] || snapshot.name
   const lastName = nameParts.slice(1).join(' ') || firstName
   const trackingCodes: string[] = []
+  const shipmentIds: string[] = []
   const shipments: ProcessHayPaymentResult['shipments'] = []
 
   for (let i = 0; i < snapshot.hayQuantity; i++) {
@@ -262,18 +298,31 @@ async function createShipmentsOnce(
     if (result.success && result.trackingCode) {
       trackingCodes.push(result.trackingCode)
     }
+    if (result.success && result.shipmentId) {
+      shipmentIds.push(result.shipmentId)
+    }
   }
 
-  if (trackingCodes.length > 0) {
-    const trackingInfo = trackingCodes
-      .map((code, i) => `Pakk ${i + 1}: ${code}`)
-      .join('\n')
-    const updated = `${comments}\n\nTracking:\n${trackingInfo}\nShipment created: ${new Date().toISOString()}`
-    await replaceComments(notion, snapshot.pageId, updated)
-    return { comments: updated, shipments }
+  const afterCreate = await loadHayOrderSnapshot(notion, snapshot.pageId)
+  const baseComments = withoutShipmentCreatingLine(afterCreate.comments)
+
+  if (!shipments.some((shipment) => shipment.success)) {
+    await replaceComments(notion, snapshot.pageId, baseComments)
+    return { comments: baseComments, shipments }
   }
 
-  return { comments: preflight, shipments }
+  const trackingInfo =
+    trackingCodes.length > 0
+      ? `\nTracking:\n${trackingCodes
+          .map((code, i) => `Pakk ${i + 1}: ${code}`)
+          .join('\n')}`
+      : ''
+  const shipmentIdInfo =
+    shipmentIds.length > 0 ? `\nShipment IDs: ${shipmentIds.join(', ')}` : ''
+  const updated = `${baseComments}${trackingInfo}\nShipment created: ${new Date().toISOString()}${shipmentIdInfo}`
+
+  await replaceComments(notion, snapshot.pageId, updated)
+  return { comments: updated, shipments }
 }
 
 export async function processMontonioHayOrderPayment(input: {
@@ -325,14 +374,12 @@ export async function processMontonioHayOrderPayment(input: {
     return result
   }
 
-  let comments = await sendPaidEmailOnce(input.notion, snapshot)
+  await sendPaidEmailOnce(input.notion, snapshot)
   const shipmentOutcome = await createShipmentsOnce(
     input.notion,
-    { ...snapshot, comments },
-    merchantReference,
-    comments
+    snapshot,
+    merchantReference
   )
-  comments = shipmentOutcome.comments
   result.shipments = shipmentOutcome.shipments
 
   const value = snapshot.totalPrice || parseMontonioAmount(decoded) || 0
@@ -352,25 +399,32 @@ export async function processMontonioHayOrderPayment(input: {
     numItems,
   }
 
-  if (input.sendMeta && input.requestHeaders && !hasMetaPurchaseBeenSent(comments)) {
-    const metaResult = await sendMetaPurchaseEvent({
-      orderId: merchantReference,
-      value,
-      currency,
-      email: snapshot.email,
-      phone: snapshot.phone,
-      numItems,
-      eventSourceUrl: `${getSiteUrl()}/tellimus-kinnitatud?reference=${merchantReference}`,
-      clientIpAddress: getClientIpFromHeaders(input.requestHeaders),
-      clientUserAgent: input.requestHeaders.get('user-agent') || undefined,
-    })
+  if (input.sendMeta && input.requestHeaders) {
+    const latestForMeta = await loadHayOrderSnapshot(input.notion, snapshot.pageId)
+    if (!hasMetaPurchaseBeenSent(latestForMeta.comments)) {
+      const metaResult = await sendMetaPurchaseEvent({
+        orderId: merchantReference,
+        value,
+        currency,
+        email: snapshot.email,
+        phone: snapshot.phone,
+        numItems,
+        eventSourceUrl: `${getSiteUrl()}/tellimus-kinnitatud?reference=${merchantReference}`,
+        clientIpAddress: getClientIpFromHeaders(input.requestHeaders),
+        clientUserAgent: input.requestHeaders.get('user-agent') || undefined,
+      })
 
-    if (metaResult.success) {
-      await replaceComments(
-        input.notion,
-        snapshot.pageId,
-        appendMetaPurchaseMarker(comments)
-      )
+      if (metaResult.success) {
+        const commentsAfterMeta = await loadHayOrderSnapshot(
+          input.notion,
+          snapshot.pageId
+        )
+        await replaceComments(
+          input.notion,
+          snapshot.pageId,
+          appendMetaPurchaseMarker(commentsAfterMeta.comments)
+        )
+      }
     }
   }
 

@@ -12,6 +12,7 @@ import {
   mapMontonioStatusToNotion,
   nextHayOrderStatus,
 } from '@/lib/montonio-payment'
+import { extractMontonioTrackingCode } from '@/lib/montonio-shipping'
 
 describe('Montonio', () => {
   const prev = { ...process.env }
@@ -142,5 +143,36 @@ describe('Montonio makse staatused', () => {
         mapped: mapMontonioStatusToNotion('VOIDED'),
       })
     ).toBe('Vigane')
+  })
+})
+
+describe('Montonio saadetise jälgimiskood', () => {
+  it('loeb carrierParcelId parcels massiivist', () => {
+    expect(
+      extractMontonioTrackingCode({
+        id: 'shp-1',
+        parcels: [
+          {
+            carrierParcelId: 'CC543130987EE',
+            trackingLink: 'https://minu.omniva.ee/track/CC543130987EE',
+          },
+        ],
+      })
+    ).toBe('CC543130987EE')
+  })
+
+  it('loeb vanemat tracking_code välja, kui see on olemas', () => {
+    expect(
+      extractMontonioTrackingCode({ tracking_code: 'OLD-CODE' })
+    ).toBe('OLD-CODE')
+  })
+
+  it('tagastab undefined, kui koodi pole', () => {
+    expect(
+      extractMontonioTrackingCode({
+        id: 'shp-1',
+        parcels: [{ carrierParcelId: null }],
+      })
+    ).toBeUndefined()
   })
 })
