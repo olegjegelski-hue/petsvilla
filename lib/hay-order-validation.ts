@@ -1,4 +1,10 @@
 import { formatPhoneNumber } from '@/lib/phone'
+import {
+  DEFAULT_HAY_REMINDER_WEEKS,
+  parseHayReminderFlag,
+  parseHayReminderWeeks,
+  type HayReminderWeeks,
+} from '@/lib/hay-reminder'
 
 export type HayOrderInput = {
   name?: unknown
@@ -15,6 +21,8 @@ export type HayOrderInput = {
   notes?: unknown
   website?: unknown
   formStartedAt?: unknown
+  reminder?: unknown
+  reminderWeeks?: unknown
 }
 
 export type HayOrderValidated = {
@@ -27,6 +35,8 @@ export type HayOrderValidated = {
   rabbitFood: number
   comments: string
   totalPrice: number
+  reminder: boolean
+  reminderWeeks: HayReminderWeeks
 }
 
 export type HayOrderValidationResult =
@@ -63,6 +73,8 @@ export function validateHayOrderForm(
         rabbitFood: 0,
         comments: '',
         totalPrice: 0,
+        reminder: false,
+        reminderWeeks: DEFAULT_HAY_REMINDER_WEEKS,
       },
     }
   }
@@ -124,6 +136,10 @@ export function validateHayOrderForm(
   }
 
   const totalPrice = quantity * 9 + guineaPigFood * 9 + rabbitFood * 6
+  const reminder = parseHayReminderFlag(body.reminder)
+  const reminderWeeks = reminder
+    ? parseHayReminderWeeks(body.reminderWeeks)
+    : DEFAULT_HAY_REMINDER_WEEKS
 
   return {
     ok: true,
@@ -137,6 +153,8 @@ export function validateHayOrderForm(
       rabbitFood,
       comments,
       totalPrice,
+      reminder,
+      reminderWeeks,
     },
   }
 }

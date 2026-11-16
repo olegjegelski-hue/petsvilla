@@ -3,6 +3,7 @@ import type { Transporter } from 'nodemailer'
 import {
   buildContactEmailContent,
   buildHayOrderEmailContent,
+  buildHayReminderEmailContent,
 } from '@/lib/email-templates'
 
 const createTransporter = (): Transporter => {
@@ -104,4 +105,21 @@ export async function sendHayOrderEmail(data: {
         'Palun kontrollige SMTP seadeid või proovige hiljem uuesti.'
     )
   }
+}
+
+export async function sendHayReminderEmail(data: {
+  email: string
+  optOutUrl: string
+}) {
+  const transporter = createTransporter()
+  const content = buildHayReminderEmailContent({ optOutUrl: data.optOutUrl })
+
+  await transporter.sendMail({
+    from: `"PetsVilla Heinatellimus" <${process.env.SMTP_USER}>`,
+    to: data.email,
+    subject: content.subject,
+    html: content.html,
+    text: content.text,
+  })
+  console.log(`Hay reminder email sent successfully to ${data.email}`)
 }

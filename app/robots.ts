@@ -10,17 +10,32 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/api/', '/tellimus-kinnitatud/', '/sonum-saadetud/'],
+        disallow: [
+          '/api/',
+          '/tellimus-kinnitatud/',
+          '/sonum-saadetud/',
+          '/meeldetuletus-valja/',
+        ],
       },
       {
         userAgent: 'Googlebot',
         allow: '/',
-        disallow: ['/api/', '/tellimus-kinnitatud/', '/sonum-saadetud/'],
+        disallow: [
+          '/api/',
+          '/tellimus-kinnitatud/',
+          '/sonum-saadetud/',
+          '/meeldetuletus-valja/',
+        ],
       },
       {
         userAgent: 'Bingbot',
         allow: '/',
-        disallow: ['/api/', '/tellimus-kinnitatud/', '/sonum-saadetud/'],
+        disallow: [
+          '/api/',
+          '/tellimus-kinnitatud/',
+          '/sonum-saadetud/',
+          '/meeldetuletus-valja/',
+        ],
       },
       {
         userAgent: 'GPTBot',

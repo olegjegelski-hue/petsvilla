@@ -7,6 +7,7 @@ import {
 import { Client } from '@notionhq/client'
 import { reportError } from '@/lib/report-error'
 import { validateHayOrderForm } from '@/lib/hay-order-validation'
+import { buildHayReminderNotionProperties } from '@/lib/hay-reminder'
 import { rateLimitExceededResponse } from '@/lib/rate-limit'
 
 const notion = new Client({ auth: process.env.NOTION_API_KEY })
@@ -53,6 +54,8 @@ export async function POST(request: NextRequest) {
       rabbitFood,
       comments,
       totalPrice,
+      reminder,
+      reminderWeeks,
     } = result.data
 
     const { address, city, postalCode, parcelMachineUuid } = body
@@ -212,6 +215,7 @@ export async function POST(request: NextRequest) {
         'Montonio UUID': {
           rich_text: [{ text: { content: uuid || '' } }],
         },
+        ...buildHayReminderNotionProperties({ reminder, reminderWeeks }),
       }
 
       await notion.pages.create({
