@@ -88,5 +88,50 @@ describe('E-maili mallid', () => {
     expect(c.subject).toContain('2 pakki')
     expect(c.html).toContain('Tartu Lõunakeskus')
     expect(c.html).toContain('18€')
+    expect(c.html).toContain(
+      'Aitäh tellimuse eest! Pakk jõuab sinuni tavaliselt 1–3 tööpäeva jooksul.'
+    )
+    expect(c.text).toContain(
+      'Aitäh tellimuse eest! Pakk jõuab sinuni tavaliselt 1–3 tööpäeva jooksul.'
+    )
+    const headingHtml = c.html.indexOf('✅ Heinatellimus kinnitatud')
+    const thanksHtml = c.html.indexOf('Aitäh tellimuse eest!')
+    const nameHtml = c.html.indexOf('<strong>Nimi:</strong>')
+    expect(headingHtml).toBeGreaterThan(-1)
+    expect(thanksHtml).toBeGreaterThan(headingHtml)
+    expect(nameHtml).toBeGreaterThan(thanksHtml)
+  })
+
+  it('heinatellimuse kinnitus sisaldab FB grupi kutset pärast tarneinfot', () => {
+    const c = buildHayOrderEmailContent({
+      name: 'Jüri',
+      email: 'j@example.com',
+      phone: '+3725000000',
+      terminal: 'Tartu Lõunakeskus',
+      quantity: 1,
+      guineaPigFood: 1,
+      rabbitFood: 1,
+      totalPrice: 24,
+    })
+
+    const merisigala = 'https://www.facebook.com/groups/merisigala'
+    const kuulikud = 'https://www.facebook.com/groups/2037723266312747'
+    const title = 'Liitu meie Facebooki gruppidega'
+
+    expect(c.html).toContain(title)
+    expect(c.html).toContain(merisigala)
+    expect(c.html).toContain(kuulikud)
+    expect(c.html).toContain('#2F6F4E')
+    expect(c.html).toContain('role="presentation"')
+    expect(c.text).toContain(title)
+    expect(c.text).toContain(merisigala)
+    expect(c.text).toContain(kuulikud)
+
+    const tarneIndex = c.html.indexOf('SmartPost terminal')
+    const inviteIndex = c.html.indexOf(title)
+    const footerIndex = c.html.indexOf('PetsVilla OÜ - petsvilla.ee')
+    expect(tarneIndex).toBeGreaterThan(-1)
+    expect(inviteIndex).toBeGreaterThan(tarneIndex)
+    expect(footerIndex).toBeGreaterThan(inviteIndex)
   })
 })
