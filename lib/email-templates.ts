@@ -6,6 +6,9 @@ import {
   buildFacebookGroupsInviteHtml,
   buildFacebookGroupsInviteText,
 } from '@/lib/facebook-groups'
+import { HAY_REMINDER_ORDER_URL } from '@/lib/hay-reminder'
+
+const BRAND_GREEN = '#2F6F4E'
 
 export function buildContactEmailContent(data: {
   name: string
@@ -104,6 +107,73 @@ Summa: ${data.totalPrice}€
 ${buildFacebookGroupsInviteText()}
 
 PetsVilla OÜ - petsvilla.ee
+  `.trim()
+
+  return { subject, html, text }
+}
+
+export function buildHayReminderEmailContent(data: {
+  optOutUrl: string
+}): { subject: string; html: string; text: string } {
+  const subject = 'Kas hein hakkab otsa saama? 🌾'
+  const orderUrl = HAY_REMINDER_ORDER_URL
+  const optOutUrl = data.optOutUrl
+
+  const html = `
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:#f4f4f4;margin:0;padding:24px 0;">
+      <tr>
+        <td align="center">
+          <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="600" style="max-width:600px;background-color:#ffffff;font-family:Arial,Helvetica,sans-serif;color:#333333;">
+            <tr>
+              <td style="background-color:${BRAND_GREEN};color:#ffffff;padding:24px 28px;font-size:22px;font-weight:bold;">
+                PetsVilla
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:28px;">
+                <p style="margin:0 0 16px;font-size:16px;line-height:1.5;">Tere!</p>
+                <p style="margin:0 0 24px;font-size:16px;line-height:1.5;">
+                  Mõne nädala eest tellisid PetsVilla heina. Kui varu hakkab lõppema, saad uue koti tellida siit:
+                </p>
+                <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 24px;">
+                  <tr>
+                    <td style="background-color:${BRAND_GREEN};border-radius:6px;">
+                      <a href="${orderUrl}" style="display:inline-block;padding:12px 24px;color:#ffffff;text-decoration:none;font-size:16px;font-weight:bold;">
+                        Telli hein
+                      </a>
+                    </td>
+                  </tr>
+                </table>
+                <p style="margin:0 0 8px;font-size:16px;line-height:1.5;">
+                  Pakk jõuab tavaliselt 1–3 tööpäeva jooksul.
+                </p>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:16px 28px 28px;border-top:1px solid #e5e7eb;font-size:13px;line-height:1.5;color:#6b7280;">
+                <p style="margin:0 0 8px;">PetsVilla OÜ · petsvilla.ee</p>
+                <p style="margin:0;">
+                  <a href="${optOutUrl}" style="color:${BRAND_GREEN};text-decoration:underline;">Ära enam meelde tuleta</a>
+                </p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  `.trim()
+
+  const text = `
+Tere!
+
+Mõne nädala eest tellisid PetsVilla heina. Kui varu hakkab lõppema, saad uue koti tellida siit:
+${orderUrl}
+
+Pakk jõuab tavaliselt 1–3 tööpäeva jooksul.
+
+Ära enam meelde tuleta: ${optOutUrl}
+
+PetsVilla OÜ · petsvilla.ee
   `.trim()
 
   return { subject, html, text }
