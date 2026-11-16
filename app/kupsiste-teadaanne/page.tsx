@@ -10,7 +10,7 @@ import { Card, CardContent } from '@/components/ui/card'
 export const metadata: Metadata = {
   title: 'Küpsiste teadaanne — PetsVilla OÜ',
   description: 'PetsVilla OÜ küpsiste kasutamise põhimõtted ja seaded.',
-  keywords: ['küpsised', 'cookies', 'veebilehe analüütika', 'Google Analytics'],
+  keywords: ['küpsised', 'cookies', 'veebilehe analüütika', 'Google Analytics', 'Google Ads'],
   alternates: {
     canonical: 'https://petsvilla.ee/kupsiste-teadaanne',
   },
@@ -115,7 +115,7 @@ export default function KupsistePage() {
                       2.2 Analüütika küpsised
                     </h3>
                     <p>
-                      Me kasutame Google Analytics'i, et mõista, kuidas külastajad meie veebilehte kasutavad. See aitab meil parandada veebilehe kvaliteeti.
+                      Me kasutame Google Analytics'i ja Google Ads'i, et mõista, kuidas külastajad meie veebilehte kasutavad, ning mõõta reklaamide tulemuslikkust. See aitab meil parandada veebilehe kvaliteeti.
                     </p>
                     <div className="mt-4 bg-blue-50 p-4 rounded-lg">
                       <p><strong>Google Analytics küpsised:</strong></p>
@@ -127,6 +127,12 @@ export default function KupsistePage() {
                       <p className="mt-4">
                         <strong>Kogutud info:</strong> IP-aadress (anonüümitud), brauseri tüüp, külastuse kestus, külastatud lehed, geograafiline asukoht (riik/linn)
                       </p>
+                      <p className="mt-2">
+                        <strong>Lisainfo:</strong> <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Google Privacy Policy</a>
+                      </p>
+                    </div>
+                    <div className="mt-4 bg-blue-50 p-4 rounded-lg">
+                      <p><strong>Google Ads:</strong> reklaamikampaaniate (sh heinatellimuse konversiooni) mõõtmiseks. Küpsised ja konversioonisündmus käivituvad ainult pärast analüütika-/turundusnõusolekut.</p>
                       <p className="mt-2">
                         <strong>Lisainfo:</strong> <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Google Privacy Policy</a>
                       </p>
@@ -203,11 +209,14 @@ export default function KupsistePage() {
                 </h2>
                 <div className="space-y-4 text-gray-700">
                   <p>
-                    Meie veebilehel võivad olla kolmandate osapoolte teenused (nt Google Analytics), mis kasutavad oma küpsiseid. Need teenused järgivad oma privaatsuspoliitikat:
+                    Meie veebilehel võivad olla kolmandate osapoolte teenused (nt Google Analytics, Google Ads), mis kasutavad oma küpsiseid. Need teenused järgivad oma privaatsuspoliitikat:
                   </p>
                   <ul className="list-disc list-inside space-y-2 ml-4">
                     <li>
                       <strong>Google Analytics:</strong> <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="text-orange-600 hover:underline">Privacy Policy</a>
+                    </li>
+                    <li>
+                      <strong>Google Ads:</strong> <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="text-orange-600 hover:underline">Privacy Policy</a>
                     </li>
                   </ul>
                 </div>

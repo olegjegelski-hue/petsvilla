@@ -6,7 +6,7 @@ export const COOKIE_SETTINGS_OPEN_EVENT = 'petsvilla-cookie-settings-open'
 
 export type CookieConsent = {
   necessary: true
-  /** GA4 + Meta Pixel (turundus/analüütika) */
+  /** GA4 + Google Ads + Meta Pixel (turundus/analüütika) */
   analytics: boolean
   timestamp?: number
 }
@@ -39,7 +39,7 @@ export function readConsent(): CookieConsent | null {
   }
 }
 
-/** Turundus-/analüütikaskriptid (GA4 + Meta Pixel) lubatud. */
+/** Turundus-/analüütikaskriptid (GA4 + Google Ads + Meta Pixel) lubatud. */
 export function hasAnalyticsConsent(): boolean {
   return readConsent()?.analytics === true
 }
@@ -91,16 +91,6 @@ export function onCookieSettingsOpen(callback: () => void): () => void {
 
 declare global {
   interface Window {
-    gtag?: (
-      command: 'consent',
-      action: 'default' | 'update',
-      params: {
-        analytics_storage?: 'granted' | 'denied'
-        ad_storage?: 'granted' | 'denied'
-        ad_user_data?: 'granted' | 'denied'
-        ad_personalization?: 'granted' | 'denied'
-        wait_for_update?: number
-      }
-    ) => void
+    gtag?: (...args: unknown[]) => void
   }
 }

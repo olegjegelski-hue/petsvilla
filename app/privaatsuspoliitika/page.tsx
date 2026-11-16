@@ -97,7 +97,7 @@ export default function PrivaatsuspoliitikаPage() {
                   <ul className="list-disc list-inside space-y-2 ml-4">
                     <li><strong>Kontaktvormid:</strong> nimi, e-posti aadress, telefoninumber, sõnum</li>
                     <li><strong>Tellimused:</strong> nimi, telefon, e-post, tarne aadress, tellimuse detailid</li>
-                    <li><strong>Automaatselt kogutavad andmed:</strong> IP-aadress, brauseri tüüp, külastusaeg, lehitsemise käitumine (Google Analytics)</li>
+                    <li><strong>Automaatselt kogutavad andmed:</strong> IP-aadress, brauseri tüüp, külastusaeg, lehitsemise käitumine (Google Analytics, Google Ads)</li>
                   </ul>
                 </div>
               </CardContent>
@@ -116,7 +116,7 @@ export default function PrivaatsuspoliitikаPage() {
                     <li>Teie päringutele vastamiseks ja klienditeeninduse pakkumiseks</li>
                     <li>Tellimuste töötlemiseks ja tarneks</li>
                     <li>Veebilehe funktsionaalsuse tagamiseks</li>
-                    <li>Statistika ja analüütika eesmärkidel (Google Analytics)</li>
+                    <li>Statistika ja analüütika eesmärkidel (Google Analytics, Google Ads)</li>
                     <li>Õiguslike kohustuste täitmiseks</li>
                   </ul>
                 </div>
@@ -135,6 +135,7 @@ export default function PrivaatsuspoliitikаPage() {
                   <ul className="list-disc list-inside space-y-2 ml-4">
                     <li><strong>Notion:</strong> tellimuste ja päringute haldamiseks</li>
                     <li><strong>Google Analytics:</strong> veebilehe külastuste analüüsiks</li>
+                    <li><strong>Google Ads:</strong> reklaamikampaaniate tulemuslikkuse mõõtmiseks (heinatellimuse konversioon)</li>
                     <li><strong>SmartPOST:</strong> tarne korraldamiseks (ainult vajalikud andmed)</li>
                     <li><strong>E-posti teenusepakkuja (Alfanet):</strong> e-kirjade saatmiseks</li>
                   </ul>
