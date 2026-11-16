@@ -2,6 +2,7 @@
 
 import { Navigation } from '@/components/navigation'
 import { Footer } from '@/components/footer'
+import { FacebookGroupsInvite } from '@/components/facebook-groups-invite'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { AlertCircle, CheckCircle2, Home, Loader2, Mail, Package } from 'lucide-react'
@@ -210,6 +211,8 @@ function TellimusKinnitatudContent() {
                     Palun kontrollige oma postkasti (ka rämpsposti kausta).
                   </p>
                 </div>
+
+                <FacebookGroupsInvite />
               </>
             )}
 

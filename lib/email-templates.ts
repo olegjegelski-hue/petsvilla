@@ -2,6 +2,11 @@
  * E-kirjade HTML/tekst koostamine (ilma SMTP-ta — testitav).
  */
 
+import {
+  buildFacebookGroupsInviteHtml,
+  buildFacebookGroupsInviteText,
+} from '@/lib/facebook-groups'
+
 export function buildContactEmailContent(data: {
   name: string
   email: string
@@ -69,6 +74,7 @@ export function buildHayOrderEmailContent(data: {
   const html = `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
       <h2>✅ Heinatellimus kinnitatud</h2>
+      <p>Aitäh tellimuse eest! Pakk jõuab sinuni tavaliselt 1–3 tööpäeva jooksul.</p>
       <p><strong>Nimi:</strong> ${data.name}</p>
       <p><strong>E-post:</strong> ${data.email}</p>
       <p><strong>Telefon:</strong> ${data.phone}</p>
@@ -78,17 +84,26 @@ export function buildHayOrderEmailContent(data: {
       ${data.rabbitFood > 0 ? `<p><strong>Küülikutoit:</strong> ${data.rabbitFood} × 2 kg</p>` : ''}
       <p><strong>Summa:</strong> ${data.totalPrice}€</p>
       ${data.comments ? `<p><strong>Kommentaarid:</strong> ${data.comments}</p>` : ''}
+      ${buildFacebookGroupsInviteHtml()}
+      <div style="color: #6b7280; font-size: 12px; margin-top: 30px; padding-top: 20px; border-top: 1px solid #e5e7eb;">
+        <p>PetsVilla OÜ - petsvilla.ee</p>
+      </div>
     </div>
   `
 
   const text = `
 ✅ HEINATELLIMUS KINNITATUD
+Aitäh tellimuse eest! Pakk jõuab sinuni tavaliselt 1–3 tööpäeva jooksul.
 Nimi: ${data.name}
 E-post: ${data.email}
 Telefon: ${data.phone}
 SmartPost: ${data.terminal}
 Hein: ${data.quantity} pakki
 Summa: ${data.totalPrice}€
+
+${buildFacebookGroupsInviteText()}
+
+PetsVilla OÜ - petsvilla.ee
   `.trim()
 
   return { subject, html, text }
