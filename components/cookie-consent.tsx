@@ -83,7 +83,7 @@ export function CookieConsent() {
                       <p>
                         Kasutame küpsiseid, et parandada veebilehe kasutuskogemust,
                         analüüsida liiklust (Google Analytics) ja mõõta reklaamide
-                        tulemuslikkust (Meta Pixel). Saate valida, millised on lubatud.
+                        tulemuslikkust (Google Ads, Meta Pixel). Saate valida, millised on lubatud.
                       </p>
 
                       {showDetails && (
@@ -109,7 +109,7 @@ export function CookieConsent() {
                                 Analüütika ja turundus
                               </h4>
                               <p className="text-gray-700">
-                                Google Analytics (GA4) ja Meta Pixel — aitavad mõista
+                                Google Analytics (GA4), Google Ads ja Meta Pixel — aitavad mõista
                                 külastusi ja reklaamide tulemuslikkust. Lubatakse ainult
                                 pärast teie nõusolekut.
                               </p>

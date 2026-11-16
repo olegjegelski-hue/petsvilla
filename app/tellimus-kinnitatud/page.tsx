@@ -10,6 +10,12 @@ import Link from 'next/link'
 import { Suspense, useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { trackPurchase } from '@/lib/meta'
+import {
+  isPurchaseAlreadyTracked,
+  markPurchaseTracked,
+  shouldTrackPaidHayPurchase,
+  trackGoogleAdsPurchase,
+} from '@/lib/google-ads'
 
 type PaymentView = 'loading' | 'paid' | 'pending' | 'failed' | 'unknown'
 
@@ -63,9 +69,8 @@ function TellimusKinnitatudContent() {
           setOrderReference(data.merchantReference)
         }
 
-        if (data.purchase) {
-          const trackingKey = `meta_purchase_tracked_${data.purchase.orderId}`
-          const alreadyTracked = sessionStorage.getItem(trackingKey) === '1'
+        if (shouldTrackPaidHayPurchase(data)) {
+          const alreadyTracked = isPurchaseAlreadyTracked(data.purchase.orderId)
 
           if (!alreadyTracked) {
             await trackPurchase({
@@ -76,7 +81,12 @@ function TellimusKinnitatudContent() {
               phone: data.purchase.phone,
               numItems: data.purchase.numItems,
             })
-            sessionStorage.setItem(trackingKey, '1')
+            trackGoogleAdsPurchase({
+              orderId: data.purchase.orderId,
+              value: data.purchase.value,
+              currency: data.purchase.currency,
+            })
+            markPurchaseTracked(data.purchase.orderId)
           }
         }
         return
