@@ -3,6 +3,7 @@ import { Client } from '@notionhq/client'
 import { sendHayOrderEmail } from '@/lib/email'
 import { reportError } from '@/lib/report-error'
 import { validateHayOrderForm } from '@/lib/hay-order-validation'
+import { buildHayReminderNotionProperties } from '@/lib/hay-reminder'
 import { rateLimitExceededResponse } from '@/lib/rate-limit'
 
 export const dynamic = 'force-dynamic'
@@ -48,6 +49,8 @@ export async function POST(request: NextRequest) {
       rabbitFood,
       comments,
       totalPrice,
+      reminder,
+      reminderWeeks,
     } = result.data
 
     const databaseId = process.env.NOTION_HAY_DATABASE_ID
@@ -97,6 +100,7 @@ export async function POST(request: NextRequest) {
             name: 'Uus',
           },
         },
+        ...buildHayReminderNotionProperties({ reminder, reminderWeeks }),
       },
     })
 

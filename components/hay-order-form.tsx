@@ -40,6 +40,8 @@ export function HayOrderForm() {
     rabbitFood: '0',
     comments: '',
     website: '',
+    reminder: false,
+    reminderWeeks: '4',
   })
 
   const handleInputChange = (field: string, value: string) => {
@@ -114,6 +116,8 @@ export function HayOrderForm() {
             notes: formData.comments,
             website: formData.website,
             formStartedAt,
+            reminder: formData.reminder,
+            reminderWeeks: formData.reminder ? Number(formData.reminderWeeks) : undefined,
           }),
         })
 
@@ -196,6 +200,8 @@ export function HayOrderForm() {
             comments: formData.comments,
             website: formData.website,
             formStartedAt,
+            reminder: formData.reminder,
+            reminderWeeks: formData.reminder ? Number(formData.reminderWeeks) : undefined,
           }),
         })
 
@@ -490,6 +496,55 @@ export function HayOrderForm() {
                       rows={4}
                       className="pl-4 pt-3 resize-none text-gray-900 placeholder:text-gray-500 bg-white"
                     />
+                  </div>
+
+                  <div className="space-y-3 rounded-lg border border-[#D7CBBE] bg-white/70 p-4">
+                    <label
+                      htmlFor="reminder"
+                      className="flex items-start gap-3 cursor-pointer"
+                    >
+                      <input
+                        id="reminder"
+                        type="checkbox"
+                        checked={formData.reminder}
+                        onChange={(e) =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            reminder: e.target.checked,
+                          }))
+                        }
+                        className="mt-1 h-4 w-4 rounded border-gray-400 text-[#1F6A4C] focus:ring-[#1F6A4C]"
+                      />
+                      <span className="text-green-900 font-semibold">
+                        Tuleta mulle meelde, kui hein võiks otsa saada
+                      </span>
+                    </label>
+                    <p className="text-sm text-gray-600 pl-7">
+                      Saadame ühe e-kirja valitud aja pärast. Saad selle igal ajal tühistada.
+                    </p>
+                    {formData.reminder ? (
+                      <div className="pl-7 space-y-2">
+                        <Label
+                          htmlFor="reminderWeeks"
+                          className="text-green-900 font-semibold"
+                        >
+                          Meeldetuletuse intervall
+                        </Label>
+                        <select
+                          id="reminderWeeks"
+                          value={formData.reminderWeeks}
+                          onChange={(e) =>
+                            handleInputChange('reminderWeeks', e.target.value)
+                          }
+                          className="h-10 w-full max-w-xs rounded-md border border-input bg-white px-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#1F6A4C]"
+                        >
+                          <option value="3">3 nädalat</option>
+                          <option value="4">4 nädalat</option>
+                          <option value="6">6 nädalat</option>
+                          <option value="8">8 nädalat</option>
+                        </select>
+                      </div>
+                    ) : null}
                   </div>
 
                   {/* Price Summary */}
