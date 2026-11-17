@@ -16,8 +16,11 @@ import {
   verifyHayRetryToken,
 } from '@/lib/hay-order-retry'
 import {
+  classifyMontonioCallbackUuid,
   extractHayMerchantReferences,
+  historicalPaidAttemptMarker,
   orderUuidMatches,
+  shouldIgnoreStaleMontonioCallback,
   type HayOrderSnapshot,
 } from '@/lib/hay-order-payment'
 import {
@@ -166,6 +169,37 @@ describe('Pooleli kirja otsus', () => {
     ).toBe('ignore')
   })
 
+  it('saadab ühe kirja e-posti kohta 48 h jooksul', () => {
+    expect(
+      decideAbandonedEmailAction({
+        candidate: due,
+        now,
+        cutoff,
+        hasLaterPaidOrder: false,
+        alreadySendingToEmail: true,
+      })
+    ).toBe('skip-same-email')
+    expect(
+      decideAbandonedEmailAction({
+        candidate: due,
+        now,
+        cutoff,
+        hasLaterPaidOrder: false,
+        hasRecentAbandonedEmail: true,
+      })
+    ).toBe('skip-same-email')
+    expect(
+      decideAbandonedEmailAction({
+        candidate: due,
+        now,
+        cutoff,
+        hasLaterPaidOrder: false,
+        alreadySendingToEmail: false,
+        hasRecentAbandonedEmail: false,
+      })
+    ).toBe('send')
+  })
+
   it('loeb cutoffi envist', () => {
     expect(
       getAbandonedEmailCutoff('2026-11-18T08:00:00.000Z').toISOString()
@@ -236,13 +270,46 @@ describe('Retry kõlblikkus ja UUID', () => {
     expect(next).toContain('vana rida')
   })
 
-  it('võrdleb UUID-d välja, mitte ainult kommentaaride sisu järgi', () => {
+  it('võrdleb praegust UUID-d välja järgi', () => {
     const row = snapshot({
       montonioUuid: 'uuid-new',
       comments: 'Montonio UUID: uuid-old\nMontonio UUID: uuid-new',
     })
     expect(orderUuidMatches(row, 'uuid-new')).toBe(true)
     expect(orderUuidMatches(row, 'uuid-old')).toBe(false)
+    expect(classifyMontonioCallbackUuid(row, 'uuid-new')).toBe('current')
+    expect(classifyMontonioCallbackUuid(row, 'uuid-old')).toBe('historical')
+    expect(classifyMontonioCallbackUuid(row, 'uuid-unknown')).toBe('unknown')
+  })
+
+  it('töötleb vanema katse PAID makstuna ja ignoreerib ABANDONED/VOIDED/PENDING', () => {
+    const row = snapshot({
+      montonioUuid: 'uuid-new',
+      comments: 'Montonio UUID: uuid-old\nMontonio UUID: uuid-new',
+    })
+    expect(classifyMontonioCallbackUuid(row, 'uuid-old')).toBe('historical')
+    expect(shouldIgnoreStaleMontonioCallback('historical', 'PAID')).toBe(false)
+    expect(shouldIgnoreStaleMontonioCallback('historical', 'FINALIZED')).toBe(
+      false
+    )
+    expect(shouldIgnoreStaleMontonioCallback('historical', 'ABANDONED')).toBe(
+      true
+    )
+    expect(shouldIgnoreStaleMontonioCallback('historical', 'VOIDED')).toBe(true)
+    expect(shouldIgnoreStaleMontonioCallback('historical', 'PENDING')).toBe(true)
+    expect(shouldIgnoreStaleMontonioCallback('current', 'ABANDONED')).toBe(false)
+    expect(historicalPaidAttemptMarker('uuid-old')).toBe(
+      'makstud varasem katse uuid-old'
+    )
+  })
+
+  it('lükkab võõra UUID tagasi', () => {
+    const row = snapshot({
+      montonioUuid: 'uuid-new',
+      comments: 'Montonio UUID: uuid-new',
+    })
+    expect(classifyMontonioCallbackUuid(row, 'uuid-other')).toBe('unknown')
+    expect(shouldIgnoreStaleMontonioCallback('unknown', 'PAID')).toBe(false)
   })
 })
 

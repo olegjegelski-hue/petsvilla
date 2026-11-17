@@ -25,6 +25,7 @@ export type HayAbandonedRunResult = {
   scanned: number
   sent: number
   skippedLaterOrder: number
+  skippedSameEmail: number
   ignored: number
   errors: number
 }
@@ -102,6 +103,35 @@ async function markAbandonedEmailSent(notion: Client, pageId: string) {
   })
 }
 
+export async function hasRecentAbandonedEmailForAddress(
+  notion: Client,
+  databaseId: string,
+  email: string,
+  sinceIso: string
+): Promise<boolean> {
+  if (!email) return false
+
+  const response = await notion.databases.query({
+    database_id: databaseId,
+    page_size: 1,
+    filter: {
+      and: [
+        { property: 'Email', email: { equals: email } },
+        {
+          property: ABANDONED_EMAIL_NOTION_PROP,
+          checkbox: { equals: true },
+        },
+        {
+          timestamp: 'created_time',
+          created_time: { after: sinceIso },
+        },
+      ],
+    },
+  })
+
+  return response.results.length > 0
+}
+
 export async function runAbandonedHayEmails(
   notion: Client,
   now = new Date()
@@ -112,6 +142,7 @@ export async function runAbandonedHayEmails(
     scanned: 0,
     sent: 0,
     skippedLaterOrder: 0,
+    skippedSameEmail: 0,
     ignored: 0,
     errors: 0,
   }
@@ -122,7 +153,14 @@ export async function runAbandonedHayEmails(
   }
 
   const pages = await queryAbandonedCandidates(notion, databaseId, now, cutoff)
+  pages.sort((a, b) =>
+    String(b.created_time || '').localeCompare(String(a.created_time || ''))
+  )
   result.scanned = pages.length
+  const emailsSentThisRun = new Set<string>()
+  const recentSince = new Date(
+    now.getTime() - ABANDONED_EMAIL_MAX_AGE_MS
+  ).toISOString()
 
   for (const page of pages) {
     const snapshot = snapshotHayOrder(page)
@@ -136,6 +174,16 @@ export async function runAbandonedHayEmails(
         email,
         createdTime
       )
+      const alreadySendingToEmail = emailsSentThisRun.has(email)
+      const hasRecentAbandonedEmail =
+        alreadySendingToEmail ||
+        (Boolean(email) &&
+          (await hasRecentAbandonedEmailForAddress(
+            notion,
+            databaseId,
+            email,
+            recentSince
+          )))
       const action = decideAbandonedEmailAction({
         candidate: {
           email,
@@ -152,6 +200,8 @@ export async function runAbandonedHayEmails(
         now,
         cutoff,
         hasLaterPaidOrder,
+        hasRecentAbandonedEmail,
+        alreadySendingToEmail,
       })
 
       if (action === 'ignore') {
@@ -165,6 +215,12 @@ export async function runAbandonedHayEmails(
         continue
       }
 
+      if (action === 'skip-same-email') {
+        await markAbandonedEmailSent(notion, snapshot.pageId)
+        result.skippedSameEmail += 1
+        continue
+      }
+
       const continueUrl = hayRetryPageUrl(snapshot.pageId, getSiteUrl())
       await sendHayAbandonedEmail({
         email,
@@ -174,6 +230,7 @@ export async function runAbandonedHayEmails(
         continueUrl,
       })
       await markAbandonedEmailSent(notion, snapshot.pageId)
+      emailsSentThisRun.add(email)
       result.sent += 1
     } catch (error) {
       result.errors += 1

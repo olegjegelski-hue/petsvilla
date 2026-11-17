@@ -5,7 +5,11 @@ export const ABANDONED_EMAIL_MIN_AGE_MS = 60 * 60 * 1000
 export const ABANDONED_EMAIL_MAX_AGE_MS = 48 * 60 * 60 * 1000
 export const DEFAULT_ABANDONED_EMAIL_AFTER = '2026-11-17T21:00:00.000Z'
 
-export type AbandonedEmailDecision = 'send' | 'skip-later-order' | 'ignore'
+export type AbandonedEmailDecision =
+  | 'send'
+  | 'skip-later-order'
+  | 'skip-same-email'
+  | 'ignore'
 
 export type AbandonedEmailCandidate = {
   email: string
@@ -46,6 +50,8 @@ export function decideAbandonedEmailAction(input: {
   now: Date
   cutoff: Date
   hasLaterPaidOrder: boolean
+  hasRecentAbandonedEmail?: boolean
+  alreadySendingToEmail?: boolean
 }): AbandonedEmailDecision {
   const { candidate, now, cutoff, hasLaterPaidOrder } = input
   if (
@@ -66,6 +72,9 @@ export function decideAbandonedEmailAction(input: {
   if (ageMs > ABANDONED_EMAIL_MAX_AGE_MS) return 'ignore'
 
   if (hasLaterPaidOrder) return 'skip-later-order'
+  if (input.hasRecentAbandonedEmail || input.alreadySendingToEmail) {
+    return 'skip-same-email'
+  }
 
   return 'send'
 }

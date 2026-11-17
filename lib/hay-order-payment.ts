@@ -68,6 +68,7 @@ export type ProcessHayPaymentResult = {
     trackingCode?: string
     error?: string
   }>
+  ignoredStaleAttempt?: boolean
 }
 
 function readTitle(prop: any): string {
@@ -122,6 +123,41 @@ export function extractHayMerchantReferences(comments: string): string[] {
   return matches.map((match) => match[1])
 }
 
+export function extractHayMontonioUuids(
+  comments: string,
+  fieldUuid?: string | null
+): string[] {
+  const matches = [
+    ...String(comments || '').matchAll(/Montonio UUID:\s*([a-zA-Z0-9-]+)/g),
+  ]
+  const ids = matches.map((match) => match[1])
+  if (fieldUuid && !ids.includes(fieldUuid)) ids.push(fieldUuid)
+  return ids
+}
+
+export function historicalPaidAttemptMarker(uuid: string): string {
+  return `makstud varasem katse ${uuid}`
+}
+
+export type MontonioCallbackUuidKind =
+  | 'current'
+  | 'historical'
+  | 'unknown'
+  | 'missing'
+
+export function classifyMontonioCallbackUuid(
+  snapshot: HayOrderSnapshot,
+  uuid: string | undefined
+): MontonioCallbackUuidKind {
+  if (!uuid) return 'missing'
+  if (snapshot.montonioUuid && snapshot.montonioUuid === uuid) return 'current'
+  const history = extractHayMontonioUuids(snapshot.comments, snapshot.montonioUuid)
+  if (history.includes(uuid)) {
+    return snapshot.montonioUuid ? 'historical' : 'current'
+  }
+  return 'unknown'
+}
+
 export function snapshotHayOrder(page: NotionPage): HayOrderSnapshot {
   const props = page.properties
   const comments = readRichText(props.Comments)
@@ -154,9 +190,15 @@ export function orderUuidMatches(
   snapshot: HayOrderSnapshot,
   uuid: string | undefined
 ): boolean {
-  if (!uuid) return true
-  if (snapshot.montonioUuid) return snapshot.montonioUuid === uuid
-  return snapshot.comments.includes(uuid)
+  const kind = classifyMontonioCallbackUuid(snapshot, uuid)
+  return kind === 'current' || kind === 'missing'
+}
+
+export function shouldIgnoreStaleMontonioCallback(
+  kind: MontonioCallbackUuidKind,
+  paymentStatus: string
+): boolean {
+  return kind === 'historical' && !isPaidMontonioStatus(paymentStatus)
 }
 
 async function loadHayOrderSnapshot(
@@ -382,8 +424,21 @@ export async function processMontonioHayOrderPayment(input: {
   }
 
   const snapshot = snapshotHayOrder(page)
-  if (!orderUuidMatches(snapshot, decoded.uuid)) {
+  const uuidKind = classifyMontonioCallbackUuid(snapshot, decoded.uuid)
+  if (uuidKind === 'unknown') {
     throw new Error('Montonio UUID ei kattu tellimusega')
+  }
+
+  if (shouldIgnoreStaleMontonioCallback(uuidKind, paymentStatus)) {
+    return {
+      paid: false,
+      paymentStatus,
+      merchantReference,
+      pageId: snapshot.pageId,
+      uuid: decoded.uuid,
+      shipments: [],
+      ignoredStaleAttempt: true,
+    }
   }
 
   await updatePaymentFields(
@@ -405,6 +460,18 @@ export async function processMontonioHayOrderPayment(input: {
 
   if (!result.paid) {
     return result
+  }
+
+  if (uuidKind === 'historical' && decoded.uuid) {
+    const latest = await loadHayOrderSnapshot(input.notion, snapshot.pageId)
+    const marker = historicalPaidAttemptMarker(decoded.uuid)
+    if (!latest.comments.includes(marker)) {
+      await replaceComments(
+        input.notion,
+        snapshot.pageId,
+        `${latest.comments}\n${marker}`
+      )
+    }
   }
 
   await sendPaidEmailOnce(input.notion, snapshot)
