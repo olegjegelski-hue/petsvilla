@@ -6,6 +6,7 @@ import { Footer } from '@/components/footer'
 import { Metadata } from 'next'
 import { Shield, Lock, Eye, Mail, FileText, AlertCircle } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
+import { SHARED_META_PIXEL_PRIVACY_SENTENCE } from '@/lib/hay-trust'
 
 export const metadata: Metadata = {
   title: 'Privaatsuspoliitika — PetsVilla OÜ',
@@ -198,6 +199,9 @@ export default function PrivaatsuspoliitikаPage() {
                 <div className="space-y-4 text-gray-700">
                   <p>
                     Meie veebileht kasutab küpsiseid veebilehe toimimise ja analüütika jaoks. Täpsem info küpsiste kohta on meie <a href="/kupsiste-teadaanne" className="text-orange-600 hover:underline">küpsiste teadaandes</a>.
+                  </p>
+                  <p>
+                    {SHARED_META_PIXEL_PRIVACY_SENTENCE}
                   </p>
                 </div>
               </CardContent>
