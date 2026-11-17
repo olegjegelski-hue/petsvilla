@@ -3,13 +3,17 @@
 import { useState } from 'react'
 import { Loader2, Package } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { HayBankLinkHelp } from '@/components/hay-bank-link-help'
+import { SITE_CONTACT } from '@/lib/site-contact'
 
 export function HayRetryPaymentButton({
   token,
   label = 'Proovi uuesti',
+  showHelpOnError = true,
 }: {
   token: string
   label?: string
+  showHelpOnError?: boolean
 }) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -36,7 +40,7 @@ export function HayRetryPaymentButton({
         setError(
           typeof data?.error === 'string'
             ? data.error
-            : 'Makset ei õnnestunud uuesti alustada. Palun proovi uuesti või kirjuta service@petsvilla.ee.'
+            : `Makset ei õnnestunud uuesti alustada. Palun proovi uuesti või kirjuta ${SITE_CONTACT.email}.`
         )
         setLoading(false)
         return
@@ -45,7 +49,7 @@ export function HayRetryPaymentButton({
       window.location.href = data.paymentUrl
     } catch {
       setError(
-        'Makset ei õnnestunud uuesti alustada. Palun proovi uuesti või kirjuta service@petsvilla.ee.'
+        `Makset ei õnnestunud uuesti alustada. Palun proovi uuesti või kirjuta ${SITE_CONTACT.email}.`
       )
       setLoading(false)
     }
@@ -69,7 +73,10 @@ export function HayRetryPaymentButton({
         {loading ? 'Suunan makselehele…' : label}
       </Button>
       {error ? (
-        <p className="text-sm text-orange-700 max-w-md text-center">{error}</p>
+        <>
+          <p className="text-sm text-orange-700 max-w-md text-center">{error}</p>
+          {showHelpOnError ? <HayBankLinkHelp /> : null}
+        </>
       ) : null}
     </div>
   )

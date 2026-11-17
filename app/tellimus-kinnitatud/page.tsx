@@ -4,6 +4,8 @@ import { Navigation } from '@/components/navigation'
 import { Footer } from '@/components/footer'
 import { FacebookGroupsInvite } from '@/components/facebook-groups-invite'
 import { HayRetryPaymentButton } from '@/components/hay-retry-payment-button'
+import { HayBankLinkHelp } from '@/components/hay-bank-link-help'
+import { SITE_CONTACT } from '@/lib/site-contact'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { AlertCircle, CheckCircle2, Home, Loader2, Mail, Package } from 'lucide-react'
@@ -190,7 +192,7 @@ function TellimusKinnitatudContent() {
                 </h1>
                 <p className="text-lg text-gray-700 mb-4">
                   {retryHint === 'expired'
-                    ? 'Makse uuesti alustamise link on vigane või aegunud. Palun telli uuesti või kirjuta service@petsvilla.ee.'
+                    ? `Makse uuesti alustamise link on vigane või aegunud. Palun telli uuesti või kirjuta ${SITE_CONTACT.email}.`
                     : retryHint === 'error'
                       ? 'Makset ei õnnestunud uuesti alustada. Raha ei ole võetud. Palun proovi uuesti.'
                       : 'Pangas tekkis viga või makse katkestati. Raha ei ole võetud. Palun proovi uuesti.'}
@@ -282,7 +284,11 @@ function TellimusKinnitatudContent() {
               </Button>
 
               {view === 'failed' && retryToken ? (
-                <HayRetryPaymentButton token={retryToken} label="Proovi uuesti" />
+                <HayRetryPaymentButton
+                  token={retryToken}
+                  label="Proovi uuesti"
+                  showHelpOnError={false}
+                />
               ) : (
                 <Button asChild variant="outline" size="lg">
                   <Link
@@ -295,6 +301,7 @@ function TellimusKinnitatudContent() {
                 </Button>
               )}
             </div>
+            {(view === 'failed' || view === 'unknown') && <HayBankLinkHelp />}
           </CardContent>
         </Card>
       </main>

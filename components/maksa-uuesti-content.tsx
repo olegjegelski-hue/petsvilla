@@ -3,6 +3,8 @@
 import { Navigation } from '@/components/navigation'
 import { Footer } from '@/components/footer'
 import { HayRetryPaymentButton } from '@/components/hay-retry-payment-button'
+import { HayBankLinkHelp } from '@/components/hay-bank-link-help'
+import { SITE_CONTACT } from '@/lib/site-contact'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { AlertCircle, Home } from 'lucide-react'
@@ -33,7 +35,7 @@ export function MaksaUuestiContent() {
             <p className="text-lg text-gray-700 mb-8">
               {hasToken
                 ? 'Sinu tellimuse andmed on alles. Ühe klõpsuga suuname sind Montonio makselehele — vormi ei pea uuesti täitma.'
-                : 'See link on vigane või aegunud. Palun alusta tellimust uuesti või kirjuta service@petsvilla.ee.'}
+                : `See link on vigane või aegunud. Palun alusta tellimust uuesti või kirjuta ${SITE_CONTACT.email}.`}
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -50,6 +52,7 @@ export function MaksaUuestiContent() {
                 </Link>
               </Button>
             </div>
+            {!hasToken ? <HayBankLinkHelp /> : null}
           </CardContent>
         </Card>
       </main>

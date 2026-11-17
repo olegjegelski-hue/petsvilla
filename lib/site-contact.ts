@@ -15,6 +15,19 @@ export const SITE_CONTACT = {
   country: 'EE',
 } as const
 
+/** Katkenud pangalingi abi failed-vaatel ja /maksa-uuesti veas. */
+export function hayBankLinkHelp(): {
+  prefix: string
+  email: string
+  mailto: string
+} {
+  return {
+    prefix: 'Pangalingiga ei õnnestu? Kirjuta',
+    email: SITE_CONTACT.email,
+    mailto: `mailto:${SITE_CONTACT.email}`,
+  }
+}
+
 /** Üherealine aadress (õiguslehed, footer). */
 export function getCanonicalAddressLine(): string {
   const c = SITE_CONTACT
