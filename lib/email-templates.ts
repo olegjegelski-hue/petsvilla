@@ -178,3 +178,79 @@ PetsVilla OÜ · petsvilla.ee
 
   return { subject, html, text }
 }
+
+export function buildHayAbandonedEmailContent(data: {
+  quantity: number
+  terminal: string
+  totalPrice: number
+  continueUrl: string
+}): { subject: string; html: string; text: string } {
+  const subject = 'Sinu heinatellimus jäi pooleli'
+  const continueUrl = data.continueUrl
+  const summa = Number.isInteger(data.totalPrice)
+    ? `${data.totalPrice}€`
+    : `${data.totalPrice.toFixed(2).replace('.', ',')}€`
+  const kottLabel = data.quantity === 1 ? 'kott' : 'kotti'
+
+  const html = `
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:#f4f4f4;margin:0;padding:24px 0;">
+      <tr>
+        <td align="center">
+          <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="600" style="max-width:600px;background-color:#ffffff;font-family:Arial,Helvetica,sans-serif;color:#333333;">
+            <tr>
+              <td style="background-color:${BRAND_GREEN};color:#ffffff;padding:24px 28px;font-size:22px;font-weight:bold;">
+                PetsVilla
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:28px;">
+                <p style="margin:0 0 16px;font-size:16px;line-height:1.5;">Tere!</p>
+                <p style="margin:0 0 16px;font-size:16px;line-height:1.5;">
+                  Sinu heinatellimus jäi pooleli. Makset ei võetud. Saad sama tellimuse juurde naasta ja makse lõpetada:
+                </p>
+                <p style="margin:0 0 8px;font-size:16px;line-height:1.5;"><strong>Hein:</strong> ${data.quantity} ${kottLabel}</p>
+                <p style="margin:0 0 8px;font-size:16px;line-height:1.5;"><strong>Pakiautomaat:</strong> ${data.terminal}</p>
+                <p style="margin:0 0 24px;font-size:16px;line-height:1.5;"><strong>Summa:</strong> ${summa}</p>
+                <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 24px;">
+                  <tr>
+                    <td style="background-color:${BRAND_GREEN};border-radius:6px;">
+                      <a href="${continueUrl}" style="display:inline-block;padding:12px 24px;color:#ffffff;text-decoration:none;font-size:16px;font-weight:bold;">
+                        Jätka maksmist
+                      </a>
+                    </td>
+                  </tr>
+                </table>
+                <p style="margin:0;font-size:14px;line-height:1.5;color:#6b7280;">
+                  Link kehtib 7 päeva. Kui heina enam ei vaja, võid kirja ignoreerida.
+                </p>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:16px 28px 28px;border-top:1px solid #e5e7eb;font-size:13px;line-height:1.5;color:#6b7280;">
+                <p style="margin:0;">PetsVilla OÜ · petsvilla.ee · service@petsvilla.ee</p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  `.trim()
+
+  const text = `
+Tere!
+
+Sinu heinatellimus jäi pooleli. Makset ei võetud.
+
+Hein: ${data.quantity} ${kottLabel}
+Pakiautomaat: ${data.terminal}
+Summa: ${summa}
+
+Jätka maksmist: ${continueUrl}
+
+Link kehtib 7 päeva. Kui heina enam ei vaja, võid kirja ignoreerida.
+
+PetsVilla OÜ · petsvilla.ee
+  `.trim()
+
+  return { subject, html, text }
+}

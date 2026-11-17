@@ -316,7 +316,7 @@ export function HayOrderForm() {
                 <div className="flex items-start space-x-3">
                   <AlertCircle className="w-6 h-6 text-orange-600 flex-shrink-0 mt-0.5" />
                   <p className="text-orange-800 font-semibold">
-                    Pärast vormi täitmist suunatakse teid Montonio makselehele, kus saate tasuda panga lingi või kaardiga.
+                    Pärast vormi täitmist suunatakse teid Montonio makselehele, kus saate tasuda pangalingiga.
                   </p>
                 </div>
               </CardContent>

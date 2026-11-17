@@ -13,7 +13,7 @@ export type MontonioOrderTokenPayload = {
 }
 
 export type NotionHayPaymentUpdate = {
-  orderStatus: 'Uus' | 'Töötlemisel' | 'Vigane'
+  orderStatus: 'Uus' | 'Töötlemisel' | 'Vigane' | 'Maksmata'
   paymentSelect: 'Ootel' | 'Makstud' | 'Tühistatud' | 'Katkestatud'
   paid: boolean
 }
@@ -67,7 +67,7 @@ export function mapMontonioStatusToNotion(
     return { orderStatus: 'Uus', paymentSelect: 'Makstud', paid: true }
   }
   if (status === 'ABANDONED') {
-    return { orderStatus: 'Vigane', paymentSelect: 'Katkestatud', paid: false }
+    return { orderStatus: 'Maksmata', paymentSelect: 'Katkestatud', paid: false }
   }
   if (status === 'VOIDED') {
     return { orderStatus: 'Vigane', paymentSelect: 'Tühistatud', paid: false }
@@ -77,7 +77,7 @@ export function mapMontonioStatusToNotion(
 
 /**
  * Ära kirjuta üle juba saadetud/lõpetatud tellimust.
- * Maksmata „Uus“ (vigane verify) tohib ABANDONED/VOIDED peale minna Vigane-ks.
+ * ABANDONED → Maksmata; VOIDED (pank tühistas) → Vigane.
  */
 export function nextHayOrderStatus(input: {
   currentStatus: string | null

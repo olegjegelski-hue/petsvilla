@@ -15,6 +15,7 @@ export default function robots(): MetadataRoute.Robots {
           '/tellimus-kinnitatud/',
           '/sonum-saadetud/',
           '/meeldetuletus-valja/',
+          '/maksa-uuesti/',
         ],
       },
       {
@@ -25,6 +26,7 @@ export default function robots(): MetadataRoute.Robots {
           '/tellimus-kinnitatud/',
           '/sonum-saadetud/',
           '/meeldetuletus-valja/',
+          '/maksa-uuesti/',
         ],
       },
       {
@@ -35,6 +37,7 @@ export default function robots(): MetadataRoute.Robots {
           '/tellimus-kinnitatud/',
           '/sonum-saadetud/',
           '/meeldetuletus-valja/',
+          '/maksa-uuesti/',
         ],
       },
       {

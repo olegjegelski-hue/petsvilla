@@ -2,12 +2,12 @@ import { NextRequest, NextResponse } from 'next/server'
 import {
   createMontonioOrder,
   generateMerchantReference,
-  type BillingAddress,
 } from '@/lib/montonio'
 import { Client } from '@notionhq/client'
 import { reportError } from '@/lib/report-error'
 import { validateHayOrderForm } from '@/lib/hay-order-validation'
 import { buildHayReminderNotionProperties } from '@/lib/hay-reminder'
+import { buildHayMontonioOrderData, resolveMontonioOrigin } from '@/lib/hay-montonio-order'
 import { rateLimitExceededResponse } from '@/lib/rate-limit'
 
 const notion = new Client({ auth: process.env.NOTION_API_KEY })
@@ -64,80 +64,25 @@ export async function POST(request: NextRequest) {
     const parcelMachine = terminal
     const notes = comments
     const grandTotal = totalPrice
-    const hayPrice = quantity * 9
 
     const merchantReference = generateMerchantReference('HAY')
+    const origin = resolveMontonioOrigin(request.headers.get('origin'))
 
-    let origin =
-      request.headers.get('origin') || process.env.NEXT_PUBLIC_BASE_URL || ''
-
-    if (
-      origin.includes('localhost') ||
-      origin.includes('127.0.0.1') ||
-      !origin
-    ) {
-      origin = 'https://petsvilla.ee'
-    }
-
-    const lineItems = []
-
-    lineItems.push({
-      name: `Lemmiklooma hein (${hayAmount} kott${hayAmount > 1 ? 'i' : ''})`,
-      quantity: hayAmount,
-      finalPrice: hayPrice,
-    })
-
-    if (guineaPigFood > 0) {
-      lineItems.push({
-        name: `Meriseatoit (${guineaPigFood} kg)`,
-        quantity: 1,
-        finalPrice: guineaPigFood * 9,
-      })
-    }
-
-    if (rabbitFood > 0) {
-      lineItems.push({
-        name: `Küülikutoit (${rabbitFood} × 2 kg pakk)`,
-        quantity: 1,
-        finalPrice: rabbitFood * 6,
-      })
-    }
-
-    const nameParts = name.trim().split(/\s+/)
-    const firstName = nameParts[0] || name
-    const lastName = nameParts.slice(1).join(' ') || firstName
-
-    const billingAddress: BillingAddress = {
-      firstName,
-      lastName,
+    const orderData = buildHayMontonioOrderData({
+      name,
       email,
-      phoneNumber: phone,
-      country: 'EE',
-      ...(address ? { addressLine1: address } : {}),
-      ...(city ? { locality: city } : {}),
-      ...(postalCode ? { postalCode } : {}),
-    }
-
-    const orderData = {
+      phone,
+      hayQuantity: hayAmount,
+      guineaPigFoodKg: guineaPigFood,
+      rabbitFoodPacks: rabbitFood,
+      totalPrice: grandTotal,
+      notes,
+      address,
+      city,
+      postalCode,
       merchantReference,
-      returnUrl: `${origin}/tellimus-kinnitatud?reference=${merchantReference}`,
-      notificationUrl: `${origin}/api/montonio/callback`,
-      currency: 'EUR',
-      grandTotal: grandTotal,
-      locale: 'et',
-      billingAddress,
-      lineItems,
-      payment: {
-        method: 'paymentInitiation',
-        methodDisplay: 'Panga link või kaart',
-        amount: grandTotal,
-        currency: 'EUR',
-        methodOptions: {
-          paymentDescription: `Heinatellimus ${merchantReference}`,
-          preferredCountry: 'EE',
-        },
-      },
-    }
+      origin,
+    })
 
     console.log('=== STARTING MONTONIO ORDER CREATION ===')
     console.log('Sending order to Montonio:', JSON.stringify(orderData, null, 2))

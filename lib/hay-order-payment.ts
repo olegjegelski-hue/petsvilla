@@ -45,12 +45,15 @@ export type HayOrderSnapshot = {
   rabbitFoodKg: number
   totalPrice: number
   pickupPointUuid: string | null
+  montonioUuid: string | null
+  merchantReference: string | null
 }
 
 export type ProcessHayPaymentResult = {
   paid: boolean
   paymentStatus: string
   merchantReference: string
+  pageId?: string
   uuid?: string
   purchase?: {
     orderId: string
@@ -99,10 +102,33 @@ export async function findHayOrderByReference(
   return response.results[0] as NotionPage
 }
 
+export async function findHayOrderByPageId(
+  notion: Client,
+  pageId: string
+): Promise<NotionPage | null> {
+  try {
+    return (await notion.pages.retrieve({ page_id: pageId })) as NotionPage
+  } catch (error: any) {
+    const code = error?.code || error?.status
+    if (code === 'object_not_found' || code === 404) return null
+    throw error
+  }
+}
+
+export function extractHayMerchantReferences(comments: string): string[] {
+  const matches = [
+    ...String(comments || '').matchAll(/Montonio Reference:\s*(HAY-[^\s]+)/g),
+  ]
+  return matches.map((match) => match[1])
+}
+
 export function snapshotHayOrder(page: NotionPage): HayOrderSnapshot {
   const props = page.properties
   const comments = readRichText(props.Comments)
   const uuidMatch = comments.match(/Pickup Point UUID: ([a-zA-Z0-9-]+)/)
+  const commentUuidMatch = comments.match(/Montonio UUID:\s*([a-zA-Z0-9-]+)/)
+  const references = extractHayMerchantReferences(comments)
+  const fieldUuid = readRichText(props['Montonio UUID']).trim()
 
   return {
     pageId: page.id,
@@ -119,12 +145,18 @@ export function snapshotHayOrder(page: NotionPage): HayOrderSnapshot {
     rabbitFoodKg: props['Küülikutoit (kg)']?.number || 0,
     totalPrice: props['Total Price (EUR)']?.number || 0,
     pickupPointUuid: uuidMatch ? uuidMatch[1] : null,
+    montonioUuid: fieldUuid || commentUuidMatch?.[1] || null,
+    merchantReference: references[0] || references[references.length - 1] || null,
   }
 }
 
-function commentHasUuid(comments: string, uuid: string | undefined): boolean {
+export function orderUuidMatches(
+  snapshot: HayOrderSnapshot,
+  uuid: string | undefined
+): boolean {
   if (!uuid) return true
-  return comments.includes(uuid)
+  if (snapshot.montonioUuid) return snapshot.montonioUuid === uuid
+  return snapshot.comments.includes(uuid)
 }
 
 async function loadHayOrderSnapshot(
@@ -350,7 +382,7 @@ export async function processMontonioHayOrderPayment(input: {
   }
 
   const snapshot = snapshotHayOrder(page)
-  if (!commentHasUuid(snapshot.comments, decoded.uuid)) {
+  if (!orderUuidMatches(snapshot, decoded.uuid)) {
     throw new Error('Montonio UUID ei kattu tellimusega')
   }
 
@@ -366,6 +398,7 @@ export async function processMontonioHayOrderPayment(input: {
     paid: isPaidMontonioStatus(paymentStatus),
     paymentStatus,
     merchantReference,
+    pageId: snapshot.pageId,
     uuid: decoded.uuid,
     shipments: [],
   }

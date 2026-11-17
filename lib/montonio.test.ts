@@ -95,7 +95,7 @@ describe('Montonio makse staatused', () => {
       paid: true,
     })
     expect(mapMontonioStatusToNotion('ABANDONED')).toEqual({
-      orderStatus: 'Vigane',
+      orderStatus: 'Maksmata',
       paymentSelect: 'Katkestatud',
       paid: false,
     })
@@ -121,14 +121,14 @@ describe('Montonio makse staatused', () => {
     ).toBeNull()
   })
 
-  it('märgib maksmata katse Vigane-ks, aga ei tühista juba makstut', () => {
+  it('märgib ABANDONED Maksmata-ks, aga ei tühista juba makstut', () => {
     expect(
       nextHayOrderStatus({
         currentStatus: 'Töötlemisel',
         alreadyPaid: false,
         mapped: mapMontonioStatusToNotion('ABANDONED'),
       })
-    ).toBe('Vigane')
+    ).toBe('Maksmata')
     expect(
       nextHayOrderStatus({
         currentStatus: 'Uus',

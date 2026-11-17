@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { Client } from '@notionhq/client'
 import { processMontonioHayOrderPayment } from '@/lib/hay-order-payment'
+import {
+  createHayRetryToken,
+  isRetryableMontonioStatus,
+} from '@/lib/hay-order-retry'
 import { extractMontonioOrderToken } from '@/lib/montonio-payment'
 import { reportError } from '@/lib/report-error'
 
@@ -34,6 +38,21 @@ export async function POST(request: NextRequest) {
       sendMeta: true,
     })
 
+    let retryToken: string | undefined
+    if (
+      !result.paid &&
+      result.pageId &&
+      isRetryableMontonioStatus(result.paymentStatus)
+    ) {
+      try {
+        retryToken = createHayRetryToken(result.pageId)
+      } catch (error) {
+        reportError(error, {
+          tags: { area: 'montonio', route: 'verify-payment-retry-token' },
+        })
+      }
+    }
+
     return NextResponse.json({
       success: true,
       paid: result.paid,
@@ -42,6 +61,7 @@ export async function POST(request: NextRequest) {
       purchase: result.purchase,
       shipments: result.shipments,
       shipmentsCreated: result.shipments.filter((s) => s.success).length,
+      retryToken,
     })
   } catch (error) {
     reportError(error, { tags: { area: 'montonio', route: 'verify-payment' } })
