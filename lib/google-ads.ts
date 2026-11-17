@@ -1,4 +1,5 @@
 import { hasAnalyticsConsent } from '@/lib/cookie-consent'
+import { ensureGtag } from '@/lib/gtag'
 
 declare global {
   interface Window {
@@ -107,7 +108,7 @@ export function trackGoogleAdsPurchase(input: {
   currency: string
 }): void {
   if (typeof window === 'undefined' || !hasAnalyticsConsent()) return
-  const gtag = window.gtag
+  const gtag = ensureGtag()
   if (typeof gtag !== 'function') return
 
   const sendTo = googleAdsPurchaseSendTo()

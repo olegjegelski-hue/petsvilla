@@ -1,8 +1,32 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
+import {
+  COOKIE_CONSENT_KEY,
+  writeConsent,
+} from '@/lib/cookie-consent'
 import { shouldTrackPaidHayPurchase } from '@/lib/google-ads'
 import { buildGa4PurchaseEvent, trackGa4Purchase } from '@/lib/ga4'
 
 type GtagCall = unknown[]
+
+function memoryStorage() {
+  const store = new Map<string, string>()
+  return {
+    getItem: (key: string) => (store.has(key) ? store.get(key)! : null),
+    setItem: (key: string, value: string) => {
+      store.set(key, value)
+    },
+    removeItem: (key: string) => {
+      store.delete(key)
+    },
+    clear: () => {
+      store.clear()
+    },
+    key: (index: number) => [...store.keys()][index] ?? null,
+    get length() {
+      return store.size
+    },
+  }
+}
 
 describe('GA4 purchase', () => {
   const purchase = {
@@ -15,14 +39,27 @@ describe('GA4 purchase', () => {
   }
 
   const gtagCalls: GtagCall[] = []
+  const storage = memoryStorage()
 
   beforeEach(() => {
     gtagCalls.length = 0
+    storage.clear()
     const gtag = (...args: unknown[]) => {
       gtagCalls.push(args)
     }
     Object.defineProperty(globalThis, 'window', {
-      value: { gtag },
+      value: {
+        gtag,
+        localStorage: storage,
+        dispatchEvent: () => true,
+        addEventListener: () => {},
+        removeEventListener: () => {},
+      },
+      configurable: true,
+      writable: true,
+    })
+    Object.defineProperty(globalThis, 'localStorage', {
+      value: storage,
       configurable: true,
       writable: true,
     })
@@ -30,9 +67,13 @@ describe('GA4 purchase', () => {
 
   afterEach(() => {
     gtagCalls.length = 0
+    storage.removeItem(COOKIE_CONSENT_KEY)
   })
 
   it('saadab purchase ainult makstud tellimusel', () => {
+    writeConsent(true)
+    gtagCalls.length = 0
+
     const fireLikeConfirmationPage = (data: {
       paid?: unknown
       purchase?: typeof purchase
@@ -57,7 +98,22 @@ describe('GA4 purchase', () => {
     expect(gtagCalls[0][1]).toBe('purchase')
   })
 
+  it('ei saada purchase-it ilma analüütikanõusolekuta', () => {
+    writeConsent(false)
+    gtagCalls.length = 0
+    trackGa4Purchase({
+      orderId: purchase.orderId,
+      value: purchase.value,
+      currency: purchase.currency,
+      quantity: purchase.numItems,
+    })
+    expect(gtagCalls).toEqual([])
+  })
+
   it('ei saada nime, e-posti ega telefoni', () => {
+    writeConsent(true)
+    gtagCalls.length = 0
+
     const event = buildGa4PurchaseEvent({
       orderId: purchase.orderId,
       value: purchase.value,
@@ -97,13 +153,22 @@ describe('GA4 purchase', () => {
     ).toBe(1)
   })
 
-  it('ei saada sündmust, kui window.gtag puudub', () => {
-    ;(globalThis as { window: { gtag?: unknown } }).window.gtag = undefined
+  it('järjekorda paneb purchase, kui gtag.js pole veel laetud', () => {
+    writeConsent(true)
+    const win = globalThis.window as Window
+    win.gtag = undefined
+    win.dataLayer = []
     trackGa4Purchase({
       orderId: 'HAY-1',
       value: 12.5,
       currency: 'EUR',
     })
-    expect(gtagCalls).toEqual([])
+    expect(typeof win.gtag).toBe('function')
+    const queued = (win.dataLayer || []).map((entry) =>
+      Array.from(entry as ArrayLike<unknown>)
+    )
+    expect(queued.some((call) => call[0] === 'event' && call[1] === 'purchase')).toBe(
+      true
+    )
   })
 })

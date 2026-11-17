@@ -1,12 +1,8 @@
 'use client'
 
 import { useEffect } from 'react'
-import {
-  FACEBOOK_GROUPS_BRAND_COLOR,
-  buildGroupJoinClickParams,
-} from '@/lib/facebook-groups'
-
-const REDIRECT_FALLBACK_MS = 800
+import { FACEBOOK_GROUPS_BRAND_COLOR } from '@/lib/facebook-groups'
+import { sendGroupJoinClickOrRedirect } from '@/lib/gtag'
 
 type GroupJoinRedirectProps = {
   slug: string
@@ -24,27 +20,14 @@ export function GroupJoinRedirect({
   utmMedium,
 }: GroupJoinRedirectProps) {
   useEffect(() => {
-    const redirect = () => {
-      window.location.replace(facebookUrl)
-    }
-
-    const gtag = window.gtag
-    if (typeof gtag !== 'function') {
-      redirect()
-      return
-    }
-
-    const timer = window.setTimeout(redirect, REDIRECT_FALLBACK_MS)
-    const params = buildGroupJoinClickParams(slug, utmSource, utmMedium)
-    gtag('event', 'group_join_click', {
-      ...params,
-      event_callback: () => {
-        window.clearTimeout(timer)
-        redirect()
+    return sendGroupJoinClickOrRedirect({
+      slug,
+      utmSource,
+      utmMedium,
+      redirect: () => {
+        window.location.replace(facebookUrl)
       },
     })
-
-    return () => window.clearTimeout(timer)
   }, [slug, facebookUrl, utmSource, utmMedium])
 
   return (

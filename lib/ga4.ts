@@ -1,8 +1,10 @@
 /**
- * GA4 sündmused gtag'i kaudu. Consent Mode (default denied + applyGtagConsent)
- * jääb muutmata — sündmused lähevad sama gtag'i kaudu nagu lehevaated.
- * Nime, e-posti ega telefoni ei saadeta.
+ * GA4 sündmused gtag'i kaudu. Silt laeb ainult pärast analüütikanõusolekut
+ * (Consent Mode basic). Nime, e-posti ega telefoni ei saadeta.
  */
+
+import { hasAnalyticsConsent } from '@/lib/cookie-consent'
+import { ensureGtag } from '@/lib/gtag'
 
 export type Ga4PurchaseInput = {
   orderId: string
@@ -32,8 +34,8 @@ export function buildGa4PurchaseEvent(input: Ga4PurchaseInput): {
 }
 
 export function trackGa4Purchase(input: Ga4PurchaseInput): void {
-  if (typeof window === 'undefined') return
-  const gtag = window.gtag
+  if (typeof window === 'undefined' || !hasAnalyticsConsent()) return
+  const gtag = ensureGtag()
   if (typeof gtag !== 'function') return
 
   gtag('event', 'purchase', buildGa4PurchaseEvent(input))
