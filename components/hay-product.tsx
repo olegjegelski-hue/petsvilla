@@ -3,6 +3,7 @@
 
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import { HayTrustBlock } from '@/components/hay-trust-block'
 import { Wheat, Package, Scale, Truck, MapPin, Euro } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
@@ -170,6 +171,8 @@ export function HayProduct() {
             </div>
           </motion.div>
         </div>
+
+        <HayTrustBlock />
 
         {/* Features Grid - Full Width */}
         <motion.div
