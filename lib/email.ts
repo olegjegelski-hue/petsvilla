@@ -2,6 +2,7 @@ import nodemailer from 'nodemailer'
 import type { Transporter } from 'nodemailer'
 import {
   buildContactEmailContent,
+  buildHayAbandonedEmailContent,
   buildHayOrderEmailContent,
   buildHayReminderEmailContent,
 } from '@/lib/email-templates'
@@ -122,4 +123,29 @@ export async function sendHayReminderEmail(data: {
     text: content.text,
   })
   console.log(`Hay reminder email sent successfully to ${data.email}`)
+}
+
+export async function sendHayAbandonedEmail(data: {
+  email: string
+  quantity: number
+  terminal: string
+  totalPrice: number
+  continueUrl: string
+}) {
+  const transporter = createTransporter()
+  const content = buildHayAbandonedEmailContent({
+    quantity: data.quantity,
+    terminal: data.terminal,
+    totalPrice: data.totalPrice,
+    continueUrl: data.continueUrl,
+  })
+
+  await transporter.sendMail({
+    from: `"PetsVilla Heinatellimus" <${process.env.SMTP_USER}>`,
+    to: data.email,
+    subject: content.subject,
+    html: content.html,
+    text: content.text,
+  })
+  console.log(`Hay abandoned-order email sent successfully to ${data.email}`)
 }

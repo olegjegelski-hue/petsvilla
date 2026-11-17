@@ -3,6 +3,9 @@
 import { Navigation } from '@/components/navigation'
 import { Footer } from '@/components/footer'
 import { FacebookGroupsInvite } from '@/components/facebook-groups-invite'
+import { HayRetryPaymentButton } from '@/components/hay-retry-payment-button'
+import { HayBankLinkHelp } from '@/components/hay-bank-link-help'
+import { SITE_CONTACT } from '@/lib/site-contact'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { AlertCircle, CheckCircle2, Home, Loader2, Mail, Package } from 'lucide-react'
@@ -24,11 +27,14 @@ function TellimusKinnitatudContent() {
   const searchParams = useSearchParams()
   const [orderReference, setOrderReference] = useState<string>('')
   const [view, setView] = useState<PaymentView>('loading')
+  const [retryToken, setRetryToken] = useState<string>('')
+  const [retryHint, setRetryHint] = useState<'expired' | 'error' | null>(null)
 
   useEffect(() => {
     const referenceParam = searchParams.get('reference')
     const orderToken = searchParams.get('order-token')
     const legacySuccess = searchParams.get('payment') === 'success'
+    const retryParam = searchParams.get('retry')
 
     if (referenceParam) {
       setOrderReference(referenceParam)
@@ -41,6 +47,12 @@ function TellimusKinnitatudContent() {
 
     if (legacySuccess) {
       setView('paid')
+      return
+    }
+
+    if (retryParam === 'expired' || retryParam === 'error') {
+      setRetryHint(retryParam)
+      setView('failed')
       return
     }
 
@@ -100,6 +112,9 @@ function TellimusKinnitatudContent() {
       }
 
       const status = String(data.paymentStatus || '').toUpperCase()
+      if (typeof data.retryToken === 'string' && data.retryToken.length > 0) {
+        setRetryToken(data.retryToken)
+      }
       setView(status === 'PENDING' || status === 'AUTHORIZED' ? 'pending' : 'failed')
     } catch (error) {
       console.error('Error verifying payment:', error)
@@ -176,8 +191,11 @@ function TellimusKinnitatudContent() {
                   Makse ei õnnestunud
                 </h1>
                 <p className="text-lg text-gray-700 mb-4">
-                  Pangas tekkis viga või makse katkestati. Raha ei ole võetud.
-                  Palun proovi uuesti.
+                  {retryHint === 'expired'
+                    ? `Makse uuesti alustamise link on vigane või aegunud. Palun telli uuesti või kirjuta ${SITE_CONTACT.email}.`
+                    : retryHint === 'error'
+                      ? 'Makset ei õnnestunud uuesti alustada. Raha ei ole võetud. Palun proovi uuesti.'
+                      : 'Pangas tekkis viga või makse katkestati. Raha ei ole võetud. Palun proovi uuesti.'}
                 </p>
               </>
             )}
@@ -265,16 +283,25 @@ function TellimusKinnitatudContent() {
                 </Link>
               </Button>
 
-              <Button asChild variant="outline" size="lg">
-                <Link
-                  href={isPaid ? '/hein' : '/telli-hein'}
-                  className="flex items-center gap-2"
-                >
-                  <Package className="w-5 h-5" />
-                  {isPaid ? 'Tagasi heina lehele' : 'Proovi uuesti tellida'}
-                </Link>
-              </Button>
+              {view === 'failed' && retryToken ? (
+                <HayRetryPaymentButton
+                  token={retryToken}
+                  label="Proovi uuesti"
+                  showHelpOnError={false}
+                />
+              ) : (
+                <Button asChild variant="outline" size="lg">
+                  <Link
+                    href={isPaid ? '/hein' : '/telli-hein'}
+                    className="flex items-center gap-2"
+                  >
+                    <Package className="w-5 h-5" />
+                    {isPaid ? 'Tagasi heina lehele' : 'Proovi uuesti tellida'}
+                  </Link>
+                </Button>
+              )}
             </div>
+            {(view === 'failed' || view === 'unknown') && <HayBankLinkHelp />}
           </CardContent>
         </Card>
       </main>

@@ -3,6 +3,10 @@
     {
       "path": "/api/cron/hay-reminder",
       "schedule": "0 7 * * *"
+    },
+    {
+      "path": "/api/cron/hay-abandoned",
+      "schedule": "0 * * * *"
     }
   ]
 }
