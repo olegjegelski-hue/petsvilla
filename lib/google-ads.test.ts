@@ -158,6 +158,7 @@ describe('trackGoogleAdsPurchase', () => {
 
     const win = {
       gtag,
+      dataLayer: [] as unknown[],
       localStorage: storage,
       sessionStorage: storage,
       dispatchEvent: () => true,
@@ -200,18 +201,27 @@ describe('trackGoogleAdsPurchase', () => {
     expect(gtagCalls).toEqual([])
   })
 
-  it('ei saada konversiooni, kui window.gtag puudub', () => {
+  it('järjekorda paneb conversion, kui gtag.js pole veel laetud', () => {
     process.env.NEXT_PUBLIC_GOOGLE_ADS_PURCHASE_SEND_TO =
       'AW-1016905977/AbCdEfGhIjk'
     writeConsent(true)
     gtagCalls.length = 0
-    ;(globalThis as { window: { gtag?: unknown } }).window.gtag = undefined
+    const win = globalThis.window as Window
+    win.gtag = undefined
+    win.dataLayer = []
     trackGoogleAdsPurchase({
       orderId: 'HAY-1',
       value: 12.5,
       currency: 'EUR',
     })
     expect(gtagCalls).toEqual([])
+    expect(typeof win.gtag).toBe('function')
+    const queued = (win.dataLayer || []).map((entry) =>
+      Array.from(entry as ArrayLike<unknown>)
+    )
+    expect(
+      queued.some((call) => call[0] === 'event' && call[1] === 'conversion')
+    ).toBe(true)
   })
 
   it('saadab conversion ilma isikuandmeteta', () => {
