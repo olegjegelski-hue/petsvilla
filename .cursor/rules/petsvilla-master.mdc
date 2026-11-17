@@ -38,7 +38,7 @@ Eesmärk: müük ja päringud (loomad, hein, tooted), usaldus, SEO, operatiivsed
   - Heinatellimused, merisead, papagoid, blogi, Petra Aqua tooted
 - **Maksed:** Montonio (hein checkout) + SmartPost tarne
 - **E-post:** Nodemailer / SMTP (`service@petsvilla.ee`, Alfanet)
-- **Analüütika:** GA4 (`NEXT_PUBLIC_GA_MEASUREMENT_ID` = G-Q1NSYHYYHB) + Google Ads silt (`NEXT_PUBLIC_GOOGLE_ADS_ID` = AW-1016905977) ühes gtag.js-is (`components/google-analytics.tsx`, `lib/google-ads.ts`; Consent Mode v2 `default` denied → `applyGtagConsent` nõusoleku järgi) + Meta Pixel + Conversions API (`META_PIXEL_ID`, `META_CAPI_TOKEN`). ID-d ainult env-is (Vercel), muutmisel redeploy.
+- **Analüütika:** GA4 (`NEXT_PUBLIC_GA_MEASUREMENT_ID` = G-Q1NSYHYYHB) + Google Ads silt (`NEXT_PUBLIC_GOOGLE_ADS_ID` = AW-1016905977) ühes gtag.js-is (`components/google-analytics.tsx`, `lib/gtag.ts`, `lib/google-ads.ts`) — silt laeb AINULT analüütikanõusolekul (`hasAnalyticsConsent()`): enne nõusolekut ei laeta `gtag.js`-i ega looda `dataLayer`/`gtag`-i (ei küpsisevabu pinge). Nõustumisel laeb samal lehel: consent default granted → js → GA4 + Ads config; sündmused (`purchase`, `conversion`, `group_join_click`) ainult nõusolekul, `ensureGtag()` paneb need järjekorda. Tühistamisel `applyGtagConsent(false)` + Meta Pixel + Conversions API (`META_PIXEL_ID`, `META_CAPI_TOKEN`). ID-d ainult env-is (Vercel), muutmisel redeploy.
 - **Hosting:** Vercel
 - **Prisma:** scaffold olemas (`Contact` mudel), **operatiivne tellimuste voog = Notion**. Ära ehita uut DB-d ilma põhjuseta; Prisma kasutus on minimaalne/jäänuk
 
@@ -144,3 +144,5 @@ Eesmärk: müük ja päringud (loomad, hein, tooted), usaldus, SEO, operatiivsed
 - **2026-07-21:** Montonio tarneaadress parandatud (Tartu mnt 80, Soinaste) — viimane Kõrge GAP suletud. API rate-limit & abuse protection (kontakt + tellimus API) valmis.
 - **2026-07-21:** Sünk Cursorisse → `.cursor/rules/petsvilla-master.mdc` (GAP §4 + 21. juuli logi, peale Montonio aadressi + rate-limiti sulgemist)
 - **2026-11-17:** §2 Analüütika ja §3 kantud järele novembri muudatused: heina kordusostu meeldetuletus (PR #2), FB grupikutse kinnituskirjas ja tänulehel (PR #1), Google Adsi silt + heinatellimuse konversioon (PR #3, commit 5db6bee), GA4 G-Q1NSYHYYHB + `/grupp` lühilingid + GA4 purchase (PR #4, commit d384761), `/hein` usaldusplokk + ühise piksli privaatsuslause (PR #5, commit 3e21181). Kõik live kontrollitud.
+- **2026-11-17:** Sünk Cursorisse → `.cursor/rules/petsvilla-master.mdc` (`alwaysApply`) — PR #6, commit 1b38974.
+- **2026-11-17:** §2 Analüütika — Google'i silt (GA4 + Ads) laeb ainult analüütikanõusolekul, enne nõusolekut mitte midagi (ka mitte küpsisevabu pinge; Oleg 17.11) — PR #7, commit 154229e: `lib/gtag.ts` (`ensureGtag`, `bootstrapGoogleTag`), `beforeInteractive` consent-mode skript eemaldatud. Live kontrollitud.
