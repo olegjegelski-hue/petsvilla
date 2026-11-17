@@ -114,8 +114,10 @@ describe('E-maili mallid', () => {
       totalPrice: 24,
     })
 
-    const merisigala = 'https://www.facebook.com/groups/merisigala'
-    const kuulikud = 'https://www.facebook.com/groups/2037723266312747'
+    const merisigala =
+      'https://petsvilla.ee/grupp/merisigala?utm_source=kinnituskiri&utm_medium=email&utm_campaign=fb_grupid'
+    const kuulikud =
+      'https://petsvilla.ee/grupp/kuulikusobrad?utm_source=kinnituskiri&utm_medium=email&utm_campaign=fb_grupid'
     const title = 'Liitu meie Facebooki gruppidega'
 
     expect(c.html).toContain(title)
@@ -123,9 +125,11 @@ describe('E-maili mallid', () => {
     expect(c.html).toContain(kuulikud)
     expect(c.html).toContain('#2F6F4E')
     expect(c.html).toContain('role="presentation"')
+    expect(c.html).not.toContain('facebook.com/groups')
     expect(c.text).toContain(title)
     expect(c.text).toContain(merisigala)
     expect(c.text).toContain(kuulikud)
+    expect(c.text).not.toContain('facebook.com/groups')
 
     const tarneIndex = c.html.indexOf('SmartPost terminal')
     const inviteIndex = c.html.indexOf(title)
