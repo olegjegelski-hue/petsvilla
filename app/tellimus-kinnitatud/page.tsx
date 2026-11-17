@@ -10,6 +10,7 @@ import Link from 'next/link'
 import { Suspense, useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { trackPurchase } from '@/lib/meta'
+import { trackGa4Purchase } from '@/lib/ga4'
 import {
   isPurchaseAlreadyTracked,
   markPurchaseTracked,
@@ -85,6 +86,12 @@ function TellimusKinnitatudContent() {
               orderId: data.purchase.orderId,
               value: data.purchase.value,
               currency: data.purchase.currency,
+            })
+            trackGa4Purchase({
+              orderId: data.purchase.orderId,
+              value: data.purchase.value,
+              currency: data.purchase.currency,
+              quantity: data.purchase.numItems ?? 1,
             })
             markPurchaseTracked(data.purchase.orderId)
           }
