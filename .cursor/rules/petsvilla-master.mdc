@@ -38,13 +38,17 @@ Eesmärk: müük ja päringud (loomad, hein, tooted), usaldus, SEO, operatiivsed
   - Heinatellimused, merisead, papagoid, blogi, Petra Aqua tooted
 - **Maksed:** Montonio (hein checkout) + SmartPost tarne
 - **E-post:** Nodemailer / SMTP (`service@petsvilla.ee`, Alfanet)
-- **Analüütika:** GA4 + Meta Pixel + Conversions API (`META_PIXEL_ID`, `META_CAPI_TOKEN`)
+- **Analüütika:** GA4 (`NEXT_PUBLIC_GA_MEASUREMENT_ID` = G-Q1NSYHYYHB) + Google Ads silt (`NEXT_PUBLIC_GOOGLE_ADS_ID` = AW-1016905977) ühes gtag.js-is (`components/google-analytics.tsx`, `lib/google-ads.ts`; Consent Mode v2 `default` denied → `applyGtagConsent` nõusoleku järgi) + Meta Pixel + Conversions API (`META_PIXEL_ID`, `META_CAPI_TOKEN`). ID-d ainult env-is (Vercel), muutmisel redeploy.
 - **Hosting:** Vercel
 - **Prisma:** scaffold olemas (`Contact` mudel), **operatiivne tellimuste voog = Notion**. Ära ehita uut DB-d ilma põhjuseta; Prisma kasutus on minimaalne/jäänuk
 
 ## 3. Peamised süsteemid (mis juba töötab)
 
 - **Hein checkout:** `/telli-hein` → Montonio makse → webhook → Notion hein DB → kinnitusmeilid → `/tellimus-kinnitatud` (Meta Purchase CAPI + browser Pixel)
+- **Ostu konversioonid** `/tellimus-kinnitatud`: ainult `paid === true` + sessionStorage topeltkaitse (`shouldTrackPaidHayPurchase`, `isPurchaseAlreadyTracked`) → Meta Purchase, Google Ads `conversion` (`NEXT_PUBLIC_GOOGLE_ADS_PURCHASE_SEND_TO`, ainult analüütika nõusolekul) ja GA4 `purchase` (`lib/ga4.ts`, items hein × kogus). Isikuandmeid Google'ile ei saadeta.
+- **Heina kordusostu meeldetuletus:** `/telli-hein` valikuline linnuke (3/4/6/8 nädalat, vaikimisi märkimata) → cron `/api/cron/hay-reminder` (`vercel.json`, iga päev) saadab ühe kirja ainult makstud tellimustele, loobumislink lülitab välja (`lib/hay-reminder.ts`; link UTM email / meeldetuletus / hein_kordus).
+- **FB grupikutse:** kinnituskirjas ja `/tellimus-kinnitatud` (`components/facebook-groups-invite.tsx`, `lib/facebook-groups.ts` = üks tõeallikas: Merisigala, Küülikusõbrad) lühilinkidega `/grupp/[slug]` (merisigala, kuulikusobrad; noindex) → GA4 `group_join_click` {group, link_source, link_medium} → Facebook (800 ms varusuunamine). UTM: kinnituskiri/email, tanuleht/web, kampaania fb_grupid; heinakoti ja heinamaja QR-id heinakott|heinamaja/print.
+- **Ristturundus Papagoi Keskusega:** `/hein` usaldusplokk „Sama hein, mida söövad Papagoi Keskuse merisead“ (`components/hay-trust-block.tsx`, tekst lukus `lib/hay-trust.ts`) → `papagoi.ee/et/broneeri` UTM petsvilla.ee / referral / ristturundus; privaatsuspoliitikas lause ühise Meta piksli kohta (PetsVilla OÜ + MTÜ Papagoi Keskus). Telli-nupp jääb lehel esimeseks.
 - **Loomade galeriid:** merisead, meriseabeebid, papagoid, viirpapagoid — Notionist, detaillehed + Product schema
 - **E-pood (Petra Aqua):** `/pood` kategooriad + tootelehed — Notion tootebaas, praegu **kataloog/päring**, mitte täielik ostukorv
 - **Blogi:** `/blogi` + `[slug]` — Notion blogi DB
@@ -138,4 +142,5 @@ Eesmärk: müük ja päringud (loomad, hein, tooted), usaldus, SEO, operatiivsed
 - **2026-07-20:** Uuesti sünk (K2 GAP eemaldamine §4 peegeldub Cursoris)
 - **2026-07-21:** §4 korrastus — eemaldatud „Sentry / error tracking“ (verifitseeritud tehtuks, K20a) ja „Papagoid kaart /pood“ (live'is olemas). Montonio aadress jääb (Töös). LCP optimeeritud (avaleht 94/2.9 s, /meriseabeebid 97/2.7 s) — §7 CWV juba kaetud.
 - **2026-07-21:** Montonio tarneaadress parandatud (Tartu mnt 80, Soinaste) — viimane Kõrge GAP suletud. API rate-limit & abuse protection (kontakt + tellimus API) valmis.
-- **2026-07-21:** Sünk Cursorisse → `.cursor/rules/petsvilla-master.mdc` (GAP §4 + 21. juuli logi)
+- **2026-07-21:** Sünk Cursorisse → `.cursor/rules/petsvilla-master.mdc` (GAP §4 + 21. juuli logi, peale Montonio aadressi + rate-limiti sulgemist)
+- **2026-11-17:** §2 Analüütika ja §3 kantud järele novembri muudatused: heina kordusostu meeldetuletus (PR #2), FB grupikutse kinnituskirjas ja tänulehel (PR #1), Google Adsi silt + heinatellimuse konversioon (PR #3, commit 5db6bee), GA4 G-Q1NSYHYYHB + `/grupp` lühilingid + GA4 purchase (PR #4, commit d384761), `/hein` usaldusplokk + ühise piksli privaatsuslause (PR #5, commit 3e21181). Kõik live kontrollitud.
