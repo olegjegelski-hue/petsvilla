@@ -346,11 +346,43 @@ export function buildHayReminderSentProperties(input: {
   }
 }
 
+export const HAY_PAID_ORDER_STATUSES = ['Saadetud', 'Lõpetatud'] as const
+
+/**
+ * Makstud tellimus: Makse ✓ VÕI Makse staatus = Makstud VÕI Status ∈ {Saadetud, Lõpetatud}.
+ * Tagastatud / Vigane / Maksmata ja Tühistatud / Katkestatud ei vasta sellele.
+ */
 export function isHayOrderPaid(input: {
   paidCheckbox?: boolean
   paymentSelect?: string | null
+  status?: string | null
 }): boolean {
-  return Boolean(input.paidCheckbox) || input.paymentSelect === 'Makstud'
+  return (
+    Boolean(input.paidCheckbox) ||
+    input.paymentSelect === 'Makstud' ||
+    (HAY_PAID_ORDER_STATUSES as readonly string[]).includes(input.status || '')
+  )
+}
+
+/** Notion filter — sama definitsioon mis isHayOrderPaid. */
+export function hayPaidNotionFilter() {
+  return {
+    or: [
+      { property: 'Makse' as const, checkbox: { equals: true as const } },
+      {
+        property: 'Makse staatus' as const,
+        select: { equals: 'Makstud' as const },
+      },
+      {
+        property: 'Status' as const,
+        select: { equals: 'Saadetud' as const },
+      },
+      {
+        property: 'Status' as const,
+        select: { equals: 'Lõpetatud' as const },
+      },
+    ],
+  }
 }
 
 export function getHayReminderSecret(): string {

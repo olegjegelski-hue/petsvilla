@@ -6,6 +6,7 @@ import {
   decideHayReminderAction,
   hayReminderListUnsubscribeUrl,
   hayReminderOptOutUrl,
+  hayPaidNotionFilter,
   HAY_REMINDER_NOTION_PROPS,
   HAY_REMINDER_TYPE,
   HAY_WINBACK_DAYS,
@@ -31,21 +32,14 @@ type NotionPage = {
   properties: Record<string, any>
 }
 
-const PAID_FILTER = {
-  or: [
-    { property: 'Makse', checkbox: { equals: true } },
-    {
-      property: 'Makse staatus',
-      select: { equals: 'Makstud' },
-    },
-  ],
-}
+const PAID_FILTER = hayPaidNotionFilter()
 
 export type HayWinbackRunResult = {
   scanned: number
   sent: number
   dryRun: boolean
   dryRunListed: number
+  eligible: number
   limited: number
   skippedLaterOrder: number
   skippedOptedOut: number
@@ -85,6 +79,7 @@ function snapshotReminder(page: NotionPage): HayReminderCandidate & {
     paid: isHayOrderPaid({
       paidCheckbox: Boolean(props.Makse?.checkbox),
       paymentSelect: readSelect(props['Makse staatus']),
+      status: readSelect(props.Status),
     }),
   }
 }
@@ -375,6 +370,7 @@ async function runWinbackReminders(input: {
     sent: 0,
     dryRun,
     dryRunListed: 0,
+    eligible: 0,
     limited: 0,
     skippedLaterOrder: 0,
     skippedOptedOut: 0,
@@ -396,6 +392,7 @@ async function runWinbackReminders(input: {
   result.skippedLaterOrder = queue.skippedLaterOrder
   result.skippedOptedOut = queue.skippedOptedOut
   result.ignored = queue.ignored
+  result.eligible = queue.selected.length + queue.deferred.length
   result.limited = queue.deferred.length
 
   if (dryRun) {
@@ -403,7 +400,8 @@ async function runWinbackReminders(input: {
     result.dryRunListed = masked.length
     console.log('[hay-winback dry-run]', {
       today,
-      wouldSend: masked.length,
+      eligible: result.eligible,
+      wouldSendToday: masked.length,
       limited: queue.deferred.length,
       skippedLaterOrder: queue.skippedLaterOrder,
       skippedOptedOut: queue.skippedOptedOut,
@@ -460,6 +458,7 @@ export async function runHayReminders(notion: Client): Promise<HayReminderRunRes
       sent: 0,
       dryRun: isHayWinbackDryRun(),
       dryRunListed: 0,
+      eligible: 0,
       limited: 0,
       skippedLaterOrder: 0,
       skippedOptedOut: 0,

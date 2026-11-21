@@ -18,6 +18,7 @@ import {
   hayReminderListUnsubscribeUrl,
   hayReminderOptOutUrl,
   hasLaterPaidFromIndex,
+  hayPaidNotionFilter,
   hayReminderUnsubscribeHeaders,
   isHayOrderPaid,
   isHayWinbackDryRun,
@@ -150,6 +151,51 @@ describe('Meeldetuletuse väljajätmise loogika', () => {
     expect(isHayOrderPaid({ paidCheckbox: true })).toBe(true)
     expect(isHayOrderPaid({ paymentSelect: 'Makstud' })).toBe(true)
     expect(isHayOrderPaid({ paymentSelect: 'Ootel' })).toBe(false)
+  })
+
+  it('vana kirje Status=Saadetud ilma Makse/Makse staatuseta on makstud', () => {
+    expect(
+      isHayOrderPaid({
+        paidCheckbox: false,
+        paymentSelect: null,
+        status: 'Saadetud',
+      })
+    ).toBe(true)
+    expect(
+      isHayOrderPaid({
+        paidCheckbox: false,
+        paymentSelect: null,
+        status: 'Lõpetatud',
+      })
+    ).toBe(true)
+    expect(
+      isHayOrderPaid({
+        paidCheckbox: false,
+        paymentSelect: null,
+        status: 'Tagastatud',
+      })
+    ).toBe(false)
+    expect(
+      isHayOrderPaid({
+        paidCheckbox: false,
+        paymentSelect: null,
+        status: 'Vigane',
+      })
+    ).toBe(false)
+    expect(
+      isHayOrderPaid({
+        paidCheckbox: false,
+        paymentSelect: 'Katkestatud',
+        status: 'Maksmata',
+      })
+    ).toBe(false)
+    expect(
+      isHayOrderPaid({
+        paidCheckbox: false,
+        paymentSelect: 'Tühistatud',
+        status: 'Vigane',
+      })
+    ).toBe(false)
   })
 })
 
@@ -379,6 +425,33 @@ describe('90 päeva meeldetuletuse valik', () => {
     ).toBe('skip-later-order')
   })
 
+  it('vana Saadetud rida on 90p järjekorras, kui see on viimane makstud', () => {
+    const created = createdDue.toISOString()
+    const latest = new Map<string, LatestPaidHayOrder>([
+      ['mari@example.com', { pageId: 'legacy-sent', createdTime: created }],
+    ])
+    const queue = selectHayWinbackRecipients({
+      candidates: [
+        dueOrder({
+          pageId: 'legacy-sent',
+          email: 'mari@example.com',
+          createdTime: created,
+          paid: isHayOrderPaid({
+            paidCheckbox: false,
+            paymentSelect: null,
+            status: 'Saadetud',
+          }),
+        }),
+      ],
+      latestPaidByEmail: latest,
+      optedOutEmails: new Set(),
+      today,
+      limit: 10,
+    })
+    expect(queue.selected).toHaveLength(1)
+    expect(queue.selected[0].pageId).toBe('legacy-sent')
+  })
+
   it('uuem makstud tellimus kehtib ka siis, kui e-posti tähesuurus erineb', () => {
     const latest = new Map<string, LatestPaidHayOrder>([
       [
@@ -455,6 +528,15 @@ describe('90 päeva meeldetuletuse valik', () => {
     expect(isHayWinbackDryRun('false')).toBe(false)
     expect(isHayWinbackDryRun('0')).toBe(false)
     expect(isHayWinbackDryRun('maybe')).toBe(true)
+  })
+
+  it('Notioni makstuse filter sisaldab Status Saadetud/Lõpetatud', () => {
+    const names = hayPaidNotionFilter().or.map((clause) =>
+      JSON.stringify(clause)
+    )
+    expect(names.some((n) => n.includes('Saadetud'))).toBe(true)
+    expect(names.some((n) => n.includes('Lõpetatud'))).toBe(true)
+    expect(names.some((n) => n.includes('Makstud'))).toBe(true)
   })
 
   it('täidab Notionis tüübi ja saatmiskuupäeva', () => {
