@@ -7,7 +7,12 @@ import {
   buildHayReminderEmailContent,
   buildHayWinbackEmailContent,
 } from '@/lib/email-templates'
-import { hayReminderUnsubscribeHeaders } from '@/lib/hay-reminder'
+import {
+  buildHayReminderDailyReportContent,
+  getHayReminderReportTo,
+  hayReminderUnsubscribeHeaders,
+  type HayReminderDailyReport,
+} from '@/lib/hay-reminder'
 import { SITE_CONTACT } from '@/lib/site-contact'
 
 const createTransporter = (): Transporter => {
@@ -149,6 +154,22 @@ export async function sendHayWinbackEmail(data: {
     headers: hayReminderUnsubscribeHeaders(data.listUnsubscribeUrl),
   })
   console.log(`Hay 90-day reminder email sent successfully to ${data.email}`)
+}
+
+export async function sendHayReminderDailyReport(report: HayReminderDailyReport) {
+  const transporter = createTransporter()
+  const to = getHayReminderReportTo()
+  const content = buildHayReminderDailyReportContent(report)
+
+  await transporter.sendMail({
+    from: `"PetsVilla Heinatellimus" <${process.env.SMTP_USER}>`,
+    to,
+    replyTo: SITE_CONTACT.email,
+    subject: content.subject,
+    html: content.html,
+    text: content.text,
+  })
+  console.log(`Hay reminder daily report sent to ${to}`)
 }
 
 export async function sendHayAbandonedEmail(data: {

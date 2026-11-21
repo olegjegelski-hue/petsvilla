@@ -1,5 +1,9 @@
 import type { Client } from '@notionhq/client'
-import { sendHayReminderEmail, sendHayWinbackEmail } from '@/lib/email'
+import {
+  sendHayReminderDailyReport,
+  sendHayReminderEmail,
+  sendHayWinbackEmail,
+} from '@/lib/email'
 import {
   addDaysToIsoDate,
   buildHayReminderSentProperties,
@@ -7,6 +11,7 @@ import {
   hayReminderListUnsubscribeUrl,
   hayReminderOptOutUrl,
   hayPaidNotionFilter,
+  hayReminderReportRecipient,
   HAY_REMINDER_NOTION_PROPS,
   HAY_REMINDER_TYPE,
   HAY_WINBACK_DAYS,
@@ -17,9 +22,12 @@ import {
   maskHayEmail,
   normalizeHayEmail,
   selectHayWinbackRecipients,
+  shouldSendHayReminderDailyReport,
   todayInTallinn,
   verifyHayReminderOptOutToken,
   type HayReminderCandidate,
+  type HayReminderDailyReport,
+  type HayReminderReportRecipient,
   type HayWinbackOrder,
   type LatestPaidHayOrder,
 } from '@/lib/hay-reminder'
@@ -39,12 +47,14 @@ export type HayWinbackRunResult = {
   sent: number
   dryRun: boolean
   dryRunListed: number
+  dailyLimit: number
   eligible: number
   limited: number
   skippedLaterOrder: number
   skippedOptedOut: number
   ignored: number
   errors: number
+  recipients: HayReminderReportRecipient[]
 }
 
 export type HayReminderRunResult = {
@@ -55,6 +65,8 @@ export type HayReminderRunResult = {
   skippedOptedOut: number
   ignored: number
   errors: number
+  recipients: HayReminderReportRecipient[]
+  optedOutUnique: number
   winback: HayWinbackRunResult
 }
 
@@ -62,15 +74,22 @@ function readSelect(prop: any): string | null {
   return prop?.select?.name || null
 }
 
+function readTitle(prop: any): string {
+  if (!Array.isArray(prop?.title)) return ''
+  return prop.title.map((part: any) => String(part.plain_text || '')).join('').trim()
+}
+
 function snapshotReminder(page: NotionPage): HayReminderCandidate & {
   pageId: string
   createdTime: string
   optedOut: boolean
+  name: string
 } {
   const props = page.properties
   return {
     pageId: page.id,
     createdTime: page.created_time || '',
+    name: readTitle(props.Name),
     email: normalizeHayEmail(props.Email?.email || ''),
     reminder: Boolean(props[HAY_REMINDER_NOTION_PROPS.enabled]?.checkbox),
     reminderSent: Boolean(props[HAY_REMINDER_NOTION_PROPS.sent]?.checkbox),
@@ -92,6 +111,7 @@ function snapshotWinback(page: NotionPage): HayWinbackOrder & {
     pageId: snapshot.pageId,
     email: snapshot.email,
     createdTime: snapshot.createdTime,
+    name: snapshot.name,
     reminder: snapshot.reminder,
     reminderSent: snapshot.reminderSent,
     paid: snapshot.paid,
@@ -345,6 +365,14 @@ async function runCheckboxReminders(input: {
         today
       )
       result.sent += 1
+      result.recipients.push(
+        hayReminderReportRecipient({
+          name: snapshot.name,
+          email: snapshot.email,
+          createdTime: snapshot.createdTime,
+          type: HAY_REMINDER_TYPE.checkbox,
+        })
+      )
     } catch (error) {
       result.errors += 1
       reportError(error, {
@@ -370,12 +398,14 @@ async function runWinbackReminders(input: {
     sent: 0,
     dryRun,
     dryRunListed: 0,
+    dailyLimit: limit,
     eligible: 0,
     limited: 0,
     skippedLaterOrder: 0,
     skippedOptedOut: 0,
     ignored: 0,
     errors: 0,
+    recipients: [],
   }
 
   const pages = await queryWinbackCandidates(notion, databaseId, today)
@@ -395,9 +425,18 @@ async function runWinbackReminders(input: {
   result.eligible = queue.selected.length + queue.deferred.length
   result.limited = queue.deferred.length
 
+  const toRecipient = (row: (typeof queue.selected)[number]) =>
+    hayReminderReportRecipient({
+      name: row.name,
+      email: row.email,
+      createdTime: row.createdTime,
+      type: HAY_REMINDER_TYPE.winback,
+    })
+
   if (dryRun) {
     const masked = queue.selected.map((row) => maskHayEmail(row.email))
     result.dryRunListed = masked.length
+    result.recipients = queue.selected.map(toRecipient)
     console.log('[hay-winback dry-run]', {
       today,
       eligible: result.eligible,
@@ -431,6 +470,7 @@ async function runWinbackReminders(input: {
         today
       )
       result.sent += 1
+      result.recipients.push(toRecipient(row))
     } catch (error) {
       result.errors += 1
       reportError(error, {
@@ -453,17 +493,21 @@ export async function runHayReminders(notion: Client): Promise<HayReminderRunRes
     skippedOptedOut: 0,
     ignored: 0,
     errors: 0,
+    recipients: [],
+    optedOutUnique: 0,
     winback: {
       scanned: 0,
       sent: 0,
       dryRun: isHayWinbackDryRun(),
       dryRunListed: 0,
+      dailyLimit: getHayWinbackDailyLimit(),
       eligible: 0,
       limited: 0,
       skippedLaterOrder: 0,
       skippedOptedOut: 0,
       ignored: 0,
       errors: 0,
+      recipients: [],
     },
   }
 
@@ -479,6 +523,7 @@ export async function runHayReminders(notion: Client): Promise<HayReminderRunRes
   ])
 
   result.scanned = duePages.length
+  result.optedOutUnique = optedOutEmails.size
   await runCheckboxReminders({
     notion,
     pages: duePages,
@@ -495,15 +540,54 @@ export async function runHayReminders(notion: Client): Promise<HayReminderRunRes
     optedOutEmails,
     latestPaidByEmail,
   })
+  result.recipients.push(...result.winback.recipients)
 
   return result
 }
 
+export function toHayReminderDailyReport(
+  result: HayReminderRunResult
+): HayReminderDailyReport {
+  return {
+    today: result.today,
+    dryRun: result.winback.dryRun,
+    dailyLimit: result.winback.dailyLimit,
+    checkboxSent: result.sent,
+    winbackSent: result.winback.sent,
+    winbackWouldSend: result.winback.dryRunListed,
+    recipients: result.recipients,
+    winbackWaiting: result.winback.limited,
+    skippedLaterOrder:
+      result.skippedLaterOrder + result.winback.skippedLaterOrder,
+    skippedOptedOut: result.skippedOptedOut + result.winback.skippedOptedOut,
+    optedOutUnique: result.optedOutUnique,
+  }
+}
+
+/** Kokkuvõtte viga ei tohi meeldetuletuste saatmist mõjutada — kutsuja püüab. */
+export async function maybeSendHayReminderDailyReport(
+  result: HayReminderRunResult
+): Promise<boolean> {
+  const report = toHayReminderDailyReport(result)
+  if (!shouldSendHayReminderDailyReport(report)) return false
+  await sendHayReminderDailyReport(report)
+  return true
+}
+
 export type HayReminderOptOutResult =
-  | { ok: true; alreadyOff?: boolean }
+  | { ok: true; alreadyOff?: boolean; pageId: string }
   | { ok: false; reason: 'missing-token' | 'invalid-token' | 'not-found' | 'error' }
 
-export async function optOutHayReminder(
+export function hayReminderOptOutView(
+  result: HayReminderOptOutResult
+): 'choice' | 'done' | 'invalid' {
+  if (!result.ok) return 'invalid'
+  if (result.alreadyOff) return 'done'
+  return 'choice'
+}
+
+/** GET: ainult loeb. Notionit ei muuda. */
+export async function inspectHayReminderOptOut(
   notion: Client,
   token: string | undefined
 ): Promise<HayReminderOptOutResult> {
@@ -516,10 +600,9 @@ export async function optOutHayReminder(
     const page = (await notion.pages.retrieve({ page_id: pageId })) as NotionPage
     const snapshot = snapshotReminder(page)
     if (snapshot.optedOut) {
-      return { ok: true, alreadyOff: true }
+      return { ok: true, alreadyOff: true, pageId }
     }
-    await markOptedOut(notion, pageId)
-    return { ok: true }
+    return { ok: true, pageId }
   } catch (error: any) {
     const code = error?.code || error?.status
     if (code === 'object_not_found' || code === 404) {
@@ -528,6 +611,29 @@ export async function optOutHayReminder(
     reportError(error, {
       tags: { area: 'notion', route: 'hay-reminder-opt-out' },
       extra: { pageId },
+    })
+    return { ok: false, reason: 'error' }
+  }
+}
+
+export async function optOutHayReminder(
+  notion: Client,
+  token: string | undefined
+): Promise<HayReminderOptOutResult> {
+  const inspection = await inspectHayReminderOptOut(notion, token)
+  if (!inspection.ok || inspection.alreadyOff) return inspection
+
+  try {
+    await markOptedOut(notion, inspection.pageId)
+    return { ok: true, pageId: inspection.pageId }
+  } catch (error: any) {
+    const code = error?.code || error?.status
+    if (code === 'object_not_found' || code === 404) {
+      return { ok: false, reason: 'not-found' }
+    }
+    reportError(error, {
+      tags: { area: 'notion', route: 'hay-reminder-opt-out' },
+      extra: { pageId: inspection.pageId },
     })
     return { ok: false, reason: 'error' }
   }

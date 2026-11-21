@@ -1,7 +1,8 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import {
   addDaysToIsoDate,
   addWeeksToIsoDate,
+  buildHayReminderDailyReportContent,
   buildHayReminderNotionProperties,
   buildHayReminderSentProperties,
   createHayReminderOptOutToken,
@@ -10,17 +11,22 @@ import {
   DEFAULT_HAY_REMINDER_WEEKS,
   DEFAULT_HAY_WINBACK_DAILY_LIMIT,
   emailsMatch,
+  getHayReminderReportTo,
   getHayWinbackDailyLimit,
+  HAY_OPT_OUT_ORDER_URL,
+  HAY_REMINDER_OPT_OUT_CHOICE_TEXT,
   HAY_REMINDER_OPT_OUT_MESSAGE,
   HAY_REMINDER_TYPE,
   HAY_WINBACK_DAYS,
   HAY_WINBACK_ORDER_URL,
   hayReminderListUnsubscribeUrl,
   hayReminderOptOutUrl,
+  hayReminderReportRecipient,
   hasLaterPaidFromIndex,
   hayPaidNotionFilter,
   hayReminderUnsubscribeHeaders,
   isHayOrderPaid,
+  isHayReminderUnsubscribeBrowserConfirm,
   isHayWinbackDryRun,
   isHayWinbackDue,
   maskHayEmail,
@@ -28,12 +34,21 @@ import {
   parseHayReminderFlag,
   parseHayReminderWeeks,
   selectHayWinbackRecipients,
+  shouldSendHayReminderDailyReport,
   todayInTallinn,
   verifyHayReminderOptOutToken,
+  type HayReminderDailyReport,
   type HayWinbackOrder,
   type LatestPaidHayOrder,
 } from '@/lib/hay-reminder'
-import { isAuthorizedCron } from '@/lib/hay-reminder-job'
+import {
+  hayReminderOptOutView,
+  inspectHayReminderOptOut,
+  isAuthorizedCron,
+  optOutHayReminder,
+  toHayReminderDailyReport,
+  type HayReminderRunResult,
+} from '@/lib/hay-reminder-job'
 import {
   buildHayReminderEmailContent,
   buildHayWinbackEmailContent,
@@ -583,5 +598,237 @@ describe('90 päeva meilimall', () => {
       'Selge — me ei saada sulle enam heina meeldetuletusi.'
     )
     expect(SITE_CONTACT.email).toBe('service@petsvilla.ee')
+  })
+})
+
+describe('Loobumisleht GET vs POST', () => {
+  const pageId = 'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee'
+  const previousSecret = process.env.HAY_REMINDER_SECRET
+
+  function mockPage(optedOut = false) {
+    return {
+      id: pageId,
+      created_time: '2026-01-15T10:00:00.000Z',
+      properties: {
+        Name: { title: [{ plain_text: 'Mari Mets' }] },
+        Email: { email: 'mari@example.com' },
+        Meeldetuletus: { checkbox: false },
+        'Meeldetuletus saadetud': { checkbox: false },
+        Loobunud: { checkbox: optedOut },
+        Makse: { checkbox: true },
+      },
+    }
+  }
+
+  function mockNotion(page = mockPage()) {
+    return {
+      pages: {
+        retrieve: vi.fn(async () => page),
+        update: vi.fn(async () => ({})),
+      },
+    }
+  }
+
+  it('GET inspect ei kirjuta Notionit; POST optOut kirjutab Loobunud', async () => {
+    process.env.HAY_REMINDER_SECRET = SECRET
+    const token = createHayReminderOptOutToken(pageId, SECRET)
+    const notion = mockNotion()
+
+    const inspected = await inspectHayReminderOptOut(notion as any, token)
+    expect(inspected).toEqual({ ok: true, pageId })
+    expect(hayReminderOptOutView(inspected)).toBe('choice')
+    expect(notion.pages.retrieve).toHaveBeenCalledTimes(1)
+    expect(notion.pages.update).not.toHaveBeenCalled()
+
+    const opted = await optOutHayReminder(notion as any, token)
+    expect(opted).toEqual({ ok: true, pageId })
+    expect(notion.pages.update).toHaveBeenCalledTimes(1)
+    expect(notion.pages.update).toHaveBeenCalledWith({
+      page_id: pageId,
+      properties: {
+        Loobunud: { checkbox: true },
+        Meeldetuletus: { checkbox: false },
+        'Meeldetuletus saadetud': { checkbox: true },
+      },
+    })
+
+    process.env.HAY_REMINDER_SECRET = previousSecret
+  })
+
+  it('juba loobunud rida: inspect ega optOut ei kirjuta uuesti', async () => {
+    process.env.HAY_REMINDER_SECRET = SECRET
+    const token = createHayReminderOptOutToken(pageId, SECRET)
+    const notion = mockNotion(mockPage(true))
+
+    const inspected = await inspectHayReminderOptOut(notion as any, token)
+    expect(inspected).toEqual({ ok: true, alreadyOff: true, pageId })
+    expect(hayReminderOptOutView(inspected)).toBe('done')
+    expect(notion.pages.update).not.toHaveBeenCalled()
+
+    const opted = await optOutHayReminder(notion as any, token)
+    expect(opted).toEqual({ ok: true, alreadyOff: true, pageId })
+    expect(notion.pages.update).not.toHaveBeenCalled()
+
+    process.env.HAY_REMINDER_SECRET = previousSecret
+  })
+
+  it('vigane token ei loe ega kirjuta Notionit', async () => {
+    process.env.HAY_REMINDER_SECRET = SECRET
+    const notion = mockNotion()
+    const result = await inspectHayReminderOptOut(notion as any, 'vigane')
+    expect(result).toEqual({ ok: false, reason: 'invalid-token' })
+    expect(hayReminderOptOutView(result)).toBe('invalid')
+    expect(notion.pages.retrieve).not.toHaveBeenCalled()
+    expect(notion.pages.update).not.toHaveBeenCalled()
+    process.env.HAY_REMINDER_SECRET = previousSecret
+  })
+
+  it('brauseri vorm POST on confirm=1; One-Click ei ole', () => {
+    expect(isHayReminderUnsubscribeBrowserConfirm('confirm=1')).toBe(true)
+    expect(
+      isHayReminderUnsubscribeBrowserConfirm('List-Unsubscribe=One-Click')
+    ).toBe(false)
+    expect(isHayReminderUnsubscribeBrowserConfirm('')).toBe(false)
+  })
+
+  it('valikulehe tekst ja Telli hein UTM', () => {
+    expect(HAY_REMINDER_OPT_OUT_CHOICE_TEXT).toContain(
+      'Kas soovid heina meeldetuletustest loobuda?'
+    )
+    expect(HAY_OPT_OUT_ORDER_URL).toContain('utm_campaign=loobumisleht')
+  })
+})
+
+describe('Päevane kokkuvõttekiri', () => {
+  const dryRunReport: HayReminderDailyReport = {
+    today: '2026-11-22',
+    dryRun: true,
+    dailyLimit: 10,
+    checkboxSent: 0,
+    winbackSent: 0,
+    winbackWouldSend: 10,
+    recipients: [
+      {
+        name: 'Mari Mets',
+        email: 'mari@example.com',
+        orderDate: '2026-08-20',
+        type: HAY_REMINDER_TYPE.winback,
+      },
+    ],
+    winbackWaiting: 198,
+    skippedLaterOrder: 3,
+    skippedOptedOut: 1,
+    optedOutUnique: 1,
+  }
+
+  it('saadetakse ainult kui midagi juhtus', () => {
+    expect(shouldSendHayReminderDailyReport(dryRunReport)).toBe(true)
+    expect(
+      shouldSendHayReminderDailyReport({
+        ...dryRunReport,
+        winbackWouldSend: 0,
+        recipients: [],
+      })
+    ).toBe(false)
+    expect(
+      shouldSendHayReminderDailyReport({
+        ...dryRunReport,
+        dryRun: false,
+        winbackWouldSend: 0,
+        checkboxSent: 2,
+      })
+    ).toBe(true)
+  })
+
+  it('dry-run teema ja saajad ilma maskeerimata', () => {
+    const content = buildHayReminderDailyReportContent(dryRunReport)
+    expect(content.subject).toBe(
+      'Heina meeldetuletused 2026-11-22: DRY-RUN, 10 oleks läinud'
+    )
+    expect(content.text).toContain(
+      'Saadetud täna: linnuke 0, 90 päeva 10.'
+    )
+    expect(content.text).toContain(
+      '- Mari Mets mari@example.com — tellimus 2026-08-20 — 90 päeva'
+    )
+    expect(content.text).toContain('90 päeva järjekorras veel ootel: 198.')
+    expect(content.text).toContain(
+      'Vahele jäetud: uuem tellimus 3, loobunud 1.'
+    )
+    expect(content.text).toContain(
+      'Loobunuid kokku (unikaalsed e-postid): 1.'
+    )
+    expect(content.text).toContain('Dry-run: jah. Päevalimiit: 10.')
+    expect(content.html).toContain('Mari Mets')
+    expect(content.html).toContain('mari@example.com')
+    expect(content.html).not.toContain('ma***@')
+  })
+
+  it('päris saatmise teema loendab saadetud kirjad', () => {
+    const content = buildHayReminderDailyReportContent({
+      ...dryRunReport,
+      dryRun: false,
+      checkboxSent: 1,
+      winbackSent: 2,
+      winbackWouldSend: 0,
+    })
+    expect(content.subject).toBe(
+      'Heina meeldetuletused 2026-11-22: 3 saadetud'
+    )
+    expect(content.text).toContain(
+      'Saadetud täna: linnuke 1, 90 päeva 2.'
+    )
+    expect(content.text).toContain('Dry-run: ei.')
+  })
+
+  it('HAY_REMINDER_REPORT_TO vaikimisi service@petsvilla.ee', () => {
+    expect(getHayReminderReportTo(undefined)).toBe(SITE_CONTACT.email)
+    expect(getHayReminderReportTo('')).toBe('service@petsvilla.ee')
+    expect(getHayReminderReportTo('  oleg@petsvilla.ee  ')).toBe(
+      'oleg@petsvilla.ee'
+    )
+  })
+
+  it('koondab croni tulemuse kokkuvõtteks', () => {
+    const result: HayReminderRunResult = {
+      today: '2026-11-22',
+      scanned: 4,
+      sent: 1,
+      skippedLaterOrder: 1,
+      skippedOptedOut: 0,
+      ignored: 0,
+      errors: 0,
+      recipients: [
+        hayReminderReportRecipient({
+          name: 'Jüri',
+          email: 'juri@example.com',
+          createdTime: '2026-08-01T12:00:00.000Z',
+          type: HAY_REMINDER_TYPE.checkbox,
+        }),
+      ],
+      optedOutUnique: 2,
+      winback: {
+        scanned: 20,
+        sent: 0,
+        dryRun: true,
+        dryRunListed: 10,
+        dailyLimit: 10,
+        eligible: 208,
+        limited: 198,
+        skippedLaterOrder: 2,
+        skippedOptedOut: 1,
+        ignored: 0,
+        errors: 0,
+        recipients: [],
+      },
+    }
+    const report = toHayReminderDailyReport(result)
+    expect(report.checkboxSent).toBe(1)
+    expect(report.winbackWouldSend).toBe(10)
+    expect(report.winbackWaiting).toBe(198)
+    expect(report.skippedLaterOrder).toBe(3)
+    expect(report.skippedOptedOut).toBe(1)
+    expect(report.optedOutUnique).toBe(2)
+    expect(shouldSendHayReminderDailyReport(report)).toBe(true)
   })
 })

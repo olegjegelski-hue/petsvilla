@@ -1,4 +1,5 @@
 import { createHmac, timingSafeEqual } from 'crypto'
+import { SITE_CONTACT } from '@/lib/site-contact'
 
 export const HAY_REMINDER_WEEKS = [3, 4, 6, 8] as const
 export type HayReminderWeeks = (typeof HAY_REMINDER_WEEKS)[number]
@@ -10,10 +11,16 @@ export const HAY_REMINDER_ORDER_URL =
 export const HAY_WINBACK_ORDER_URL =
   'https://petsvilla.ee/telli-hein?utm_source=email&utm_medium=meeldetuletus&utm_campaign=hein_90p'
 
+export const HAY_OPT_OUT_ORDER_URL =
+  'https://petsvilla.ee/telli-hein?utm_source=email&utm_medium=meeldetuletus&utm_campaign=loobumisleht'
+
 export const HAY_WINBACK_DAYS = 90
 export const DEFAULT_HAY_WINBACK_DAILY_LIMIT = 10
 export const HAY_REMINDER_OPT_OUT_MESSAGE =
   'Selge — me ei saada sulle enam heina meeldetuletusi.'
+
+export const HAY_REMINDER_OPT_OUT_CHOICE_TEXT =
+  'Kas soovid heina meeldetuletustest loobuda? Kui hein hakkab otsa saama, saad uue koti tellida kohe siit.'
 
 export const HAY_REMINDER_TYPE = {
   checkbox: 'Linnuke',
@@ -173,10 +180,151 @@ export function getHayWinbackDailyLimit(
   return n
 }
 
+export function getHayReminderReportTo(
+  envValue = process.env.HAY_REMINDER_REPORT_TO
+): string {
+  const trimmed = String(envValue || '').trim()
+  return trimmed || SITE_CONTACT.email
+}
+
+/** Brauseri loobumisvorm (hidden confirm=1). One-Click POST-il seda pole. */
+export function isHayReminderUnsubscribeBrowserConfirm(body: string): boolean {
+  try {
+    return new URLSearchParams(body).get('confirm') === '1'
+  } catch {
+    return false
+  }
+}
+
+export type HayReminderReportRecipient = {
+  name: string
+  email: string
+  orderDate: string
+  type: HayReminderTypeName
+}
+
+export type HayReminderDailyReport = {
+  today: string
+  dryRun: boolean
+  dailyLimit: number
+  checkboxSent: number
+  winbackSent: number
+  winbackWouldSend: number
+  recipients: HayReminderReportRecipient[]
+  winbackWaiting: number
+  skippedLaterOrder: number
+  skippedOptedOut: number
+  optedOutUnique: number
+}
+
+export function hayReminderReportRecipient(input: {
+  name?: string
+  email: string
+  createdTime: string
+  type: HayReminderTypeName
+}): HayReminderReportRecipient {
+  const created = new Date(input.createdTime)
+  return {
+    name: String(input.name || '').trim() || '—',
+    email: normalizeHayEmail(input.email),
+    orderDate: Number.isFinite(created.getTime())
+      ? todayInTallinn(created)
+      : '',
+    type: input.type,
+  }
+}
+
+export function shouldSendHayReminderDailyReport(
+  report: HayReminderDailyReport
+): boolean {
+  return (
+    report.checkboxSent > 0 ||
+    report.winbackSent > 0 ||
+    report.winbackWouldSend > 0
+  )
+}
+
+export function hayReminderDailyReportCount(
+  report: HayReminderDailyReport
+): number {
+  if (report.dryRun) {
+    return report.checkboxSent + report.winbackWouldSend
+  }
+  return report.checkboxSent + report.winbackSent
+}
+
+function escapeReportHtml(value: string): string {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+}
+
+export function buildHayReminderDailyReportContent(
+  report: HayReminderDailyReport
+): { subject: string; html: string; text: string } {
+  const n = hayReminderDailyReportCount(report)
+  const subject = report.dryRun
+    ? `Heina meeldetuletused ${report.today}: DRY-RUN, ${n} oleks läinud`
+    : `Heina meeldetuletused ${report.today}: ${n} saadetud`
+
+  const winbackToday = report.dryRun
+    ? report.winbackWouldSend
+    : report.winbackSent
+  const recipientLines =
+    report.recipients.length === 0
+      ? ['(pole saajaid)']
+      : report.recipients.map((row) => {
+          const name = row.name.trim() || '—'
+          return `- ${name} ${row.email} — tellimus ${row.orderDate} — ${row.type}`
+        })
+
+  const text = [
+    `Saadetud täna: linnuke ${report.checkboxSent}, 90 päeva ${winbackToday}.`,
+    '',
+    'Saajad:',
+    ...recipientLines,
+    '',
+    `90 päeva järjekorras veel ootel: ${report.winbackWaiting}.`,
+    `Vahele jäetud: uuem tellimus ${report.skippedLaterOrder}, loobunud ${report.skippedOptedOut}.`,
+    `Loobunuid kokku (unikaalsed e-postid): ${report.optedOutUnique}.`,
+    `Dry-run: ${report.dryRun ? 'jah' : 'ei'}. Päevalimiit: ${report.dailyLimit}.`,
+  ].join('\n')
+
+  const htmlRecipients =
+    report.recipients.length === 0
+      ? '<li>(pole saajaid)</li>'
+      : report.recipients
+          .map((row) => {
+            const name = escapeReportHtml(row.name.trim() || '—')
+            const email = escapeReportHtml(row.email)
+            const orderDate = escapeReportHtml(row.orderDate)
+            const type = escapeReportHtml(row.type)
+            return `<li>${name} ${email} — tellimus ${orderDate} — ${type}</li>`
+          })
+          .join('')
+
+  const html = `
+    <div style="font-family: Arial, sans-serif; max-width: 640px; margin: 0 auto; color: #1f2937;">
+      <p>Saadetud täna: linnuke ${report.checkboxSent}, 90 päeva ${winbackToday}.</p>
+      <p><strong>Saajad:</strong></p>
+      <ul>${htmlRecipients}</ul>
+      <p>90 päeva järjekorras veel ootel: ${report.winbackWaiting}.</p>
+      <p>Vahele jäetud: uuem tellimus ${report.skippedLaterOrder}, loobunud ${report.skippedOptedOut}.</p>
+      <p>Loobunuid kokku (unikaalsed e-postid): ${report.optedOutUnique}.</p>
+      <p>Dry-run: ${report.dryRun ? 'jah' : 'ei'}. Päevalimiit: ${report.dailyLimit}.</p>
+    </div>
+  `.trim()
+
+  return { subject, html, text }
+}
+
 export type HayWinbackOrder = {
   pageId: string
   email: string
   createdTime: string
+  name?: string
   reminder: boolean
   reminderSent: boolean
   paid: boolean
