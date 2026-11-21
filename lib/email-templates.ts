@@ -6,7 +6,11 @@ import {
   buildFacebookGroupsInviteHtml,
   buildFacebookGroupsInviteText,
 } from '@/lib/facebook-groups'
-import { HAY_REMINDER_ORDER_URL } from '@/lib/hay-reminder'
+import {
+  HAY_REMINDER_ORDER_URL,
+  HAY_WINBACK_ORDER_URL,
+} from '@/lib/hay-reminder'
+import { calculateHayOrderTotal } from '@/lib/phone'
 
 const BRAND_GREEN = '#2F6F4E'
 
@@ -170,6 +174,96 @@ Mõne nädala eest tellisid PetsVilla heina. Kui varu hakkab lõppema, saad uue 
 ${orderUrl}
 
 Pakk jõuab tavaliselt 1–3 tööpäeva jooksul.
+
+Ära enam meelde tuleta: ${optOutUrl}
+
+PetsVilla OÜ · petsvilla.ee
+  `.trim()
+
+  return { subject, html, text }
+}
+
+export function buildHayWinbackEmailContent(data: {
+  optOutUrl: string
+  hayBagPriceEur?: number
+}): { subject: string; html: string; text: string } {
+  const subject = 'Kas heinavaru hakkab otsa saama? 🌾'
+  const orderUrl = HAY_WINBACK_ORDER_URL
+  const optOutUrl = data.optOutUrl
+  const price = data.hayBagPriceEur ?? calculateHayOrderTotal({ quantity: 1 })
+  const priceLabel = Number.isInteger(price)
+    ? String(price)
+    : price.toFixed(2).replace('.', ',')
+
+  const html = `
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:#f4f4f4;margin:0;padding:24px 0;">
+      <tr>
+        <td align="center">
+          <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="600" style="max-width:600px;background-color:#ffffff;font-family:Arial,Helvetica,sans-serif;color:#333333;">
+            <tr>
+              <td style="background-color:${BRAND_GREEN};color:#ffffff;padding:24px 28px;font-size:22px;font-weight:bold;">
+                PetsVilla
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:28px;">
+                <p style="margin:0 0 16px;font-size:16px;line-height:1.5;">Tere!</p>
+                <p style="margin:0 0 16px;font-size:16px;line-height:1.5;">
+                  Sinu viimasest heinatellimusest on möödas paar kuud — kas varu hakkab otsa saama?
+                </p>
+                <p style="margin:0 0 16px;font-size:16px;line-height:1.5;">
+                  Kott heina (umbes 4 kg) maksab koos saatmisega pakiautomaati <strong>${priceLabel} €</strong>. Tellida ja maksta saad otse
+                  <a href="https://petsvilla.ee" style="color:${BRAND_GREEN};">petsvilla.ee</a> lehel.
+                </p>
+                <p style="margin:0 0 24px;font-size:16px;line-height:1.5;">
+                  Hein on endiselt sama, mida söövad iga päev meie enda tõumerisead. Aretame tõumerisigu juba neljandat aastat.
+                </p>
+                <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 24px;">
+                  <tr>
+                    <td style="background-color:${BRAND_GREEN};border-radius:6px;">
+                      <a href="${orderUrl}" style="display:inline-block;padding:12px 24px;color:#ffffff;text-decoration:none;font-size:16px;font-weight:bold;">
+                        Telli hein
+                      </a>
+                    </td>
+                  </tr>
+                </table>
+                <p style="margin:0;font-size:16px;line-height:1.5;">
+                  Kui on küsimusi, vasta lihtsalt sellele kirjale.
+                </p>
+                <p style="margin:16px 0 0;font-size:16px;line-height:1.5;">
+                  Oleg Jegelski<br />PetsVilla
+                </p>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:16px 28px 28px;border-top:1px solid #e5e7eb;font-size:13px;line-height:1.5;color:#6b7280;">
+                <p style="margin:0 0 8px;">PetsVilla OÜ · petsvilla.ee</p>
+                <p style="margin:0;">
+                  <a href="${optOutUrl}" style="color:${BRAND_GREEN};text-decoration:underline;">Ära enam meelde tuleta</a>
+                </p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  `.trim()
+
+  const text = `
+Tere!
+
+Sinu viimasest heinatellimusest on möödas paar kuud — kas varu hakkab otsa saama?
+
+Kott heina (umbes 4 kg) maksab koos saatmisega pakiautomaati ${priceLabel} €. Tellida ja maksta saad otse petsvilla.ee lehel.
+
+Hein on endiselt sama, mida söövad iga päev meie enda tõumerisead. Aretame tõumerisigu juba neljandat aastat.
+
+Telli hein: ${orderUrl}
+
+Kui on küsimusi, vasta lihtsalt sellele kirjale.
+
+Oleg Jegelski
+PetsVilla
 
 Ära enam meelde tuleta: ${optOutUrl}
 

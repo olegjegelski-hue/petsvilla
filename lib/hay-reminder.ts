@@ -7,10 +7,29 @@ export const DEFAULT_HAY_REMINDER_WEEKS: HayReminderWeeks = 4
 export const HAY_REMINDER_ORDER_URL =
   'https://petsvilla.ee/telli-hein?utm_source=email&utm_medium=meeldetuletus&utm_campaign=hein_kordus'
 
+export const HAY_WINBACK_ORDER_URL =
+  'https://petsvilla.ee/telli-hein?utm_source=email&utm_medium=meeldetuletus&utm_campaign=hein_90p'
+
+export const HAY_WINBACK_DAYS = 90
+export const DEFAULT_HAY_WINBACK_DAILY_LIMIT = 10
+export const HAY_REMINDER_OPT_OUT_MESSAGE =
+  'Selge — me ei saada sulle enam heina meeldetuletusi.'
+
+export const HAY_REMINDER_TYPE = {
+  checkbox: 'Linnuke',
+  winback: '90 päeva',
+} as const
+
+export type HayReminderTypeName =
+  (typeof HAY_REMINDER_TYPE)[keyof typeof HAY_REMINDER_TYPE]
+
 export const HAY_REMINDER_NOTION_PROPS = {
   enabled: 'Meeldetuletus',
   date: 'Meeldetuletuse kuupäev',
   sent: 'Meeldetuletus saadetud',
+  optedOut: 'Loobunud',
+  type: 'Meeldetuletuse tüüp',
+  sentAt: 'Meeldetuletus saadetud (kp)',
 } as const
 
 const TALLINN_TZ = 'Europe/Tallinn'
@@ -73,7 +92,11 @@ export function buildHayReminderNotionProperties(input: {
   }
 }
 
-export type HayReminderDecision = 'send' | 'skip-later-order' | 'ignore'
+export type HayReminderDecision =
+  | 'send'
+  | 'skip-later-order'
+  | 'skip-opted-out'
+  | 'ignore'
 
 export type HayReminderCandidate = {
   reminder: boolean
@@ -83,25 +106,111 @@ export type HayReminderCandidate = {
   email: string
 }
 
+export function normalizeHayEmail(email: string | null | undefined): string {
+  return String(email || '').trim().toLowerCase()
+}
+
+export function emailsMatch(
+  a: string | null | undefined,
+  b: string | null | undefined
+): boolean {
+  const left = normalizeHayEmail(a)
+  const right = normalizeHayEmail(b)
+  return Boolean(left) && left === right
+}
+
+export function maskHayEmail(email: string): string {
+  const normalized = normalizeHayEmail(email)
+  const at = normalized.indexOf('@')
+  if (at <= 0) return '***'
+  const local = normalized.slice(0, at)
+  const domain = normalized.slice(at + 1)
+  const keep = local.slice(0, Math.min(2, local.length))
+  return `${keep}***@${domain}`
+}
+
+export function addDaysToIsoDate(fromIsoDate: string, days: number): string {
+  const [year, month, day] = fromIsoDate.split('-').map(Number)
+  const utc = new Date(Date.UTC(year, month - 1, day))
+  utc.setUTCDate(utc.getUTCDate() + days)
+  return utc.toISOString().slice(0, 10)
+}
+
+export function hayWinbackDueDate(created: Date): string {
+  return addDaysToIsoDate(todayInTallinn(created), HAY_WINBACK_DAYS)
+}
+
+export function isHayWinbackDue(created: Date, today: string): boolean {
+  if (!Number.isFinite(created.getTime())) return false
+  return hayWinbackDueDate(created) <= today
+}
+
+function envFlagTrue(value: string | undefined): boolean {
+  const v = String(value || '').trim().toLowerCase()
+  return v === 'true' || v === '1' || v === 'yes' || v === 'on'
+}
+
+function envFlagFalse(value: string | undefined): boolean {
+  const v = String(value || '').trim().toLowerCase()
+  return v === 'false' || v === '0' || v === 'no' || v === 'off'
+}
+
+/** Vaikimisi true: 90p kirju ei saadeta ega märgita. Tühi / puuduv env = dry-run. */
+export function isHayWinbackDryRun(
+  envValue = process.env.HAY_WINBACK_DRY_RUN
+): boolean {
+  if (envValue === undefined || String(envValue).trim() === '') return true
+  if (envFlagFalse(envValue)) return false
+  if (envFlagTrue(envValue)) return true
+  return true
+}
+
+export function getHayWinbackDailyLimit(
+  envValue = process.env.HAY_WINBACK_DAILY_LIMIT
+): number {
+  const n = parseInt(String(envValue ?? DEFAULT_HAY_WINBACK_DAILY_LIMIT), 10)
+  if (!Number.isFinite(n) || n < 1) return DEFAULT_HAY_WINBACK_DAILY_LIMIT
+  return n
+}
+
+export type HayWinbackOrder = {
+  pageId: string
+  email: string
+  createdTime: string
+  reminder: boolean
+  reminderSent: boolean
+  paid: boolean
+}
+
+export type LatestPaidHayOrder = {
+  pageId: string
+  createdTime: string
+}
+
 /**
- * Kas see tellimus peaks täna meeldetuletuse saama.
- * Uus makstud tellimus samalt e-postilt → ära saada, märgi töödelduks.
+ * Kas see tellimus peaks täna linnukese-meeldetuletuse saama.
+ * Uus makstud tellimus samalt e-postilt või Loobunud → ära saada.
  */
 export function decideHayReminderAction(input: {
   candidate: HayReminderCandidate
   today: string
   hasLaterPaidOrder: boolean
+  emailOptedOut?: boolean
 }): HayReminderDecision {
   const { candidate, today, hasLaterPaidOrder } = input
   if (
     !candidate.reminder ||
     candidate.reminderSent ||
     !candidate.paid ||
-    !candidate.email ||
+    !normalizeHayEmail(candidate.email) ||
     !candidate.reminderDate ||
     candidate.reminderDate > today
   ) {
     return 'ignore'
+  }
+
+  if (input.emailOptedOut) {
+    return 'skip-opted-out'
   }
 
   if (hasLaterPaidOrder) {
@@ -109,6 +218,132 @@ export function decideHayReminderAction(input: {
   }
 
   return 'send'
+}
+
+export type HayWinbackDecision = 'send' | 'skip-later-order' | 'skip-opted-out' | 'ignore'
+
+export function decideHayWinbackAction(input: {
+  candidate: HayWinbackOrder
+  today: string
+  isLatestPaidOrder: boolean
+  emailOptedOut?: boolean
+}): HayWinbackDecision {
+  const { candidate, today } = input
+  const created = new Date(candidate.createdTime)
+  if (
+    candidate.reminder ||
+    candidate.reminderSent ||
+    !candidate.paid ||
+    !normalizeHayEmail(candidate.email) ||
+    !candidate.createdTime ||
+    !isHayWinbackDue(created, today)
+  ) {
+    return 'ignore'
+  }
+
+  if (input.emailOptedOut) return 'skip-opted-out'
+  if (!input.isLatestPaidOrder) return 'skip-later-order'
+  return 'send'
+}
+
+export function hasLaterPaidFromIndex(
+  email: string,
+  pageId: string,
+  createdTime: string,
+  latestPaidByEmail: Map<string, LatestPaidHayOrder>
+): boolean {
+  const latest = latestPaidByEmail.get(normalizeHayEmail(email))
+  if (!latest) return false
+  if (latest.pageId === pageId) return false
+  return latest.createdTime > createdTime
+}
+
+export function isLatestPaidFromIndex(
+  email: string,
+  pageId: string,
+  latestPaidByEmail: Map<string, LatestPaidHayOrder>
+): boolean {
+  const latest = latestPaidByEmail.get(normalizeHayEmail(email))
+  return Boolean(latest && latest.pageId === pageId)
+}
+
+/**
+ * 90p järjekord: viimane makstud tellimus kahanevalt, siis päevalimiit.
+ * Linnukesega ridu siia ei panda.
+ */
+export function selectHayWinbackRecipients(input: {
+  candidates: HayWinbackOrder[]
+  latestPaidByEmail: Map<string, LatestPaidHayOrder>
+  optedOutEmails: Set<string>
+  today: string
+  limit: number
+}): {
+  selected: HayWinbackOrder[]
+  deferred: HayWinbackOrder[]
+  skippedLaterOrder: number
+  skippedOptedOut: number
+  ignored: number
+} {
+  const eligible: HayWinbackOrder[] = []
+  let skippedLaterOrder = 0
+  let skippedOptedOut = 0
+  let ignored = 0
+
+  for (const candidate of input.candidates) {
+    const email = normalizeHayEmail(candidate.email)
+    const action = decideHayWinbackAction({
+      candidate: { ...candidate, email },
+      today: input.today,
+      isLatestPaidOrder: isLatestPaidFromIndex(
+        email,
+        candidate.pageId,
+        input.latestPaidByEmail
+      ),
+      emailOptedOut: input.optedOutEmails.has(email),
+    })
+
+    if (action === 'send') {
+      eligible.push({ ...candidate, email })
+    } else if (action === 'skip-later-order') {
+      skippedLaterOrder += 1
+    } else if (action === 'skip-opted-out') {
+      skippedOptedOut += 1
+    } else {
+      ignored += 1
+    }
+  }
+
+  eligible.sort((a, b) => b.createdTime.localeCompare(a.createdTime))
+  const limit = input.limit < 1 ? DEFAULT_HAY_WINBACK_DAILY_LIMIT : input.limit
+
+  return {
+    selected: eligible.slice(0, limit),
+    deferred: eligible.slice(limit),
+    skippedLaterOrder,
+    skippedOptedOut,
+    ignored,
+  }
+}
+
+export function hayReminderUnsubscribeHeaders(listUnsubscribeUrl: string): {
+  'List-Unsubscribe': string
+  'List-Unsubscribe-Post': string
+} {
+  return {
+    'List-Unsubscribe': `<${listUnsubscribeUrl}>`,
+    'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
+  }
+}
+
+export function buildHayReminderSentProperties(input: {
+  type: HayReminderTypeName
+  sentDate: string
+}): Record<string, unknown> {
+  return {
+    [HAY_REMINDER_NOTION_PROPS.sent]: { checkbox: true },
+    [HAY_REMINDER_NOTION_PROPS.type]: { select: { name: input.type } },
+    [HAY_REMINDER_NOTION_PROPS.sentAt]: { date: { start: input.sentDate } },
+  }
 }
 
 export function isHayOrderPaid(input: {
@@ -176,4 +411,14 @@ export function hayReminderOptOutUrl(
   const token = createHayReminderOptOutToken(pageId, secret)
   const base = siteUrl.replace(/\/+$/, '')
   return `${base}/meeldetuletus-valja?token=${encodeURIComponent(token)}`
+}
+
+export function hayReminderListUnsubscribeUrl(
+  pageId: string,
+  siteUrl: string,
+  secret = getHayReminderSecret()
+): string {
+  const token = createHayReminderOptOutToken(pageId, secret)
+  const base = siteUrl.replace(/\/+$/, '')
+  return `${base}/api/hay-reminder/unsubscribe?token=${encodeURIComponent(token)}`
 }

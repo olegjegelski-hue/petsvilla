@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { Client } from '@notionhq/client'
 import { CheckCircle2, AlertCircle } from 'lucide-react'
 import { LegalPageShell, legalCallout } from '@/components/legal-page-shell'
+import { HAY_REMINDER_OPT_OUT_MESSAGE } from '@/lib/hay-reminder'
 import { optOutHayReminder } from '@/lib/hay-reminder-job'
 
 export const dynamic = 'force-dynamic'
@@ -27,9 +28,7 @@ export default async function MeeldetuletusValjaPage({ searchParams }: PageProps
     ? 'Meeldetuletus on tühistatud'
     : 'Meeldetuletust ei õnnestunud tühistada'
   const message = success
-    ? result.alreadyOff
-      ? 'Selle tellimuse meeldetuletus oli juba välja lülitatud. Rohkem kirju selle tellimuse kohta ei saadeta.'
-      : 'Selle tellimuse kohta rohkem meeldetuletusi ei saadeta.'
+    ? HAY_REMINDER_OPT_OUT_MESSAGE
     : result.reason === 'missing-token' || result.reason === 'invalid-token'
       ? 'Link on vigane või aegunud. Kui soovid meeldetuletuse tühistada, vasta viimasele kirjale või kirjuta service@petsvilla.ee.'
       : 'Midagi läks valesti. Palun proovi uuesti või kirjuta service@petsvilla.ee.'

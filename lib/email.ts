@@ -5,7 +5,10 @@ import {
   buildHayAbandonedEmailContent,
   buildHayOrderEmailContent,
   buildHayReminderEmailContent,
+  buildHayWinbackEmailContent,
 } from '@/lib/email-templates'
+import { hayReminderUnsubscribeHeaders } from '@/lib/hay-reminder'
+import { SITE_CONTACT } from '@/lib/site-contact'
 
 const createTransporter = (): Transporter => {
   const host = process.env.SMTP_HOST
@@ -111,6 +114,7 @@ export async function sendHayOrderEmail(data: {
 export async function sendHayReminderEmail(data: {
   email: string
   optOutUrl: string
+  listUnsubscribeUrl: string
 }) {
   const transporter = createTransporter()
   const content = buildHayReminderEmailContent({ optOutUrl: data.optOutUrl })
@@ -118,11 +122,33 @@ export async function sendHayReminderEmail(data: {
   await transporter.sendMail({
     from: `"PetsVilla Heinatellimus" <${process.env.SMTP_USER}>`,
     to: data.email,
+    replyTo: SITE_CONTACT.email,
     subject: content.subject,
     html: content.html,
     text: content.text,
+    headers: hayReminderUnsubscribeHeaders(data.listUnsubscribeUrl),
   })
   console.log(`Hay reminder email sent successfully to ${data.email}`)
+}
+
+export async function sendHayWinbackEmail(data: {
+  email: string
+  optOutUrl: string
+  listUnsubscribeUrl: string
+}) {
+  const transporter = createTransporter()
+  const content = buildHayWinbackEmailContent({ optOutUrl: data.optOutUrl })
+
+  await transporter.sendMail({
+    from: `"PetsVilla Heinatellimus" <${process.env.SMTP_USER}>`,
+    to: data.email,
+    replyTo: SITE_CONTACT.email,
+    subject: content.subject,
+    html: content.html,
+    text: content.text,
+    headers: hayReminderUnsubscribeHeaders(data.listUnsubscribeUrl),
+  })
+  console.log(`Hay 90-day reminder email sent successfully to ${data.email}`)
 }
 
 export async function sendHayAbandonedEmail(data: {
