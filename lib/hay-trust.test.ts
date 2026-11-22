@@ -30,7 +30,7 @@ describe('Heina usaldusplokk ja ühine piksel', () => {
 
   it('hoiab lukus privaatsuspoliitika ühise piksli lause', () => {
     expect(SHARED_META_PIXEL_PRIVACY_SENTENCE).toBe(
-      'PetsVilla OÜ ja MTÜ Papagoi Keskus kasutavad ühist Meta pikslit. Kui oled andnud nõusoleku turundusküpsistele, võime näidata sulle Facebookis ja Instagramis mõlema reklaame.'
+      'PetsVilla OÜ ja MTÜ Papagoi Keskus kasutavad ühist Meta pikslit. Kui olete andnud nõusoleku turundusküpsistele, võime näidata teile Facebookis ja Instagramis mõlema reklaame.'
     )
   })
 })

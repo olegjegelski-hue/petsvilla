@@ -15,4 +15,4 @@ export const HAY_TRUST_CTA_HREF =
   'https://papagoi.ee/et/broneeri?utm_source=petsvilla.ee&utm_medium=referral&utm_campaign=ristturundus'
 
 export const SHARED_META_PIXEL_PRIVACY_SENTENCE =
-  'PetsVilla OÜ ja MTÜ Papagoi Keskus kasutavad ühist Meta pikslit. Kui oled andnud nõusoleku turundusküpsistele, võime näidata sulle Facebookis ja Instagramis mõlema reklaame.'
+  'PetsVilla OÜ ja MTÜ Papagoi Keskus kasutavad ühist Meta pikslit. Kui olete andnud nõusoleku turundusküpsistele, võime näidata teile Facebookis ja Instagramis mõlema reklaame.'
