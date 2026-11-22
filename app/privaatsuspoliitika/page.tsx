@@ -55,7 +55,7 @@ export default function PrivaatsuspoliitikаPage() {
               Privaatsuspoliitika
             </h1>
             <p className="text-lg text-gray-600">
-              Viimati uuendatud: 13. november 2025
+              Viimati uuendatud: 22. november 2026
             </p>
           </div>
 
@@ -119,6 +119,7 @@ export default function PrivaatsuspoliitikаPage() {
                     <li>Veebilehe funktsionaalsuse tagamiseks</li>
                     <li>Statistika ja analüütika eesmärkidel (Google Analytics, Google Ads)</li>
                     <li>Õiguslike kohustuste täitmiseks</li>
+                    <li>Tellimusel antud e-posti aadressi ja telefoninumbrit võime kasutada, et näidata teile Facebookis ja Instagramis PetsVilla OÜ ning MTÜ Papagoi Keskuse reklaame. Selleks edastame kontaktid Metale krüpteeritud kujul; Meta kasutab neid ainult kontode sobitamiseks ega anna neid meile ega teistele reklaamijatele. Õiguslik alus on meie õigustatud huvi teavitada endisi kliente oma teenustest.</li>
                   </ul>
                 </div>
               </CardContent>
@@ -139,6 +140,7 @@ export default function PrivaatsuspoliitikаPage() {
                     <li><strong>Google Ads:</strong> reklaamikampaaniate tulemuslikkuse mõõtmiseks (heinatellimuse konversioon)</li>
                     <li><strong>SmartPOST:</strong> tarne korraldamiseks (ainult vajalikud andmed)</li>
                     <li><strong>E-posti teenusepakkuja (Alfanet):</strong> e-kirjade saatmiseks</li>
+                    <li><strong>Meta Platforms Ireland Ltd:</strong> reklaami sihtimiseks (krüpteeritud e-post ja telefon). Samu kontakte kasutatakse ka MTÜ Papagoi Keskuse reklaamis.</li>
                   </ul>
                   <p className="mt-4">
                     Kõik kolmandad osapooled on kohustatud järgima GDPR-i ja tagama teie andmete turvalisuse.
@@ -181,7 +183,7 @@ export default function PrivaatsuspoliitikаPage() {
                     <li><strong>Kustutamise õigus:</strong> taotleda oma andmete kustutamist</li>
                     <li><strong>Töötlemise piiramise õigus:</strong> piirata andmete töötlemist</li>
                     <li><strong>Andmete ülekandmise õigus:</strong> saada oma andmed masintöödeldavas formaadis</li>
-                    <li><strong>Vastuväite õigus:</strong> esitada vastuväiteid andmete töötlemisele</li>
+                    <li><strong>Vastuväite õigus:</strong> esitada vastuväiteid andmete töötlemisele. Kui te ei soovi, et teie kontakti reklaamis kasutataks, kirjutage aadressile <a href="mailto:service@petsvilla.ee" className="text-orange-600 hover:underline">service@petsvilla.ee</a> — eemaldame teie andmed reklaaminimekirjast.</li>
                   </ul>
                   <p className="mt-4">
                     Oma õiguste kasutamiseks võtke meiega ühendust: <a href="mailto:service@petsvilla.ee" className="text-orange-600 hover:underline">service@petsvilla.ee</a>
